@@ -1,3 +1,3 @@
 [submodule "libft"]
 	path = libft
-	url = git@github.com:sitempels/common_libft.git
+	url = https://github.com/sitempels/common_libft.git 
