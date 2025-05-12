@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 13:49:17 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/11 19:28:21 by user             ###   ########.fr       */
+/*   Updated: 2025/05/12 20:23:50 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,5 @@ void	ft_free_shell(t_shell *shell)
 	if (shell->tree)
 		ft_free_tree(shell->tree);
 	free(shell);
+	shell = NULL;
 }

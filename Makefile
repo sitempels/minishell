@@ -55,6 +55,7 @@ gdb: $(NAME)
 	gdb ./$(NAME)
 
 clean:
+	rm -rf ./.vscode
 	rm -rf $(OBJ)
 	make -C libft clean
 
