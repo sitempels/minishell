@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:40 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/11 19:45:43 by user             ###   ########.fr       */
+/*   Updated: 2025/05/13 00:51:34 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,18 +76,18 @@ t_shell	*ft_new_shell(char **envs)
 	return (shell);
 }
 
-int	ft_minishell(t_shell *shell)
+void	ft_minishell(t_shell *shell)
 {
 	if (!shell)
-		return (FAILURE);
+		return ;
 	ft_display_banner();
 	while (1)
 	{
 		shell->cmds = ft_read_line("");
 		if (!shell->cmds)
 		{
-			printf("%sAll your memory are belong to us...%s\n", RED, RESET);
-			exit(EXIT_SUCCESS);
+			printf("%sLeaving the shell...\n", BOLD_RED);
+			exit(0);
 		}
 		shell->tokens = ft_tokenize_cmds(shell->cmds);
 		// shell->tree = ft_parse_tokens(shell->tokens);
@@ -101,5 +101,4 @@ int	ft_minishell(t_shell *shell)
 			ft_free_tokens(shell->tokens);
 		free((void *)shell->cmds);
 	}
-	return (SUCCESS);
 }
