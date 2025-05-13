@@ -5,17 +5,13 @@
 %token  ASSIGNMENT_WORD
 %token  NAME
 %token  NEWLINE
-%token  IO_NUMBER
 
 
 /* The following are the operators (see XBD Operator)
    containing more than one character. */
 
-
-
 %token  AND_IF    OR_IF
 /*      '&&'      '||' */
-
 
 %token  DLESS  DGREAT  
 /*      '<<'   '>>'    */
@@ -85,22 +81,15 @@ redirect_list    :               io_redirect
                  | redirect_list io_redirect
                  ;
 io_redirect      :           io_file
-                 | IO_NUMBER io_file
                  |           io_here
-                 | IO_NUMBER io_here
                  ;
 io_file          : '<'       filename
-                 | LESSAND   filename
                  | '>'       filename
-                 | GREATAND  filename
                  | DGREAT    filename
-                 | LESSGREAT filename
-                 | CLOBBER   filename
                  ;
 filename         : WORD                      /* Apply rule 2 */
                  ;
 io_here          : DLESS     here_end
-                 | DLESSDASH here_end
                  ;
 here_end         : WORD                      /* Apply rule 3 */
                  ;
