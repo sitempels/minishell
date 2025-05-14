@@ -18,50 +18,51 @@ VOID	=	> /dev/null 2>&1
 
 
 
-all: $(NAME)	
+all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) $(LIBFT) $(LFLAGS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) $(LIBFT) $(LFLAGS) -o $(NAME)
 
 $(LIBFT):
-	make -C libft
+	@make -C libft
 
 $(OBJ):
-	mkdir -p $(OBJ)
+	@mkdir -p $(OBJ)
 
 # Compile the source files into object files
 $(OBJ)/%.o: $(SRC)/%.c | $(OBJ)
-	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 run: $(NAME)
-	./$(NAME)
+	@./$(NAME)
 
 norm:
-	clear && norminette
+	@clear && norminette
 
 leak: $(NAME)
-	valgrind --leak-check=full ./$(NAME)
+	@valgrind --leak-check=full ./$(NAME)
 
 ltrace: $(NAME)
-	ltrace ./$(NAME)
+	@ltrace ./$(NAME)
 
 strace: $(NAME)
-	strace ./$(NAME)
+	@strace ./$(NAME)
 
 lldb: $(NAME)
-	lldb ./$(NAME)
+	@lldb ./$(NAME)
 
 gdb: $(NAME)
-	gdb ./$(NAME)
+	@gdb ./$(NAME)
 
 clean:
-	rm -rf ./.vscode
-	rm -rf $(OBJ)
-	make -C libft clean
+	@rm -rf ./.vscode
+	@rm -rf $(OBJ)
+	@make -C libft clean
 
 fclean: clean
-	rm -f $(NAME)
-	make -C libft fclean
+	@rm -f $(NAME)
+	@make -C libft fclean
+
 
 re: fclean all
 
