@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/13 00:52:05 by user             ###   ########.fr       */
+/*   Updated: 2025/05/15 12:37:14 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,18 @@ typedef enum e_node
 typedef struct s_token
 {
 	t_type			type;
-	char			*token;
+	char			*start;
+	size_t			size;
 	struct s_token	*next;
 }					t_token;
 
-typedef struct s_tree
+typedef struct s_node
 {
-	int				type;
-	char			*cmd;
-	char			**args;
-	int				infile;
-	int				outfile;
-	struct s_tree	*right;
-	struct s_tree	*left;
-}					t_tree;
+	t_type			type;
+	void			*fct;
+	struct t_node		*left;
+	struct t_node		*right;
+}					t_node;
 
 typedef struct s_shell
 {
