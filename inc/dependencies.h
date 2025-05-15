@@ -6,31 +6,49 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 17:30:18 by user              #+#    #+#             */
-/*   Updated: 2025/05/11 19:23:03 by user             ###   ########.fr       */
+/*   Updated: 2025/05/13 01:12:41 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEPENDENCIES_H
 # define DEPENDENCIES_H
 
-/* SYSTEM */
+/* ************************************************************************** */
+/*                                 SYSTEM                                     */
+/* ************************************************************************** */
+
 # include <errno.h>
+# include <fcntl.h>
 # include <limits.h>
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <signal.h>
 # include <stdarg.h>
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
+# include <sys/ioctl.h>
+# include <sys/stat.h>
 # include <sys/types.h>
+# include <termcap.h>
+# include <termios.h>
 # include <time.h>
 # include <unistd.h>
 
-/* CUSTOMS */
-# include "constants.h"
+/* ************************************************************************** */
+/*                               READLINE                                     */
+/* ************************************************************************** */
 
-/* LIBFTS */
+# include <readline/history.h>
+# include <readline/readline.h>
+
+/* ************************************************************************** */
+/*                                 CUSTOMS                                    */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                  LIBFT                                     */
+/* ************************************************************************** */
+
 # include "../libft/inc/bool.h"
 # include "../libft/inc/crypto.h"
 # include "../libft/inc/file.h"
@@ -44,4 +62,4 @@
 # include "../libft/inc/str.h"
 # include "../libft/inc/utils.h"
 
-#endif
+#endif /* DEPENDENCIES_H */

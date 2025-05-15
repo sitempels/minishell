@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 14:45:05 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/11 19:42:12 by user             ###   ########.fr       */
+/*   Updated: 2025/05/13 01:20:31 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,8 @@ int	ft_isinteractive(void)
 	return (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO));
 }
 
-static void	ft_handl_sigint(int sig, siginfo_t *info, void *context)
+static void	ft_handl_sigint(int sig)
 {
-	(void)info;
-	(void)context;
 	if (sig == SIGINT)
 	{
 		g_signal = SIGINT;
@@ -33,40 +31,38 @@ static void	ft_handl_sigint(int sig, siginfo_t *info, void *context)
 	}
 }
 
-static void	ft_handl_sigquit(int sig, siginfo_t *info, void *context)
+static void	ft_handl_sigquit(int sig)
 {
-	(void)info;
-	(void)context;
 	if (sig == SIGQUIT)
 	{
 		g_signal = SIGQUIT;
-		exit(1);
 	}
 }
 
-static void	ft_handl_sigeof(int sig, siginfo_t *info, void *context)
+static void	ft_handl_sigterm(int sig)
 {
-	(void)info;
-	(void)context;
 	if (sig == SIGTERM)
 	{
 		g_signal = SIGTERM;
 	}
 }
 
-int	ft_setup_signals(void)
+static void	ft_set_signal(int signum, void (*handler)(int))
 {
 	struct sigaction	sa;
 
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = handler;
+	sigaction(signum, &sa, NULL);
+}
+
+int	ft_setup_signals(void)
+{
 	if (!ft_isinteractive())
 		return (FAILURE);
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_SIGINFO;
-	sa.sa_sigaction = ft_handl_sigint;
-	sigaction(SIGINT, &sa, NULL);
-	sa.sa_sigaction = ft_handl_sigquit;
-	sigaction(SIGQUIT, &sa, NULL);
-	sa.sa_sigaction = ft_handl_sigeof;
-	sigaction(SIGTERM, &sa, NULL);
+	ft_set_signal(SIGINT, ft_handl_sigint);
+	ft_set_signal(SIGQUIT, ft_handl_sigquit);
+	ft_set_signal(SIGTERM, ft_handl_sigterm);
 	return (SUCCESS);
 }
