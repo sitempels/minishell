@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/15 12:37:14 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:13:37 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include "dependencies.h"
 
+/* ************************************************************************** */
+/*                                  MACROS                                    */
+/* ************************************************************************** */
+ 
 /* ************************************************************************** */
 /*                                  ENUMS                                     */
 /* ************************************************************************** */
@@ -27,21 +31,25 @@ typedef enum e_level
 	ERROR
 }					t_level;
 
-typedef enum e_type
+typedef enum e_token_type
 {
-	VOID,
-	WORD,
-	PIPE,
-	AMPERSAND,
-	REDIR_IN,
-	REDIR_OUT,
-	APPEND,
-	HEREDOC,
-	PAREN_LEFT,
-	PAREN_RIGHT,
-	WILDCARD,
-	ENV
-}					t_type;
+	ERROR;
+	WORD;
+	ASSIGNMENT_WORD;
+	NEWLINE;
+	AND_IF;
+	OR_IF;
+	LESS;
+	GREAT;
+	DLESS;
+	DGREAT;
+}					t_token_type;
+
+typedef enum e_node_type
+{
+	FILENAME;
+	ERROR;
+}					t_node_type;
 
 typedef enum e_node
 {
@@ -57,16 +65,23 @@ typedef enum e_node
 
 typedef struct s_token
 {
-	t_type			type;
+	t_token_type			type;
 	char			*start;
 	size_t			size;
 	struct s_token	*next;
 }					t_token;
 
+typedef struct union u_usage
+{
+	void	*pointer_fct; //REWRITE FOR A POINTER ON FUNCTION
+	void	*content;
+}			t_usage; // NOT SURE FOR NAMING CONVENTION OF UNION, NEED TO CHECK
+
 typedef struct s_node
 {
-	t_type			type;
-	void			*fct;
+	t_node_type			type;
+	t_usage			use;
+	struct t_node		*parent;
 	struct t_node		*left;
 	struct t_node		*right;
 }					t_node;

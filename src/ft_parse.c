@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:40 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/15 14:02:03 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:29:16 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,46 @@ t_tree	*ft_parser(t_token *tokens)
 
 t_node	*parse_simple_cmd(t_token *tokens)
 {
-	t_token	peek1;
+	t_node	*new;
 
-	peek1 = tokens->next;
-	if (peek1->type == )
+	new = parse_cmd_prefix(tokens);
+	if (new)
+	{
+		new = parse_cmd_word(tokens->next);
+		if (new)
+			*new = parse_cmd_suffix(tokens->new);
+		return (new);
+	}
+	new = parse_cmd_name(tokens);
+	if (new)
+		*new = parse_cmd_suffix(tokens->next);
+	return (new);
 }
+
+t_node	*parse_cmd_suffix(tokens) //!! NOT SURE THE LOGIC WORK LIKE THAT
+{
+	t_node	*new;
+
+	new = NULL;
+	new = parse_io_redirect(tokens);
+	if (new)
+		return (new);
+	new = parse_cmd_suffix(tokens);
+	if (new)
+		return (new);
+	if (token->type == ASSIGNMENT_WORD)
+	{
+		/*DO SOMETHING*/; //-->NEED TO LOOK WHAT ARE ASSIGNMENT WORD
+		return (new);
+	}
+	new = parse_cmd_suffix(tokens);
+	return (new);
+}
+
 t_node	*parse_io_redirect(t_token *tokens)
 {
-	t_token	peek1;
-	t_node	new;
+	t_node	*new;
 
-	peek1 = tokens->next;
 	new = parse_io_file(tokens);
 	if (new)
 		return (new);
@@ -48,21 +77,50 @@ t_node	*parse_io_redirect(t_token *tokens)
 
 t_node	*parse_io_file(t_token *tokens)
 {
-	t_token	peek1;
+	t_node	*new;
 
-	peek1 = tokens->next;
-	if (token->type == DLESS || token->*(char *)content == '<' || token->*(char *)content == '>')
-		if (parse_filename(tokens->next)
-			/*DO SOMETHING*/;
-	else
-		return (NULL);
+	new = NULL;
+	if (token->type == LESS || token->type == GREAT || token->type == DLESS)
+	{
+		new = (t_node *) malloc(sizeof(t_node) * 1);
+		if (!new)
+		{
+			take_node(tokens);
+			return (/*ERROR HANDLING*/);
+		}
+		new->type = token->type; //!!! WON'T WORK AS IT IS, NEED THINKERING
+		new->use.pointer_fct = /*FCT NEEDED*/
+		new->parent = NULL;
+		new->left = parse_filename(tokens->next);
+		if (new->left)
+			new->left->parent = new;
+		new->right = NULL;
+		take_node(tokens);
+	}
+	return (new);
 }
 
 t_node	*parse_filename(t_token *tokens)
 {
+	t_node	*new;
+	char	*content;
+
+	new = NULL;
+	content = (char *)tokens->content;
 	if (tokens->type == WORD)
-		/*DO SOMETHING*/
-		/*IF SUCCESS RETURN NODE*/
-	else
-		return (NULL);
+	{
+		new = (t_node *) malloc(sizeof(t_node) * 1);
+		if (!new)
+		{
+			take_node(tokens);
+			return (/*ERROR HANDLING*/);
+		}
+		new->type = FILENAME;
+		new->use.content = (void *) ft_substr(content, 0, tokens->size);
+		new->parent = NULL;
+		new->left = NULL;
+		new->right = NULL;
+	}
+	take_node(tokens);
+	return (new);
 }

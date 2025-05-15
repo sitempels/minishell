@@ -12,8 +12,8 @@
 %token  AND_IF    OR_IF
 /*      '&&'      '||' */
 
-%token  DLESS  DGREAT  
-/*      '<<'   '>>'    */
+%token  LESS  GREAT  DLESS  DGREAT  
+/*      '<'    '>'    '<<'   '>>'    */
 
 /* -------------------------------------------------------
    The Grammar
@@ -80,8 +80,8 @@ redirect_list    :               io_redirect
 io_redirect      :           io_file
                  |           io_here
                  ;
-io_file          : '<'       filename
-                 | '>'       filename
+io_file          : LESS      filename
+                 | GREAT     filename
                  | DGREAT    filename
                  ;
 filename         : WORD                      /* Apply rule 2 */
