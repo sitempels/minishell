@@ -2,7 +2,6 @@
    The grammar symbols
    ------------------------------------------------------- */
 %token  WORD
-%token  ASSIGNMENT_WORD
 %token  NEWLINE
 
 
@@ -66,8 +65,6 @@ cmd_word         : WORD                   /* Apply rule 7b */
                  ;
 cmd_prefix       :            io_redirect
                  | cmd_prefix io_redirect
-                 |            ASSIGNMENT_WORD
-                 | cmd_prefix ASSIGNMENT_WORD
                  ;
 cmd_suffix       :            io_redirect
                  | cmd_suffix io_redirect

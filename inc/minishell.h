@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/15 15:13:37 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:15:26 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 /* ************************************************************************** */
 /*                                  MACROS                                    */
 /* ************************************************************************** */
- 
 /* ************************************************************************** */
 /*                                  ENUMS                                     */
 /* ************************************************************************** */
@@ -35,7 +34,6 @@ typedef enum e_token_type
 {
 	ERROR;
 	WORD;
-	ASSIGNMENT_WORD;
 	NEWLINE;
 	AND_IF;
 	OR_IF;
@@ -65,22 +63,23 @@ typedef enum e_node
 
 typedef struct s_token
 {
-	t_token_type			type;
-	char			*start;
-	size_t			size;
-	struct s_token	*next;
+	t_token_type		type;
+	char				*start;
+	size_t				size;
+	struct s_token		*prev;
+	struct s_token		*next;
 }					t_token;
 
-typedef struct union u_usage
+typedef union u_usage
 {
-	void	*pointer_fct; //REWRITE FOR A POINTER ON FUNCTION
+	void	(*fct)();
 	void	*content;
-}			t_usage; // NOT SURE FOR NAMING CONVENTION OF UNION, NEED TO CHECK
+}		t_usage;
 
 typedef struct s_node
 {
 	t_node_type			type;
-	t_usage			use;
+	t_usage				use;
 	struct t_node		*parent;
 	struct t_node		*left;
 	struct t_node		*right;
