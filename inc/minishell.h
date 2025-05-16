@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/16 17:15:26 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:30:00 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,35 +27,21 @@ typedef enum e_level
 	DEBUG,
 	INFO,
 	WARN,
-	ERROR
 }					t_level;
 
-typedef enum e_token_type
+typedef enum e_type
 {
-	ERROR;
-	WORD;
-	NEWLINE;
-	AND_IF;
-	OR_IF;
-	LESS;
-	GREAT;
-	DLESS;
-	DGREAT;
-}					t_token_type;
-
-typedef enum e_node_type
-{
-	FILENAME;
-	ERROR;
-}					t_node_type;
-
-typedef enum e_node
-{
-	CMDX,
-	JOBX,
-	PIPEX,
-	IFX
-}					t_node;
+	ERROR,
+	WORD,
+	NEWLINE,
+	AND_IF,
+	OR_IF,
+	LESS,
+	GREAT,
+	DLESS,
+	DGREAT,
+	EOL,
+}					t_type;
 
 /* ************************************************************************** */
 /*                                  STRUCTS                                   */
@@ -63,9 +49,9 @@ typedef enum e_node
 
 typedef struct s_token
 {
-	t_token_type		type;
-	char				*start;
-	size_t				size;
+	t_type		type;
+	char		*start;
+	size_t		size;
 	struct s_token		*prev;
 	struct s_token		*next;
 }					t_token;
@@ -78,18 +64,18 @@ typedef union u_usage
 
 typedef struct s_node
 {
-	t_node_type			type;
+	t_type				type;
 	t_usage				use;
-	struct t_node		*parent;
-	struct t_node		*left;
-	struct t_node		*right;
+	struct s_node		*parent;
+	struct s_node		*left;
+	struct s_node		*right;
 }					t_node;
 
 typedef struct s_shell
 {
 	const char		*cmds;
 	char			**envs;
-	t_token			*tokens;
+	struct s_token			*tokens;
 	t_tree			*tree;
 }					t_shell;
 

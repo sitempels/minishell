@@ -6,13 +6,20 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:40 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/16 17:10:20 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:31:46 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_tree	*ft_parser(t_token *tokens)
+t_node	*parse_simple_cmd(t_token *tokens);
+t_node	*parse_filename(t_token *tokens);
+t_node	*parse_cmd_prefix(t_token *tokens);
+t_node	*parse_cmd_suffix(t_token *tokens);
+t_node	*parse_io_redirect(t_token *tokens);
+t_node	*parse_io_file(t_token *tokens);
+
+t_node	*ft_parser(t_token *tokens)
 {
 	t_node	*tree;
 
@@ -44,7 +51,7 @@ t_node	*parse_simple_cmd(t_token *tokens)
 	return (new);
 }
 
-t_node	*parse_cmd_prefix(tokens) //!! NOT SURE THE LOGIC WORK LIKE THAT
+t_node	*parse_cmd_prefix(t_token *tokens) //!! NOT SURE THE LOGIC WORK LIKE THAT
 {
 	t_node	*new;
 
@@ -58,7 +65,7 @@ t_node	*parse_cmd_prefix(tokens) //!! NOT SURE THE LOGIC WORK LIKE THAT
 	return (new);
 }
 
-t_node	*parse_cmd_suffix(tokens) //!! NOT SURE THE LOGIC WORK LIKE THAT
+t_node	*parse_cmd_suffix(t_token *tokens) //!! NOT SURE THE LOGIC WORK LIKE THAT
 {
 	t_node	*new;
 
@@ -69,7 +76,7 @@ t_node	*parse_cmd_suffix(tokens) //!! NOT SURE THE LOGIC WORK LIKE THAT
 	new = parse_cmd_suffix(tokens);
 	if (new)
 		return (new);
-	if (token->type == WORD)
+	if (tokens->type == WORD)
 	{
 		/*DO SOMETHING*/;
 		return (new);
@@ -107,7 +114,7 @@ t_node	*parse_io_file(t_token *tokens)
 		new->parent = NULL;
 		new->left = parse_filename(tokens->next);
 		if (new->left)
-			new->left->parent = new;
+			(new->left)->parent = new;
 		new->right = NULL;
 		take_node(tokens);
 	}
