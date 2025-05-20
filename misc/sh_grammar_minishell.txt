@@ -54,9 +54,9 @@ term             : term separator and_or
                  |                and_or
                  ;
 
-simple_command   : cmd_prefix cmd_word cmd_suffix
-                 | cmd_prefix cmd_word
-                 | cmd_prefix
+simple_command   : io_redirect cmd_word cmd_suffix
+                 | io_redirect cmd_word
+                 | io_redirect
                  | cmd_name cmd_suffix
                  | cmd_name
                  ;
@@ -65,9 +65,6 @@ cmd_name         : WORD                   /* Apply rule 7a */
                  ;
 
 cmd_word         : WORD                   /* Apply rule 7b */
-                 ;
-
-cmd_prefix       :            io_redirect
                  ;
 
 cmd_suffix       :            io_redirect
