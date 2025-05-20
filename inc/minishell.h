@@ -31,8 +31,7 @@ typedef enum e_level
 
 typedef enum e_type
 {
-	ERROR,
-	WORD,
+	WORD = 1,
 	NEWLINE,
 	AND_IF,
 	OR_IF,
