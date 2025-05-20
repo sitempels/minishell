@@ -33,6 +33,7 @@ typedef enum e_type
 {
 	WORD = 1,
 	NEWLINE,
+	OR,
 	AND_IF,
 	OR_IF,
 	LESS,
