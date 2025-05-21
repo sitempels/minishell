@@ -1,7 +1,5 @@
 #include "test.h"
 
-int	visit(t_node *tree, int indent);
-
 int	main(void)
 {
 	t_token	*temp;
