@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 10:47:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/05/09 11:09:16 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/18 06:28:50 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 t_token	*lexer(char *cl)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	t_token	*token_lst;
 
 	/*if(verif)
-	*/
+		*/
 	i = 0;
 	while (cl[i])
 	{
