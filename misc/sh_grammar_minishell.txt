@@ -9,8 +9,8 @@
 /* The following are the operators (see XBD Operator)
    containing more than one character. */
 
-%token  AND_IF    OR_IF
-/*      '&&'      '||' */
+%token  OR	AND_IF    OR_IF
+/*      '|'	'&&'      '||' */
 
 %token  LESS  GREAT  DLESS  DGREAT  
 /*      '<'    '>'    '<<'   '>>'    */

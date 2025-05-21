@@ -35,7 +35,13 @@ typedef enum e_level
 typedef enum e_type
 {
 	WORD = 1,
+<<<<<<< HEAD
 	OR,
+=======
+	NEWLINE,
+	OR,
+	AND_IF,
+>>>>>>> refs/remotes/origin/dev---stempels
 	OR_IF,
 	AND_IF,
 	LEFT_PAREN,
