@@ -6,38 +6,32 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 10:47:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/05/21 17:09:37 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/26 10:50:23 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	match(char c, char *match_lst);
-static int	assign_type(char *token, int *pos);
-static int	new_token(t_token **token_lst, char *token, int *pos);
-int			token_addback(t_token **tokens, t_token *token);
-t_token		*last_token(t_token **tokens);
+static int		match(char c, char *match_lst);
+static int		token_found(t_token **token_lst, char *cli, int *i);
+static int		token_addback(t_token **tokens, t_token *new);
+static t_token	*token_create(int type, char *start, size_t size);
 
-t_token	**lexer(char *cl)
+t_token	**lexer(t_token **token_lst, char *cli)
 {
 	int		i;
-	int		j;
-	t_token	**token_lst;
+	t_token	*new;
 
 	i = 0;
-	while (cl[i])
+	while (cli[i])
 	{
-		j = 0;
-		while (cl[i + j])
-		{
-			if (cl[i + j + 1] && match(cl[i + j + 1], DELIMITERS))
-				if (!new_token(token_lst, &cl[i], &j))
-					return (NULL);
-			j++;
-		}
-		i = i + j;
-		i++;
+		while (cli[i] && match(cli[i], SEPARATOR))
+			i++;
+		if (token_found(token_lst, cli, &i))
+			return (NULL);
 	}
+	new = token_create(EOL, "\0", 1);
+	token_addback(token_lst, new);
 	return (token_lst);
 }
 
@@ -45,103 +39,68 @@ static int	match(char c, char *match_lst)
 {
 	int	i;
 
+
 	i = 0;
 	while (match_lst[i])
+	{
 		if (match_lst[i] == c)
-			return (1);
+			return (i + 1);
+		i++;
+	}
+	return (0);
+}
+static int	token_found(t_token **token_lst, char *cli, int *i)
+{
+	int		type;
+	int		size;
+	t_token	*new;
+
+	type = match(cli[*i], OPERATOR);
+	size = 1;
+	if (type > 0 && cli[*i + 1] && cli[*i] == cli[*i + 1])
+	{
+		type = type + DOUBLE_ADJUST;
+		size++;
+	}
+	if (type == 0)
+		while (cli[*i + size] && !match(cli[*i + size], DELIMITERS))
+			size++;
+	new = token_create(type, &cli[*i], size);
+	if (!new)
+		return (FAILURE);
+	token_addback(token_lst, new);
+	*i = *i + size;
 	return (0);
 }
 
-static int	new_token(t_token **token_lst, char *token, int *pos)
+static t_token	*token_create(int type, char *start, size_t size)
 {
 	t_token	*new;
 
-	new = (t_token *) ft_calloc(1, sizeof(t_token));
+	new = (t_token *) malloc(1 * sizeof(t_token));
 	if (!new)
-		return (0);
-	new->type = assign_type(token, pos);
-	new->start = token;
-	(*pos)++;
-	new->size = *pos;
-	token_addback(token_lst, new);
-//	if (token[j + 1] && match(token[j + 1], OPERATOR))
-//		if (!new_token(token_list, token[j + 1], 0))
-//			return (0);
-	return (1);
-}
-
-static int	assign_type(char *token, int *pos)
-{
-	if (token[*pos] == '\0')
-		return (EOL);
-	if (token[*pos] == '|' && token[*pos + 1] == '|')
-		return ((*pos)++, OR_IF);
-	if (token[*pos] == '|')
-		return (OR);
-	if (token[*pos] == '&' && token[*pos + 1] == '&')
-		return ((*pos++), AND_IF);
-	if (token[*pos] == '<' && token[*pos + 1] == '<')
-		return ((*pos)++, DLESS);
-	if (token[*pos] == '<')
-		return (LESS);
-	if (token[*pos] == '>' && token[*pos + 1] == '>')
-		return ((*pos)++, DGREAT);
-	if (token[*pos] == '>')
-		return (GREAT);
-	if (token[*pos] == '\n')
-		return (NEWLINE);
-	else
-		return (WORD);
-}
-
-t_token	*last_token(t_token **tokens)
-{
-	t_token	*last;
-
-	if (!tokens || !*tokens)
 		return (NULL);
-	last = *tokens;
-	while (last->next)
-		last = last->next;
-	return (last);
+	new->type = type;
+	new->start = start;
+	new->size = size;
+	new->next = NULL;
+	return (new);
 }
 
-int	token_addback(t_token **tokens, t_token *token)
+static int	token_addback(t_token **token_lst, t_token *new)
 {
 	t_token	*last;
 
-	if (!token)
+	if (!token_lst)
 		return (FAILURE);
-	if (!*tokens)
+	if (!(*token_lst))
 	{
-		*tokens = token;
+		*token_lst = new;
 		return (SUCCESS);
 	}
-	last = last_token(tokens);
-	last->next = token;
+	last = *token_lst;
+	while (last->next)
+		last = last->next;
+	last->next = new;
 	return (SUCCESS);
-}
-
-int	main(void)
-{
-	char *line;
-	int	j;
-	t_token	**token_lst;
-	t_token	*temp;
-
-	line = "ls ls ls ls";
-	token_lst = lexer(line);
-	temp = *token_lst;	
-	while (temp)
-	{
-		printf("TOKEN_TYPE: %d	",temp->type);
-		printf("TOKEN_CONTENT: ");
-		j = 0;
-		while (j < temp->size)
-		{
-			write(1, &(temp->start[j]), 1);
-			j++;
-		}
-		temp = temp->next;
-	}
 }

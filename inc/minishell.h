@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/21 16:31:19 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/26 10:08:58 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@
 /* ************************************************************************** */
 /*                                  MACROS                                    */
 /* ************************************************************************** */
-# define DELIMITERS " |&()\"<>\n\0"
-# define OPERATOR "|&()\"<>\n\0"
-# define METACAR " "
+# define DELIMITERS " |&()\"<>\n"
+/* MAKE SURE OPERATOR MACRO ORDER MATCH ENUM ORDER */
+# define OPERATOR "|&<>()\"\n"
+# define DOUBLE_ADJUST (OR_IF - OR)
+# define SEPARATOR " "
 /* ************************************************************************** */
 /*                                  ENUMS                                     */
 /* ************************************************************************** */
@@ -32,20 +34,23 @@ typedef enum e_level
 	WARN,
 }					t_level;
 
+/* FILL ENUM IN THIS ORDER: SINGLE CHARACTER TOKENS THEN DOUBLE CHARACTER TOKENS */
+/* MAKE SURE THE ORDER MATCH OPERATOR MACRO */
 typedef enum e_type
 {
-	WORD = 1,
+	WORD,
 	OR,
-	OR_IF,
-	AND_IF,
+	IF,
+	LESS,
+	GREAT,
 	LEFT_PAREN,
 	RIGHT_PAREN,
 	DQUOTE,
-	LESS,
-	DLESS,
-	GREAT,
-	DGREAT,
 	NEW_LINE,
+	OR_IF,
+	AND_IF,
+	DLESS,
+	DGREAT,
 	EOL
 }					t_type;
 
@@ -58,7 +63,6 @@ typedef struct s_token
 	t_type		type;
 	char		*start;
 	size_t		size;
-	struct s_token		*prev;
 	struct s_token		*next;
 }					t_token;
 
@@ -78,7 +82,7 @@ typedef struct s_node
 }					t_node;
 
 int	ft_add_token(t_token **tokens, t_token *token);
-t_token	**lexer(char *cl);
+t_token	**lexer(t_token **token_lst, char *cli);
 t_node	*parse_cmd(t_token *tokens);
 int	visit(t_node *tree, int indent);
 
