@@ -6,13 +6,13 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:55:00 by stempels          #+#    #+#             */
-/*   Updated: 2025/05/16 17:00:23 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:29:04 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	take_node(t_tokens *tokens)
+void	take_node(t_token *tokens)
 {
 	t_token	*temp;
 

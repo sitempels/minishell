@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/26 10:08:58 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:23:35 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef enum e_type
 	AND_IF,
 	DLESS,
 	DGREAT,
+	CMD,
 	EOL
 }					t_type;
 
@@ -83,7 +84,7 @@ typedef struct s_node
 
 int	ft_add_token(t_token **tokens, t_token *token);
 t_token	**lexer(t_token **token_lst, char *cli);
-t_node	*parse_cmd(t_token *tokens);
+t_node	*parser(t_token *tokens);
 int	visit(t_node *tree, int indent);
 
 //typedef struct s_shell
