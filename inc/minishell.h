@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/26 11:23:35 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/26 12:56:15 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef enum e_type
 	DLESS,
 	DGREAT,
 	CMD,
+	FILENAME,
 	EOL
 }					t_type;
 
