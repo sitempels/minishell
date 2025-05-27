@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/26 12:56:15 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/26 14:49:26 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 # define OPERATOR "|&<>()\"\n"
 # define DOUBLE_ADJUST (OR_IF - OR)
 # define SEPARATOR " "
+# define TYPE token->type
+# define N_TYPE (token->next)->type
+# define N_TOKEN token->next
 /* ************************************************************************** */
 /*                                  ENUMS                                     */
 /* ************************************************************************** */
@@ -38,22 +41,22 @@ typedef enum e_level
 /* MAKE SURE THE ORDER MATCH OPERATOR MACRO */
 typedef enum e_type
 {
-	WORD,
-	OR,
-	IF,
-	LESS,
-	GREAT,
-	LEFT_PAREN,
-	RIGHT_PAREN,
-	DQUOTE,
-	NEW_LINE,
-	OR_IF,
-	AND_IF,
-	DLESS,
-	DGREAT,
-	CMD,
-	FILENAME,
-	EOL
+/*0*/	WORD,
+/*1*/	OR,
+/*2*/	IF,
+/*3*/	LESS,
+/*4*/	GREAT,
+/*5*/	LEFT_PAREN,
+/*6*/	RIGHT_PAREN,
+/*7*/	DQUOTE,
+/*8*/	NEW_LINE,
+/*9*/	OR_IF,
+/*10*/	AND_IF,
+/*11*/	DLESS,
+/*12*/	DGREAT,
+/*13*/	CMD,
+/*14*/	FILENAME,
+/*15*/	EOL
 }					t_type;
 
 /* ************************************************************************** */
@@ -85,7 +88,7 @@ typedef struct s_node
 
 int	ft_add_token(t_token **tokens, t_token *token);
 t_token	**lexer(t_token **token_lst, char *cli);
-t_node	*parser(t_token *tokens);
+t_node	*parser(t_token *token);
 int	visit(t_node *tree, int indent);
 
 //typedef struct s_shell
@@ -120,7 +123,6 @@ int	visit(t_node *tree, int indent);
 /*                                 TOKENIZER                                  */
 /* ************************************************************************** */
 
-int	visit(t_node *tree, int indent);
 //t_token				*ft_new_token(t_type type, char *value);
 //t_token				*ft_last_token(t_token **tokens);
 //int					ft_add_token(t_token **tokens, t_token *token);
