@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/26 14:49:26 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/28 09:56:05 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@
 # define OPERATOR "|&<>()\"\n"
 # define DOUBLE_ADJUST (OR_IF - OR)
 # define SEPARATOR " "
-# define TYPE token->type
-# define N_TYPE (token->next)->type
-# define N_TOKEN token->next
+# define TOKEN (*token)
+# define TYPE (TOKEN->type)
+# define N_TOKEN (TOKEN->next)
+# define N_TYPE N_TOKEN->type
 /* ************************************************************************** */
 /*                                  ENUMS                                     */
 /* ************************************************************************** */

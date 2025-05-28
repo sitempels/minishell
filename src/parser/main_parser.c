@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_main.c                                      :+:      :+:    :+:   */
+/*   main_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:41:26 by stempels          #+#    #+#             */
-/*   Updated: 2025/05/27 13:16:08 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/28 12:12:52 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,19 @@ int	main(int argc, char **argv)
 	t_token	*token_lst;
 	t_node	*tree;
 
-	if (argc != 2)
+	if (argc != 3)
 		return (write(1, "Error Arg!\n", 10));
 	token_lst = NULL;
-	token_lst = *lexer(&token_lst, argv[1]);	
-	show_lexeme(token_lst);
+	token_lst = *lexer(&token_lst, argv[2]);	
+	if (argv[1][0] == '1' || argv[1][0] == '3')
+	{
+		show_lexeme(token_lst);
+		if (argv[1][0] == '1')
+			return (0);
+	}
 	tree = parser(token_lst);
-	show_tree(tree, 1);
+	if (argv[1][0] == '2' || argv[1][0] == '3')
+		show_tree(tree, 1);
 	return (0);
 }
 
@@ -58,7 +64,6 @@ void	show_tree(t_node *tree, int indent)
 {
 	int	i;
 
-	i = 0;
 	if (!tree)
 	{
 		printf("TREE: NULL");
@@ -71,6 +76,7 @@ void	show_tree(t_node *tree, int indent)
 		printf("	");
 	}
 	printf("	  %d		  %d	", indent, tree->type);
+	i = 1;
 	while (i < indent)	
 	{
 		printf("\t");
