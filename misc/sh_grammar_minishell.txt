@@ -35,7 +35,7 @@ and_or           :                         pipeline_sequence
                  ;
 
 pipe_sequence    :                             command
-                 | pipe_sequence '|' linebreak command
+                 | pipe_sequence OR linebreak command
                  ;
 
 command          : simple_command

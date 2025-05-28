@@ -6,23 +6,23 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/05/28 12:11:36 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/28 13:32:01 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-t_node	*create_node(t_token **tokens, int type);
+t_node	*create_node(t_token *tokens, int type);
 t_token	*munch_token(t_token **token);
 //t_node	*parse_pipeline(t_token *token);
-t_node	*parse_word(t_token **token);
-t_node	*parse_cmd(t_token **token, int iter);
-/*
+t_node	*parse_word(t_token *token);
+t_node	*parse_cmd(t_token *token, int iter);
+
 t_node	*parse_cmd_prefix(t_token *tokens);
 t_node	*parse_cmd_suffix(t_token *tokens);
 t_node	*parse_io_redirect(t_token *tokens);
 t_node	*parse_io_file(t_token *tokens);
 t_node	*parse_filename(t_token *tokens);
-*/
+
 /*PROTO GRAMMAR FUNCTION NON TERMINAL*/
 /*
 t_node	*parse_*(t_token token)
@@ -38,7 +38,7 @@ t_node	*parser(t_token *token)
 
 	if (!token)
 		return (NULL);
-	tree = parse_cmd(&token, 0);
+	tree = parse_cmd(token, 0);
 	if (!tree)
 		return (NULL);
 	return (tree);
@@ -55,17 +55,17 @@ t_token	*munch_token(t_token **token)
 	return (target);
 }
 
-void	*expander(t_token **token)
+void	*expander(t_token *token)
 {
 	int	i;
 	int	size;
 	char	*start;
 	char	*new;
 
-	if (TYPE == EOL)
+	if (token->type == EOL)
 		return (NULL);
-	start = (TOKEN->start);
-	size = TOKEN->size;
+	start = (token->start);
+	size = token->size;
 	new = (char *) malloc(sizeof(char) * (size + 1));
 	if (!new)
 		return (NULL);
@@ -79,7 +79,7 @@ void	*expander(t_token **token)
 	return ((void *)new);
 }
 
-t_node	*create_node(t_token **token, int type)
+t_node	*create_node(t_token *token, int type)
 {
 	t_node	*new;
 
@@ -114,93 +114,74 @@ t_node	*parse_pipeline(t_token *token)
 	return (new);
 }
 */
-t_node	*parse_cmd(t_token **token, int	iter)
+t_node	*parse_cmd(t_token *token, int	iter)
 {
 	t_node	*new;
 
-	if (TYPE == EOL)
-		return (NULL);
-//	if (iter == 0)
-//		new = create_node(token, CMD);
-/*	if (!new)
-		panic(.tkt);*/
-/*
-	if (TYPE == LESS)
+	new = NULL;
+	if (token->type == LESS || token->type == DLESS)
 	{
-		new->left = parse_io_redirect(TOKEN);
-		if (N_TOKEN)
-			new->right = parse_cmd(N_TOKEN, iter + 1);
-	}
-*/
-	if (TYPE == WORD)
+		new = parse_cmd_prefix(token);
+		if ((token->next)->type == WORD)
 		{
-		new->left = parse_word(token);
+			new->left = parse_word(token);
+			if ((token->next)->type == WORD || (token->next)->type == GREAT
+				|| (token->next)->type == DGREAT)
+				new->right = parse_cmd_suffix(token->next);
+		}
 	}
-	if (N_TOKEN)
-		new->right = parse_cmd(&N_TOKEN, iter + 1);
-/*
-	if (token->type == GREAT)
+	if (token->type == WORD)
 	{
-		new->left = parse_cmd_suffix(token);
-		new->right = parse_word(token->next);
+		new = parse_word(token);
+		if ((token->next)->type == WORD || (token->next)->type == GREAT
+			|| (token->next)->type == DGREAT)
+			new->right = parse_cmd_suffix(token->next);
 	}
-*/
-//	take(tokens);
 	return (new);
 }
 
-t_node	*parse_word(t_token **token)
+t_node	*parse_word(t_token *token)
 {
 	t_node	*new;
-//	t_token	*target;
 
-//	target = munch_token(token); 
-	if (TYPE == EOL)
-		return (NULL);
 	new = create_node(token, WORD);
-	if (!new)
-		return (NULL);	
-//	if (token && token->type == WORD)
-//		new->left = parse_word(token);
-//	if (token && token->type == GREAT)
-//		new->left = parse_cmd(token, 0);
 	return (new);
 }
-/*
-t_node	*parse_cmd_prefix(t_token *tokens) //!! NOT SURE THE LOGIC WORK LIKE THAT
+
+t_node	*parse_cmd_prefix(t_token *token) //!! NOT SURE THE LOGIC WORK LIKE THAT
 {
 	t_node	*new;
 
-	new = create_node(tokens, LESS);
-	new = parse_io_redirect(tokens);
-	if (new)
-		return (new);
-	new = parse_cmd_prefix(tokens);
-	if (new)
-		return (new);
+	new = create_node(token, token->type);
+	if (token->type == LESS && (token->next)->type == WORD)
+		new->left = parse_io_file(token->next);
+	else
+		return (NULL);
+//	if (token->type == DLESS)
+//		new->left = parse_io_here(token);
 	return (new);
 }
-*/
-/*
-t_node	*parse_cmd_suffix(t_token *tokens) //!! NOT SURE THE LOGIC WORK LIKE THAT
+
+
+t_node	*parse_cmd_suffix(t_token *token) //!! NOT SURE THE LOGIC WORK LIKE THAT
 {
 	t_node	*new;
 
-	new = parse_io_redirect(tokens);
-	if (new)
-		return (new);
-	new->left = parse_cmd_suffix(tokens);
-	if (new)
-		return (new);
-	if (tokens->type == WORD)
+	if (token->type == WORD)
 	{
-		new = parse_word(tokens);
-		return (new);
+		new = create_node(token, WORD);
+		if (token->next)
+			new->right = parse_cmd_suffix(token->next);
 	}
-	new = parse_cmd_suffix(tokens);
+	if (token->type == GREAT || token->type == DGREAT)
+	{
+		new = create_node(token, token->type);
+		new->right = parse_io_file(token->next);
+	else
+		new->left = parse_cmd_suffix(tokens);
 	return (new);
 }
-
+/*
 t_node	*parse_io_redirect(t_token *tokens)
 {
 	t_node	*new;
@@ -211,19 +192,17 @@ t_node	*parse_io_redirect(t_token *tokens)
 //	new = parse_io_here(tokens);
 	return (new);
 }
+*/
 
-t_node	*parse_io_file(t_token *tokens)
+t_node	*parse_io_file(t_token *token)
 {
 	t_node	*new;
 
 	new = NULL;
-	if (tokens->type == LESS || tokens->type == GREAT || tokens->type == DLESS)
-	{
-		new = create_node(tokens, tokens->type);
-		if (!new)
-			return (NULL);
-		new->right = NULL;
-	}
+	new = create_node(token, token->type);
+	if (!new)
+		return (NULL);
+	new->right = parse_filename(token);
 	return (new);
 }
 
@@ -239,4 +218,3 @@ t_node	*parse_filename(t_token *token)
 	}
 	return (new);
 }
-*/
