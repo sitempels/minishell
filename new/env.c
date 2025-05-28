@@ -3,16 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 10:59:47 by user              #+#    #+#             */
-/*   Updated: 2025/05/21 04:54:49 by user             ###   ########.fr       */
+/*   Updated: 2025/05/28 13:22:15 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "minishell.h"
 
 // Only need to split the value using ft_split with the ':' delimiter
+
+char	**env_fromlist(t_env *env)
+{
+}
 
 // Get all the paths in an array of string
 char	**env_getallpaths(char *path)

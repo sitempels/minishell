@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:50 by user              #+#    #+#             */
-/*   Updated: 2025/05/21 09:18:04 by user             ###   ########.fr       */
+/*   Updated: 2025/05/28 13:29:14 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define _GNU_SOURCE
 
-#include "shell.h"
+#include "minishell.h"
 
 volatile sig_atomic_t	g_signal;
 
