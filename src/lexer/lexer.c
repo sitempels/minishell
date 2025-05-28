@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 10:47:25 by stempels          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/05/27 10:47:30 by stempels         ###   ########.fr       */
+=======
+/*   Updated: 2025/05/18 06:28:50 by user             ###   ########.fr       */
+>>>>>>> dev---sjacquet
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +24,16 @@ static t_token	*token_create(int type, char *start, size_t size);
 t_token	**lexer(t_token **token_lst, char *cli)
 {
 	int		i;
+<<<<<<< HEAD
 	t_token	*new;
 
+=======
+	int		j;
+	t_token	*token_lst;
+
+	/*if(verif)
+		*/
+>>>>>>> dev---sjacquet
 	i = 0;
 	while (cli[i])
 	{
