@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:41:26 by stempels          #+#    #+#             */
-/*   Updated: 2025/05/28 12:12:52 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/29 09:23:11 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,23 @@ void	show_tree(t_node *tree, int indent);
 
 int	main(int argc, char **argv)
 {
+	int	i;
 	t_token	*token_lst;
 	t_node	*tree;
 
-	if (argc != 3)
+	if (argc < 2 || argc > 3)
 		return (write(1, "Error Arg!\n", 10));
+	i = argc - 1;
 	token_lst = NULL;
-	token_lst = *lexer(&token_lst, argv[2]);	
-	if (argv[1][0] == '1' || argv[1][0] == '3')
+	token_lst = *lexer(&token_lst, argv[i]);	
+	if (i == 2 && argv[1][0] == '1' || argv[1][0] == '3')
 	{
 		show_lexeme(token_lst);
 		if (argv[1][0] == '1')
 			return (0);
 	}
 	tree = parser(token_lst);
-	if (argv[1][0] == '2' || argv[1][0] == '3')
+	if (i == 2 && argv[1][0] == '2' || argv[1][0] == '3')
 		show_tree(tree, 1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/05/28 13:32:01 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/29 10:23:45 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -87,8 +87,10 @@ t_node	*create_node(t_token *token, int type)
 	if (!new)
 		return (NULL);
 	new->type = type;
-//	if (type != CMD)
-	new->use.content = expander(token);
+	if (token)
+		new->use.content = expander(token);
+	else
+		new->use.content = NULL;
 	new->left = NULL;
 	new->right = NULL;
 	return (new);
@@ -118,24 +120,26 @@ t_node	*parse_cmd(t_token *token, int	iter)
 {
 	t_node	*new;
 
-	new = NULL;
+	new = create_node(NULL, CMD);
+	if (token->type == EOL)
+		return (NULL);
 	if (token->type == LESS || token->type == DLESS)
 	{
-		new = parse_cmd_prefix(token);
+		new->left = parse_cmd_prefix(token);
 		if ((token->next)->type == WORD)
 		{
 			new->left = parse_word(token);
 			if ((token->next)->type == WORD || (token->next)->type == GREAT
 				|| (token->next)->type == DGREAT)
-				new->right = parse_cmd_suffix(token->next);
+				new->left = parse_cmd_suffix(token->next);
 		}
 	}
 	if (token->type == WORD)
 	{
-		new = parse_word(token);
+		new->right = parse_word(token);
 		if ((token->next)->type == WORD || (token->next)->type == GREAT
 			|| (token->next)->type == DGREAT)
-			new->right = parse_cmd_suffix(token->next);
+			new->left = parse_cmd_suffix(token->next);
 	}
 	return (new);
 }
@@ -156,7 +160,10 @@ t_node	*parse_cmd_prefix(t_token *token) //!! NOT SURE THE LOGIC WORK LIKE THAT
 	if (token->type == LESS && (token->next)->type == WORD)
 		new->left = parse_io_file(token->next);
 	else
-		return (NULL);
+	{
+		free(new);
+		new = NULL;
+	}
 //	if (token->type == DLESS)
 //		new->left = parse_io_here(token);
 	return (new);
@@ -177,8 +184,7 @@ t_node	*parse_cmd_suffix(t_token *token) //!! NOT SURE THE LOGIC WORK LIKE THAT
 	{
 		new = create_node(token, token->type);
 		new->right = parse_io_file(token->next);
-	else
-		new->left = parse_cmd_suffix(tokens);
+	}
 	return (new);
 }
 /*
