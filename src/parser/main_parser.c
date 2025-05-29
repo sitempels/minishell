@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:31:42 by stempels          #+#    #+#             */
-/*   Updated: 2025/05/29 10:31:45 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:49:46 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ int	main(int argc, char **argv)
 	i = argc - 1;
 	token_lst = NULL;
 	token_lst = *lexer(&token_lst, argv[i]);	
-	if (i == 2 && argv[1][0] == '1' || argv[1][0] == '3')
+	if (i == 2 && (argv[1][0] == '1' || argv[1][0] == '3'))
 	{
 		show_lexeme(token_lst);
 		if (argv[1][0] == '1')
 			return (0);
 	}
 	tree = parser(token_lst);
-	if (i == 2 && argv[1][0] == '2' || argv[1][0] == '3')
+	if (i == 2 && (argv[1][0] == '2' || argv[1][0] == '3'))
 		show_tree(tree, 1);
 	return (0);
 }

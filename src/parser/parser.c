@@ -6,22 +6,27 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/05/29 14:36:23 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:36:50 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
+/*UTILS FUNCTIONS*/
 t_node	*create_node(t_token *tokens, int type);
 t_token	*munch_token(t_token **token);
+void	*expander(t_token *token);
+/**/
+/*DESCENT FUNCTIONS - BY ORDER OF DESCENT*/
 t_node	*parse_pipeline(t_token *token);
-t_node	*parse_word(t_token *token);
 t_node	*parse_cmd(t_token *token);
-
+t_node	*parse_simple_cmd(t_token *token);
+t_node	*parse_word(t_token *token);
 t_node	*parse_cmd_prefix(t_token *tokens);
-t_node	*parse_cmd_suffix(t_token *tokens);
-t_node	*parse_io_redirect(t_token *tokens);
+//t_node	*parse_cmd_suffix(t_token *tokens);
+//t_node	*parse_io_redirect(t_token *tokens);
 t_node	*parse_io_file(t_token *tokens);
 t_node	*parse_filename(t_token *tokens);
+/**/
 
 /*PROTO GRAMMAR FUNCTION NON TERMINAL*/
 /*
@@ -44,16 +49,17 @@ t_node	*parser(t_token *token)
 	return (tree);
 }
 
-t_token	*munch_token(t_token **token)
+/*
+t_token	*munch_token(t_token *token)
 {
-	t_token	*target;
-	t_token	*tmp;
+	t_token	tmp;
 
-	tmp = (*token)->next;
-	target = *token;
-	*token = tmp;
+	tmp = *(token)->next;
+	free(token);
+	token = &tmp;
 	return (target);
 }
+*/
 
 void	*expander(t_token *token)
 {
@@ -109,15 +115,48 @@ t_node	*parse_pipeline(t_token *token)
 		new = create_node(token, OR);
 		if (!new)
 			return (NULL);
-		munch_token(&token);
 		new->left = node;
-		new->right = parse_pipeline(token);
-		if (new->right == NULL)
-			new->right = create_node(NULL, ERROR);
+		if (token->next)
+		{
+			new->right = parse_cmd(token->next);
+			if ((new->right)->type != CMD && (new->right)->type != SUBSHELL)
+				new->right = create_node(NULL, ERROR);
+		}
 	}
 	else
 		new = node;
 
+	return (new);
+}
+
+t_node	*parse_cmd(t_token *token)
+{
+	int	verif;
+	t_node	*node;
+	t_node	*new;
+
+	new = NULL;
+	verif = 0;
+	if (token->type == EOL)
+		return (NULL);
+	node = parse_simple_cmd(token);
+	if (token->type == LEFT_PAREN)	
+	{
+		verif = 1;
+		new = create_node(token, SUBSHELL);
+		if (!new)
+			return (NULL);
+		*token = *(token->next);
+		new->right = parse_simple_cmd(token);
+		if (token->type == EOL && verif == 1)
+		{
+			if (new)
+				free(new);
+			new = create_node(NULL, ERROR);
+		}
+	}
+	else
+		new = node;
 	return (new);
 }
 
@@ -146,7 +185,7 @@ t_node	*node_addback(t_node *node, t_node *new, int mode)
 	return (node);
 }
 
-t_node	*parse_cmd(t_token *token)
+t_node	*parse_simple_cmd(t_token *token)
 {
 	t_node	*new;
 
@@ -216,6 +255,7 @@ t_node	*parse_filename(t_token *token)
 {
 	t_node	*new;
 
+	new = NULL;
 	if (TYPE == WORD)
 	{
 		new = create_node(token, FILENAME);
