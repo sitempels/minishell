@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/29 10:37:06 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/29 13:23:10 by stempels         ###   ########.fr       */
 /*   Updated: 2025/05/28 13:22:23 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -24,6 +24,7 @@
 # define OPERATOR "|&<>()\"\n"
 # define DOUBLE_ADJUST (OR_IF - OR)
 # define SEPARATOR " "
+# define IO_REDIRECTION LESS DLESS GREAT DGREAT
 # define TOKEN token
 # define TYPE (TOKEN->type)
 # define N_TOKEN (TOKEN->next)
@@ -58,7 +59,8 @@ typedef enum e_type
 /*12*/	DGREAT,
 /*13*/	CMD,
 /*14*/	FILENAME,
-/*15*/	EOL
+/*15*/	EOL,
+/*16*/	ERROR
 }					t_type;
 
 /* ************************************************************************** */

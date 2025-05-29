@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/05/29 10:23:45 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/29 13:44:00 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -43,6 +43,7 @@ t_node	*parser(t_token *token)
 		return (NULL);
 	return (tree);
 }
+
 t_token	*munch_token(t_token **token)
 {
 	t_token	*target;
@@ -50,7 +51,6 @@ t_token	*munch_token(t_token **token)
 
 	tmp = (*token)->next;
 	target = *token;
-//	free(*token);
 	*token = tmp;
 	return (target);
 }
@@ -116,30 +116,62 @@ t_node	*parse_pipeline(t_token *token)
 	return (new);
 }
 */
+t_node	*node_addback(t_node *node, t_node *new, int mode)
+{
+	t_node	*tmp;
+
+	if (node == NULL)
+	{
+		node = new;
+		return (node);
+	}
+	tmp = node;
+	if (mode == 0)
+	{
+		while (tmp->left)
+			tmp = tmp->left;
+		tmp->left = new;
+	}
+	if (mode == 1)
+	{
+		while (tmp->right)
+			tmp = tmp->right;
+		tmp->right = new;
+	}
+	return (node);
+}
+
 t_node	*parse_cmd(t_token *token, int	iter)
 {
 	t_node	*new;
+	int	LEFT = 0;
+	int	RIGHT = 1;
 
 	new = create_node(NULL, CMD);
-	if (token->type == EOL)
-		return (NULL);
-	if (token->type == LESS || token->type == DLESS)
+	while (token->type != EOL)
 	{
-		new->left = parse_cmd_prefix(token);
-		if ((token->next)->type == WORD)
+		if (token->type == LESS || token->type == GREAT)
 		{
-			new->left = parse_word(token);
-			if ((token->next)->type == WORD || (token->next)->type == GREAT
-				|| (token->next)->type == DGREAT)
-				new->left = parse_cmd_suffix(token->next);
+			new = node_addback(new, parse_cmd_prefix(token), LEFT);
+//			token = (token->next);
 		}
-	}
-	if (token->type == WORD)
+		else if (token->type == WORD)
+		{
+			new = node_addback(new, parse_word(token), RIGHT);
+		}
+/*
+	else if (token->type == GREAT || token->type == DGREAT)
 	{
-		new->right = parse_word(token);
-		if ((token->next)->type == WORD || (token->next)->type == GREAT
-			|| (token->next)->type == DGREAT)
-			new->left = parse_cmd_suffix(token->next);
+		new = node_addback(new, parse_cmd_suffix(token), LEFT);
+		token = (token->next);
+	}
+*/
+/*	if (token->type == LESS || token->type == DLESS || token->type == WORD || token->type == GREAT || token->type == DGREAT)
+		new = node_addback(new, parse_cmd(token->next, iter + 1), RIGHT);
+	*/
+		else
+			break ;
+		token = token->next;
 	}
 	return (new);
 }
@@ -157,12 +189,15 @@ t_node	*parse_cmd_prefix(t_token *token) //!! NOT SURE THE LOGIC WORK LIKE THAT
 	t_node	*new;
 
 	new = create_node(token, token->type);
-	if (token->type == LESS && (token->next)->type == WORD)
-		new->left = parse_io_file(token->next);
+	if (/*token->type == LESS && */(token->next)->type == WORD)
+	{
+		new->right = parse_io_file(token->next);
+		*token = *(token->next);
+	}
 	else
 	{
-		free(new);
-		new = NULL;
+		new->type = ERROR;
+		new->use.content = "ERROR";
 	}
 //	if (token->type == DLESS)
 //		new->left = parse_io_here(token);
@@ -173,16 +208,17 @@ t_node	*parse_cmd_prefix(t_token *token) //!! NOT SURE THE LOGIC WORK LIKE THAT
 t_node	*parse_cmd_suffix(t_token *token) //!! NOT SURE THE LOGIC WORK LIKE THAT
 {
 	t_node	*new;
-
+/*
 	if (token->type == WORD)
 	{
 		new = create_node(token, WORD);
 		if (token->next)
 			new->right = parse_cmd_suffix(token->next);
 	}
-	if (token->type == GREAT || token->type == DGREAT)
+*/
+	new = create_node(token, token->type);
+	if (token->type == GREAT && (token->next)->type == WORD)
 	{
-		new = create_node(token, token->type);
 		new->right = parse_io_file(token->next);
 	}
 	return (new);
@@ -204,11 +240,7 @@ t_node	*parse_io_file(t_token *token)
 {
 	t_node	*new;
 
-	new = NULL;
-	new = create_node(token, token->type);
-	if (!new)
-		return (NULL);
-	new->right = parse_filename(token);
+	new = parse_filename(token);
 	return (new);
 }
 
@@ -221,6 +253,7 @@ t_node	*parse_filename(t_token *token)
 		new = create_node(token, FILENAME);
 		if (!new)
 			return (NULL);
+//		munch_token(&token);
 	}
 	return (new);
 }
