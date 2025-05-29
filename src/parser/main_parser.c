@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:41:26 by stempels          #+#    #+#             */
-/*   Updated: 2025/05/29 09:23:11 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/29 10:30:07 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	show_tree(t_node *tree, int indent)
 	i = 1;
 	while (i < indent)	
 	{
-		printf("\t");
+		printf("	");
 		i++;
 	}
 	printf("  %s\n", (char *)tree->use.content);
