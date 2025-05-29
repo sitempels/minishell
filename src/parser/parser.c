@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/05/29 15:36:50 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:58:36 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -63,8 +63,8 @@ t_token	*munch_token(t_token *token)
 
 void	*expander(t_token *token)
 {
-	int	i;
-	int	size;
+	int		i;
+	int		size;
 	char	*start;
 	char	*new;
 
@@ -110,7 +110,7 @@ t_node	*parse_pipeline(t_token *token)
 	if (token->type == EOL)
 		return (NULL);
 	node = parse_cmd(token);
-	if (TYPE == OR)	
+	if (TYPE == OR)
 	{
 		new = create_node(token, OR);
 		if (!new)
@@ -125,13 +125,11 @@ t_node	*parse_pipeline(t_token *token)
 	}
 	else
 		new = node;
-
 	return (new);
 }
 
 t_node	*parse_cmd(t_token *token)
 {
-	int	verif;
 	t_node	*node;
 	t_node	*new;
 
@@ -140,7 +138,7 @@ t_node	*parse_cmd(t_token *token)
 	if (token->type == EOL)
 		return (NULL);
 	node = parse_simple_cmd(token);
-	if (token->type == LEFT_PAREN)	
+	if (token->type == LEFT_PAREN)
 	{
 		verif = 1;
 		new = create_node(token, SUBSHELL);
@@ -148,12 +146,6 @@ t_node	*parse_cmd(t_token *token)
 			return (NULL);
 		*token = *(token->next);
 		new->right = parse_simple_cmd(token);
-		if (token->type == EOL && verif == 1)
-		{
-			if (new)
-				free(new);
-			new = create_node(NULL, ERROR);
-		}
 	}
 	else
 		new = node;
@@ -190,7 +182,8 @@ t_node	*parse_simple_cmd(t_token *token)
 	t_node	*new;
 
 	new = create_node(NULL, CMD);
-	while (token->type == LESS || token->type == DLESS || token->type == GREAT || token->type == DGREAT || token->type == WORD)
+	while (TYPE == LESS || TYPE == DLESS || TYPE == GREAT
+		|| TYPE == DGREAT || TYPE == WORD)
 	{
 		if (token->type == LESS || token->type == GREAT)
 			new = node_addback(new, parse_cmd_prefix(token), LEFT);
@@ -228,7 +221,6 @@ t_node	*parse_cmd_prefix(t_token *token)
 	}
 	return (new);
 }
-
 
 /*
 t_node	*parse_io_redirect(t_token *tokens)
