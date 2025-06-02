@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/29 17:23:37 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:41:16 by stempels         ###   ########.fr       */
 /*   Updated: 2025/05/28 13:22:23 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -95,8 +95,6 @@ typedef struct s_node
 	struct s_node		*right;
 }					t_node;
 
-int	ft_add_token(t_token **tokens, t_token *token);
-t_token	**lexer(t_token **token_lst, char *cli);
 t_node	*parser(t_token *token);
 int	visit(t_node *tree, int indent);
 
@@ -129,33 +127,18 @@ int	visit(t_node *tree, int indent);
 //void				ft_logdebug(t_level level, const char *log);
 
 /* ************************************************************************** */
-/*                                 TOKENIZER                                  */
+/*                                 LEXER                                      */
 /* ************************************************************************** */
-
-//t_token				*ft_new_token(t_type type, char *value);
-//t_token				*ft_last_token(t_token **tokens);
-//int					ft_add_token(t_token **tokens, t_token *token);
-//void				ft_print_tokens(t_token **tokens);
-//t_token				*ft_tokenize_cmds(const char *cmds);
-
-/* Token handlers */
-//int					ft_handl_word(t_token **tokens, const char *cmds, int *i);
-//int					ft_handl_oper(t_token **tokens, const char *cmds, int *i);
-//int					ft_handl_pipe(t_token **tokens, const char *cmds, int *i);
-//int					ft_handl_amper(t_token **tokens, const char *cmds, int *i);
-//int					ft_handl_redir(t_token **tokens, const char *cmds, int *i);
-//int					ft_handl_paren(t_token **tokens, const char *cmds, int *i);
-//int					ft_handl_wild(t_token **tokens, const char *cmds, int *i);
-//int					ft_handl_env(t_token **tokens, const char *cmds, int *i);
-
+t_token	*lexer(t_token **token_lst, char *cli);
+void	show_lexeme(t_token *token_lst);
+/**/
 /* ************************************************************************** */
 /*                                 PARSER                                     */
 /* ************************************************************************** */
 
-//t_tree				*ft_new_tree(int type, char *cmd, char **args);
-//int					ft_add2tree(void);
-//t_tree				*ft_parse_tokens(t_token *tokens);
 
+void	show_tree(t_node *tree, int indent);
+/**/
 /* ************************************************************************** */
 /*                                 EXPANDER                                   */
 /* ************************************************************************** */

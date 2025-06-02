@@ -6,7 +6,7 @@
 #    By: stempels <stempels@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/06/02 12:22:12 by stempels         ###   ########.fr        #
+#    Updated: 2025/06/02 14:36:31 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #
@@ -25,16 +25,27 @@ CPPFLAGS = $(INC_FLAG)
 #
 #----------------------------LINKER--------------------------------------------#
 #----------------------------DEBUG---------------------------------------------#
-#----------------------------MAIN----------------------------------------------#
+#----------------------------HEADER--------------------------------------------#
+INC_DIR = inc
+INC_FLAG = -I$(INC_DIR)
+#
 #----------------------------SRC-----------------------------------------------#
+MAIN = input/input
 SRC_DIR = src
+#
 LEXER_DIR = lexer
 SRC_LEXER = $(addprefix $(LEXER_DIR)/, lexer)
+#
 PARSER_DIR = parser
-SRC_PARSER = $(addprefix $(PARSER_DIR)/, main_parser parser)
+SRC_PARSER = $(addprefix $(PARSER_DIR)/, parser)
+#
 EXEC_DIR = exec
 SRC_EXEC = $(addprefix $(EXEC_DIR)/, )
-SRCS ::= $(SRC_LEXER) $(SRC_PARSER) $(SRC_EXEC)
+#
+UTILS_DIR = utils
+SRC_UTILS = $(addprefix $(UTILS_DIR)/, debug_utils)
+#
+SRCS ::= $(MAIN) $(SRC_LEXER) $(SRC_PARSER) $(SRC_EXEC) $(SRC_UTILS)
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 
 #
 #----------------------------OBJ-----------------------------------------------#
@@ -44,11 +55,8 @@ OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
 #----------------------------LIB-----------------------------------------------#
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
-INC_FLAG = -I $(LIBFT_DIR)/$(INC_DIR)
-#
-#----------------------------HEADER--------------------------------------------#
-INC_DIR = inc
-INC_FLAG += -I$(INC_DIR)
+INC_FLAG += -I $(LIBFT_DIR)/$(INC_DIR)
+LIB_FLAG = -lft -lreadline 
 #
 #----------------------------RULES---------------------------------------------#
 all: $(NAME)
@@ -62,7 +70,7 @@ $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
 #
 $(NAME): $(OBJ) $(LIBFT) 
-	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -o $(NAME)
+	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
 	@echo "$(NAME) $(GREEN)created !$(NC)"
 #
 clean:
@@ -84,7 +92,7 @@ ffclean: fclean libclean
 re: ffclean all
 #
 debug: $(OBJ) $(LIBFT) 
-	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -o $(NAME)
+	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
 	@echo "$(NAME) $(GREEN)created !$(NC)"
 #
 .PHONY: all clean libclean fclean ffclean re debug

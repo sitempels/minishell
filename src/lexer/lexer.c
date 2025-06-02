@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/05/29 10:38:50 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:48:51 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int		token_found(t_token **token_lst, char *cli, int *i);
 static int		token_addback(t_token **tokens, t_token *new);
 static t_token	*token_create(int type, char *start, size_t size);
 
-t_token	**lexer(t_token **token_lst, char *cli)
+t_token	*lexer(t_token **token_lst, char *cli)
 {
 	int		i;
 	t_token	*new;
@@ -32,7 +32,7 @@ t_token	**lexer(t_token **token_lst, char *cli)
 	}
 	new = token_create(EOL, "\0", 1);
 	token_addback(token_lst, new);
-	return (token_lst);
+	return (*token_lst);
 }
 
 static int	match(char c, char *match_lst)
@@ -77,7 +77,7 @@ static t_token	*token_create(int type, char *start, size_t size)
 {
 	t_token	*new;
 
-	new = (t_token *) malloc(1 * sizeof(t_token));
+	new = (t_token *) ft_calloc(1, sizeof(t_token));
 	if (!new)
 		return (NULL);
 	new->type = type;
@@ -91,8 +91,6 @@ static int	token_addback(t_token **token_lst, t_token *new)
 {
 	t_token	*last;
 
-	if (!token_lst)
-		return (FAILURE);
 	if (!(*token_lst))
 	{
 		*token_lst = new;
