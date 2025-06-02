@@ -6,8 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/02 15:43:21 by stempels         ###   ########.fr       */
-/*   Updated: 2025/05/28 13:22:23 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:18:58 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +73,11 @@ typedef enum e_type
 
 typedef struct s_token
 {
-	t_type		type;
-	char		*start;
-	size_t		size;
-	struct s_token		*next;
-}					t_token;
+	t_type			type;
+	char			*start;
+	size_t			size;
+	struct s_token	*next;
+}				t_token;
 
 typedef union u_usage
 {
@@ -88,31 +87,38 @@ typedef union u_usage
 
 typedef struct s_node
 {
-	t_type				type;
-	t_usage				use;
-	struct s_node		*parent;
-	struct s_node		*left;
-	struct s_node		*right;
-}					t_node;
-
-
-/**/
+	t_type			type;
+	t_usage			use;
+	struct s_node	*parent;
+	struct s_node	*left;
+	struct s_node	*right;
+}				t_node;
 /*_________________________________SETUP______________________________________*/
-/**/
-/**/
 /*_________________________________DISPLAY____________________________________*/
-/**/
-/**/
 /*_________________________________LEXER______________________________________*/
-/**/
 t_token	*lexer(t_token **token_lst, char *cli);
-/**/
 /*_________________________________PARSER_____________________________________*/
-/**/
 t_node	*parser(t_token *token);
+
+/*____________CMD_______________*/
+t_node	*parse_cmd(t_token **token);
+t_node	*parse_simple_cmd(t_token **token);
+t_node	*parse_word(t_token **token);
+
+/*____________REDIRECT__________*/
+t_node	*parse_cmd_affix(t_token **tokens);
+t_node	*parse_io_redirect(t_token **token);
+t_node	*parse_io_here(t_token **token);
+t_node	*parse_io_file(t_token **token);
+t_node	*parse_filename(t_token **token);
+
+/*____________UTILS_____________*/
+t_node	*create_node(t_token **token, int type);
+t_token	*munch_token(t_token **token);
+t_node	*node_addback(t_node *node, t_node *new, int mode);
 /**/
 /*_________________________________EXPAND_____________________________________*/
-/**/
+void	*expander(t_token *token);
 /**/
 /*_________________________________EXEC_______________________________________*/
 /**/
@@ -122,7 +128,7 @@ t_node	*parser(t_token *token);
 /**/
 /*_________________________________DEBUG______________________________________*/
 /**/
-int	visit(t_node *tree, int indent);
+int		visit(t_node *tree, int indent);
 void	show_lexeme(t_token *token_lst);
 void	show_tree(t_node *tree, int indent);
 /**/

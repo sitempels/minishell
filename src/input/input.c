@@ -6,13 +6,13 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/02 15:28:02 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:23:03 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	minishell(int mode);
+int		minishell(int mode);
 char	*read_line(const char *prompt);
 void	ft_display_prompt(void);
 static void	display_banner(void);
@@ -22,7 +22,7 @@ int	main(int argc, char **argv)
 {
 	int	mode;
 
-	mode = 0;
+	mode = 1;
 	if (argc > 2)
 		return (write(1, "Error Arg!\n", 10));
 	if (argc == 2)

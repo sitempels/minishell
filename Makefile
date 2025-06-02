@@ -6,7 +6,7 @@
 #    By: stempels <stempels@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/06/02 14:36:31 by stempels         ###   ########.fr        #
+#    Updated: 2025/06/02 16:20:07 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #
@@ -37,15 +37,18 @@ LEXER_DIR = lexer
 SRC_LEXER = $(addprefix $(LEXER_DIR)/, lexer)
 #
 PARSER_DIR = parser
-SRC_PARSER = $(addprefix $(PARSER_DIR)/, parser)
+SRC_PARSER = $(addprefix $(PARSER_DIR)/, parser parser_cmd parser_redirect parser_utils)
 #
 EXEC_DIR = exec
 SRC_EXEC = $(addprefix $(EXEC_DIR)/, )
 #
+EXPAND_DIR = expand
+SRC_EXPAND = $(addprefix $(EXPAND_DIR)/, expander)
+#
 UTILS_DIR = utils
 SRC_UTILS = $(addprefix $(UTILS_DIR)/, debug_utils)
 #
-SRCS ::= $(MAIN) $(SRC_LEXER) $(SRC_PARSER) $(SRC_EXEC) $(SRC_UTILS)
+SRCS ::= $(MAIN) $(SRC_LEXER) $(SRC_PARSER) $(SRC_EXEC) $(SRC_EXPAND) $(SRC_UTILS)
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 
 #
 #----------------------------OBJ-----------------------------------------------#

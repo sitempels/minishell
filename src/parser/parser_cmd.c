@@ -1,0 +1,67 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_cmd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
+/*   Updated: 2025/06/02 16:11:58 by stempels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+t_node	*parse_cmd(t_token **token)
+{
+	t_node	*node;
+	t_node	*new;
+
+	if (TYPE == EOL)
+		return (NULL);
+	new = NULL;
+	node = parse_simple_cmd(token);
+	if (TYPE == LEFT_PAREN)
+	{
+		new = create_node(token, SUBSHELL);
+		if (!new)
+			return (NULL);
+		new->right = parse_cmd(token);
+		if (TYPE != RIGHT_PAREN)
+			return (create_node(NULL, ERROR));
+		if (TYPE == RIGHT_PAREN)
+			munch_token(token);
+	}
+	else
+	{
+		new = node;
+	}
+	return (new);
+}
+
+t_node	*parse_simple_cmd(t_token **token)
+{
+	t_node	*new;
+
+	new = create_node(NULL, CMD);
+	while (TYPE == LESS || TYPE == DLESS || TYPE == GREAT
+		|| TYPE == DGREAT || TYPE == WORD)
+	{
+		if ((*token)->type == LESS || (*token)->type == GREAT
+			|| TYPE == DLESS || TYPE == DGREAT)
+			new = node_addback(new, parse_io_redirect(token), LEFT);
+		else if (TYPE == WORD)
+			new = node_addback(new, parse_word(token), RIGHT);
+		else
+			break ;
+	}
+	return (new);
+}
+
+t_node	*parse_word(t_token **token)
+{
+	t_node	*new;
+
+	new = create_node(token, WORD);
+	return (new);
+}
