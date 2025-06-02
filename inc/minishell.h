@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/05/29 15:19:22 by stempels         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:23:37 by stempels         ###   ########.fr       */
 /*   Updated: 2025/05/28 13:22:23 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -25,8 +25,7 @@
 # define DOUBLE_ADJUST (OR_IF - OR)
 # define SEPARATOR " "
 # define IO_REDIRECTION LESS DLESS GREAT DGREAT
-# define TOKEN token
-# define TYPE (TOKEN->type)
+# define TYPE ((*token)->type)
 # define N_TOKEN (TOKEN->next)
 # define N_TYPE N_TOKEN->type
 /* ************************************************************************** */

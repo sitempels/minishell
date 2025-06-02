@@ -1,69 +1,96 @@
-NAME    =   minishell
-CC      =   cc
-CFLAGS  =   -Wall -Wextra -Werror -g
-IFLAGS  =   -Iinc -Ilibft/inc
-LFLAGS  =   -lreadline
-LIBFT   =   libft/libft.a
-
-SRC     =   src
-OBJ     =   obj
-SRCS    =   $(addprefix $(SRC)/, ft_main.c ft_execute.c ft_handl_env.c ft_handl_wild.c ft_parse.c ft_tokenize.c ft_free.c ft_handl_oper.c ft_handl_word.c ft_minishell.c ft_token.c ft_tree.c ft_debug.c ft_signal.c)
-OBJS    =   $(SRCS:$(SRC)/%.c=$(OBJ)/%.o)
-
-VOID	=	> /dev/null 2>&1
-
 # **************************************************************************** #
-#                                  RULES                                       #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: stempels <stempels@student.s19.be>         +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
+#    Updated: 2025/06/02 12:22:12 by stempels         ###   ########.fr        #
+#                                                                              #
 # **************************************************************************** #
-
-
-
+#
+#MAKEFLAGS += --silent
+#
+NAME_PROJECT = minishell 
+NAME = $(NAME_PROJECT)
+debug: NAME = $(addprefix debug_, $(NAME_PROJECT))
+TYPE = EXEC
+#----------------------------COMPILER------------------------------------------#
+CC = cc
+debug: CC = clang 
+CCFLAGS = -Wall -Wextra -Werror
+debug: CCFLAGS += -g
+CPPFLAGS = $(INC_FLAG)
+#
+#----------------------------LINKER--------------------------------------------#
+#----------------------------DEBUG---------------------------------------------#
+#----------------------------MAIN----------------------------------------------#
+#----------------------------SRC-----------------------------------------------#
+SRC_DIR = src
+LEXER_DIR = lexer
+SRC_LEXER = $(addprefix $(LEXER_DIR)/, lexer)
+PARSER_DIR = parser
+SRC_PARSER = $(addprefix $(PARSER_DIR)/, main_parser parser)
+EXEC_DIR = exec
+SRC_EXEC = $(addprefix $(EXEC_DIR)/, )
+SRCS ::= $(SRC_LEXER) $(SRC_PARSER) $(SRC_EXEC)
+SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 
+#
+#----------------------------OBJ-----------------------------------------------#
+OBJ_DIR = obj
+OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
+#
+#----------------------------LIB-----------------------------------------------#
+LIBFT_DIR = libft
+LIBFT = $(LIBFT_DIR)/libft.a
+INC_FLAG = -I $(LIBFT_DIR)/$(INC_DIR)
+#
+#----------------------------HEADER--------------------------------------------#
+INC_DIR = inc
+INC_FLAG += -I$(INC_DIR)
+#
+#----------------------------RULES---------------------------------------------#
 all: $(NAME)
-
-$(NAME): $(LIBFT) $(OBJS)
-	@$(CC) $(CFLAGS) $(IFLAGS) $(OBJS) $(LIBFT) $(LFLAGS) -o $(NAME)
-
+#
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(@D)
+	$(CC) $(CCFLAGS) $(CPPFLAGS) -c $< -o $@
+#
+lib:	$(LIBFT) 
 $(LIBFT):
-	@make -C libft
-
-$(OBJ):
-	@mkdir -p $(OBJ)
-
-# Compile the source files into object files
-$(OBJ)/%.o: $(SRC)/%.c | $(OBJ)
-	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
-
-run: $(NAME)
-	@./$(NAME)
-
-norm:
-	@clear && norminette
-
-leak: $(NAME)
-	@valgrind --leak-check=full ./$(NAME)
-
-ltrace: $(NAME)
-	@ltrace ./$(NAME)
-
-strace: $(NAME)
-	@strace ./$(NAME)
-
-lldb: $(NAME)
-	@lldb ./$(NAME)
-
-gdb: $(NAME)
-	@gdb ./$(NAME)
-
+	@$(MAKE) -C $(LIBFT_DIR)
+#
+$(NAME): $(OBJ) $(LIBFT) 
+	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -o $(NAME)
+	@echo "$(NAME) $(GREEN)created !$(NC)"
+#
 clean:
-	@rm -rf ./.vscode
-	@rm -rf $(OBJ)
-	@make -C libft clean
-
+	rm -rf $(OBJ_DIR)
+	@echo "$(NAME) $(GREEN)$@ed !$(NC)"
+#
+libclean:
+	$(MAKE) clean -C $(LIBFT_DIR)	
+	rm -rf $(LIBFT)
+#
 fclean: clean
-	@rm -f $(NAME)
-	@make -C libft fclean
-
-
-re: fclean all
-
-.PHONY: all run leak ltrace strace lldb gdb clean fclean re
+	rm -rf $(NAME)
+	rm -rf $(addprefix debug_, $(NAME))
+	$(MAKE) fclean -C $(LIBFT_DIR)	
+	@echo "$(NAME) $(GREEN)$@ed !$(NC)"
+#
+ffclean: fclean libclean
+#
+re: ffclean all
+#
+debug: $(OBJ) $(LIBFT) 
+	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -o $(NAME)
+	@echo "$(NAME) $(GREEN)created !$(NC)"
+#
+.PHONY: all clean libclean fclean ffclean re debug
+#----------------------------TEXT----------------------------------------------#
+GREEN=\033[0;32m
+NC=\033[0m
+#
+#----------------------------MISC----------------------------------------------#
+#

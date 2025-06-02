@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:31:42 by stempels          #+#    #+#             */
-/*   Updated: 2025/05/29 14:49:46 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/02 09:38:23 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	show_lexeme(t_token *token_lst);
 void	show_tree(t_node *tree, int indent);
+static char *get_enum(int i);
 
 int	main(int argc, char **argv)
 {
@@ -65,6 +66,7 @@ void	show_lexeme(t_token *token_lst)
 void	show_tree(t_node *tree, int indent)
 {
 	int	i;
+	char	*content;
 
 	if (!tree)
 	{
@@ -77,14 +79,17 @@ void	show_tree(t_node *tree, int indent)
 		printf("DESCENT		NODE_RANK	NODE_TYPE	CONTENT \n\n");
 		printf("	");
 	}
-	printf("	  %d		  %d	", indent, tree->type);
-	i = 1;
+	printf("	  %d		  %s	", indent, get_enum(tree->type));
+	i = 0;
 	while (i < indent)	
 	{
 		printf("	");
 		i++;
 	}
-	printf("  %s\n", (char *)tree->use.content);
+	content = (char *) tree->use.content;
+	if (!content)
+		content = get_enum(tree->type);
+	printf("  %s\n", content);
 	if (tree->left)
 	{
 		printf("LEFT	");
@@ -96,4 +101,37 @@ void	show_tree(t_node *tree, int indent)
 		show_tree(tree->right, indent + 1);
 	}
 	return ;
+}
+
+static char *get_enum(int i)
+{
+	if (i == 0)
+/*0*/		return ("WORD");
+	if (i == 1)
+/*1*/		return ("PIPE");
+	if (i == 3)
+/*3*/		return ("REDIRECT_I");
+	if (i == 4)
+/*4*/		return ("REDIRECT_O");
+	if (i == 5)
+/*5*/		return ("SUBSHELL");
+	if (i == 9)
+/*9*/		return ("OR_IF");
+	if (i == 10)
+/*10*/		return ("AND_IF");
+	if (i == 11)
+/*11*/		return ("HERE_DOC");
+	if (i == 12)
+/*12*/		return ("DGREAT");
+	if (i == 13)
+/*13*/		return ("CMD");
+	if (i == 14)
+/*14*/		return ("FILENAME");
+	if (i == 15)
+/*15*/		return ("EOL");
+	if (i == 16)
+/*16*/		return ("ERROR");
+	if (i == 17)
+/*17*/		return ("SUBSHELL");
+	return (NULL);
 }
