@@ -28,7 +28,6 @@ void	show_lexeme(t_token *token_lst)
 void	show_tree(t_node *tree, int indent)
 {
 	int	i;
-	char	*content;
 
 	if (!tree)
 	{
@@ -48,10 +47,10 @@ void	show_tree(t_node *tree, int indent)
 		printf("	");
 		i++;
 	}
-	content = (char *) tree->use.content;
-	if (!content)
-		content = get_enum(tree->type);
-	printf("  %s\n", content);
+	if (!tree->use.content)
+		printf("  %s\n", get_enum(tree->type));
+	else
+		printf("  %.*s\n", (int)(tree->use.content)->size, (tree->use.content)->start);
 	if (tree->left)
 	{
 		printf("LEFT	");
@@ -76,24 +75,28 @@ static char *get_enum(int i)
 	if (i == 4)
 /*4*/		return ("REDIRECT_O");
 	if (i == 5)
-/*5*/		return ("SUBSHELL");
-	if (i == 9)
-/*9*/		return ("OR_IF");
+/*5*/		return ("QUOTE");
+	if (i == 6)
+/*6*/		return ("DQUOTE");
+	if (i == 7)
+/*7*/		return ("SUBSHELL");
 	if (i == 10)
-/*10*/		return ("AND_IF");
+/*10*/		return ("OR_IF");
 	if (i == 11)
-/*11*/		return ("HERE_DOC");
+/*11*/		return ("AND_IF");
 	if (i == 12)
-/*12*/		return ("DGREAT");
+/*12*/		return ("HERE_DOC");
 	if (i == 13)
-/*13*/		return ("CMD");
+/*13*/		return ("DGREAT");
 	if (i == 14)
-/*14*/		return ("FILENAME");
+/*14*/		return ("CMD");
 	if (i == 15)
-/*15*/		return ("EOL");
+/*15*/		return ("FILENAME");
 	if (i == 16)
-/*16*/		return ("ERROR");
+/*16*/		return ("EOL");
 	if (i == 17)
-/*17*/		return ("SUBSHELL");
+/*17*/		return ("ERROR");
+	if (i == 18)
+/*18*/		return ("SUBSHELL");
 	return (NULL);
 }

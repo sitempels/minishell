@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/02 16:18:58 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:17:47 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,8 @@
 # define DELIMITERS " |&()\"<>\n"
 /* MAKE SURE OPERATOR MACRO ORDER MATCH ENUM ORDER */
 # define OPERATOR "|&<>()\"\n"
-# define DOUBLE_ADJUST (OR_IF - OR)
+# define DOUBLE_ADJUST 9 /*equivalent to (OR_IF - OR) but cannot 'cause norme */
 # define SEPARATOR " "
-# define IO_REDIRECTION LESS DLESS GREAT DGREAT
-# define TYPE ((*token)->type)
-# define N_TOKEN (TOKEN->next)
-# define N_TYPE N_TOKEN->type
 /**/
 /*_________________________________ENUM_______________________________________*/
 /**/
@@ -43,28 +39,29 @@ typedef enum e_level
 	WARN,
 }					t_level;
 
-/* FILL ENUM IN THIS ORDER: SINGLE CHARACTER TOKENS THEN DOUBLE CHARACTER TOKENS */
+/* FILL ENUM IN THIS ORDER: SINGLE CHARACTER THEN DOUBLE CHARACTER TOKENS */
 /* MAKE SURE THE ORDER MATCH OPERATOR MACRO */
 typedef enum e_type
 {
-/*0*/	WORD,
-/*1*/	OR,
-/*2*/	IF,
-/*3*/	LESS,
-/*4*/	GREAT,
-/*5*/	LEFT_PAREN,
-/*6*/	RIGHT_PAREN,
-/*7*/	DQUOTE,
-/*8*/	NEW_LINE,
-/*9*/	OR_IF,
-/*10*/	AND_IF,
-/*11*/	DLESS,
-/*12*/	DGREAT,
-/*13*/	CMD,
-/*14*/	FILENAME,
-/*15*/	EOL,
-/*16*/	ERROR,
-/*17*/	SUBSHELL
+	WORD,			/*0*/
+	OR,			/*1*/
+	IF,			/*2*/
+	LESS,			/*3*/
+	GREAT,			/*4*/
+	QUOTE,			/*5*/
+	DQUOTE,			/*6*/
+	LEFT_PAREN,		/*7*/
+	RIGHT_PAREN,		/*8*/
+	NEW_LINE,		/*9*/
+	OR_IF,			/*10*/
+	AND_IF,			/*11*/
+	DLESS,			/*12*/
+	DGREAT,			/*13*/
+	CMD,			/*14*/
+	FILENAME,		/*15*/
+	EOL,			/*16*/
+	ERROR,			/*17*/
+	SUBSHELL,		/*18*/
 }					t_type;
 
 /**/
@@ -82,7 +79,8 @@ typedef struct s_token
 typedef union u_usage
 {
 	void	(*fct)();
-	void	*content;
+	char	*arg;
+	t_token	*content;
 }		t_usage;
 
 typedef struct s_node

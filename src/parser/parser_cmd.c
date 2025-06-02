@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/02 16:11:58 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:43:03 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ t_node	*parse_cmd(t_token **token)
 	t_node	*node;
 	t_node	*new;
 
-	if (TYPE == EOL)
+	if ((*token)->type == EOL)
 		return (NULL);
 	new = NULL;
 	node = parse_simple_cmd(token);
-	if (TYPE == LEFT_PAREN)
+	if ((*token)->type == LEFT_PAREN)
 	{
 		new = create_node(token, SUBSHELL);
 		if (!new)
 			return (NULL);
 		new->right = parse_cmd(token);
-		if (TYPE != RIGHT_PAREN)
+		if ((*token)->type != RIGHT_PAREN)
 			return (create_node(NULL, ERROR));
-		if (TYPE == RIGHT_PAREN)
+		if ((*token)->type == RIGHT_PAREN)
 			munch_token(token);
 	}
 	else
@@ -44,13 +44,14 @@ t_node	*parse_simple_cmd(t_token **token)
 	t_node	*new;
 
 	new = create_node(NULL, CMD);
-	while (TYPE == LESS || TYPE == DLESS || TYPE == GREAT
-		|| TYPE == DGREAT || TYPE == WORD)
+	while ((*token)->type == LESS || (*token)->type == DLESS
+		|| (*token)->type == GREAT
+		|| (*token)->type == DGREAT || (*token)->type == WORD)
 	{
 		if ((*token)->type == LESS || (*token)->type == GREAT
-			|| TYPE == DLESS || TYPE == DGREAT)
+			|| (*token)->type == DLESS || (*token)->type == DGREAT)
 			new = node_addback(new, parse_io_redirect(token), LEFT);
-		else if (TYPE == WORD)
+		else if ((*token)->type == WORD)
 			new = node_addback(new, parse_word(token), RIGHT);
 		else
 			break ;

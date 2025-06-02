@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:51:06 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/02 16:10:32 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:18:30 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_node	*create_node(t_token **token, int type)
 	new->type = type;
 	if (token)
 	{
-		new->use.content = expander(*token);
+		new->use.content = *token;
 		*token = munch_token(token);
 	}
 	else
