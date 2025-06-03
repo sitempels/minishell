@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/02 17:17:47 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:21:43 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 /**/
 /*_________________________________MACRO______________________________________*/
 /**/
-# define DELIMITERS " |&()\"<>\n"
+# define DELIMITERS " |&()<>\n\t\0"
 /* MAKE SURE OPERATOR MACRO ORDER MATCH ENUM ORDER */
-# define OPERATOR "|&<>()\"\n"
-# define DOUBLE_ADJUST 9 /*equivalent to (OR_IF - OR) but cannot 'cause norme */
+# define OPERATOR "|&<>()"
+# define DOUBLE_ADJUST (OR_IF - OR) /*equivalent to (OR_IF - OR) but cannot 'cause norme */
 # define SEPARATOR " "
 /**/
 /*_________________________________ENUM_______________________________________*/
@@ -95,6 +95,12 @@ typedef struct s_node
 /*_________________________________DISPLAY____________________________________*/
 /*_________________________________LEXER______________________________________*/
 t_token	*lexer(t_token **token_lst, char *cli);
+
+/*____________UTILS_____________*/
+int		token_addback(t_token **tokens, t_token *new);
+t_token	*token_create(int type, char *start, size_t size);
+t_token	*token_last(t_token **token_lst);
+
 /*_________________________________PARSER_____________________________________*/
 t_node	*parser(t_token *token);
 

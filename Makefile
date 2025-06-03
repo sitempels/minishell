@@ -6,7 +6,7 @@
 #    By: stempels <stempels@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/06/02 16:20:07 by stempels         ###   ########.fr        #
+#    Updated: 2025/06/03 16:22:26 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #
@@ -34,7 +34,7 @@ MAIN = input/input
 SRC_DIR = src
 #
 LEXER_DIR = lexer
-SRC_LEXER = $(addprefix $(LEXER_DIR)/, lexer)
+SRC_LEXER = $(addprefix $(LEXER_DIR)/, lexer lexer_utils)
 #
 PARSER_DIR = parser
 SRC_PARSER = $(addprefix $(PARSER_DIR)/, parser parser_cmd parser_redirect parser_utils)
@@ -94,7 +94,7 @@ ffclean: fclean libclean
 #
 re: ffclean all
 #
-debug: $(OBJ) $(LIBFT) 
+debug: clean $(OBJ) $(LIBFT) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
 	@echo "$(NAME) $(GREEN)created !$(NC)"
 #

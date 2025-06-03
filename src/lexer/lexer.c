@@ -6,16 +6,15 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/02 16:17:02 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:32:15 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int		match(char c, char *match_lst);
-static int		token_found(t_token **token_lst, char *cli, int *i);
-static int		token_addback(t_token **tokens, t_token *new);
-static t_token	*token_create(int type, char *start, size_t size);
+static int	match(char c, char *match_lst);
+static int	token_found(t_token **token_lst, char *cli, int *i);
+static int	handle_word(char *cli);
 
 t_token	*lexer(t_token **token_lst, char *cli)
 {
@@ -55,16 +54,17 @@ static int	token_found(t_token **token_lst, char *cli, int *i)
 	int		size;
 	t_token	*new;
 
-	type = match(cli[*i], OPERATOR);
 	size = 1;
+	type = match(cli[*i], OPERATOR);
 	if (type > 0 && cli[*i + 1] && cli[*i] == cli[*i + 1])
 	{
 		type = type + DOUBLE_ADJUST;
 		size++;
 	}
+	if (type == 2)
+		return (write(1, "& not handled\n", 14), 1);
 	if (type == 0)
-		while (cli[*i + size] && !match(cli[*i + size], DELIMITERS))
-			size++;
+		size = handle_word(&cli[*i]);
 	new = token_create(type, &cli[*i], size);
 	if (!new)
 		return (FAILURE);
@@ -73,32 +73,20 @@ static int	token_found(t_token **token_lst, char *cli, int *i)
 	return (0);
 }
 
-static t_token	*token_create(int type, char *start, size_t size)
+static int	handle_word(char *cli)
 {
-	t_token	*new;
+	int	i;
 
-	new = (t_token *) ft_calloc(1, sizeof(t_token));
-	if (!new)
-		return (NULL);
-	new->type = type;
-	new->start = start;
-	new->size = size;
-	new->next = NULL;
-	return (new);
-}
-
-static int	token_addback(t_token **token_lst, t_token *new)
-{
-	t_token	*last;
-
-	if (!(*token_lst))
+	i = 0;
+	while (cli[i] && !match(cli[i], DELIMITERS))
 	{
-		*token_lst = new;
-		return (SUCCESS);
+		if (cli[i] == '\'')
+			while (cli[++i] && cli[i] != '\'')
+				continue ;
+		if (cli[i] == '\"')
+			while (cli[++i] && cli[i] != '\"')
+				continue ;
+		i++;
 	}
-	last = *token_lst;
-	while (last->next)
-		last = last->next;
-	last->next = new;
-	return (SUCCESS);
+	return (i);
 }
