@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/03 16:28:30 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:40:50 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,11 @@ int	minishell(int mode)
 			return (1);
 		if (mode == 1 || mode == 2)
 			show_lexeme(token_lst);
-		if (mode != 2)
-		{
-			tree = parser(token_lst);
-			if (!tree)
-				return (1);
-			if (mode == 1 || mode == 3)
-				show_tree(tree, 1);
-		}
+		tree = parser(token_lst);
+		if (!tree)
+			return (1);
+		if (mode == 1 || mode == 3)
+			show_tree(tree, 1);
 		free(line);
 		line = NULL;
 	}

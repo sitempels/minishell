@@ -28,6 +28,7 @@ void	show_lexeme(t_token *token_lst)
 void	show_tree(t_node *tree, int indent)
 {
 	int	i;
+	t_token	*tmp;
 
 	if (!tree)
 	{
@@ -50,7 +51,15 @@ void	show_tree(t_node *tree, int indent)
 	if (!tree->use.content)
 		printf("  %s\n", get_enum(tree->type));
 	else
-		printf("  %.*s\n", (int)(tree->use.content)->size, (tree->use.content)->start);
+	{
+		tmp = tree->use.content;
+		while (tmp)
+		{
+			printf("  %.*s	", (int)tmp->size, tmp->start);
+			tmp = tmp->next;
+		}
+		printf("\n");
+	}
 	if (tree->left)
 	{
 		printf("LEFT	");
@@ -66,37 +75,37 @@ void	show_tree(t_node *tree, int indent)
 
 static char *get_enum(int i)
 {
-	if (i == 0)
+	if (i == WORD)
 /*0*/		return ("WORD");
-	if (i == 1)
+	if (i == OR)
 /*1*/		return ("PIPE");
-	if (i == 3)
+	if (i == LESS)
 /*3*/		return ("REDIRECT_I");
-	if (i == 4)
+	if (i == GREAT)
 /*4*/		return ("REDIRECT_O");
 //	if (i == 5)
 ///*5*/		return ("QUOTE");
 //	if (i == 6)
 ///*6*/		return ("DQUOTE");
-	if (i == 5)
+	if (i == LEFT_PAREN)
 /*7*/		return ("SUBSHELL");
-	if (i == 8)
+	if (i == OR_IF)
 /*10*/		return ("OR_IF");
-	if (i == 9)
+	if (i == AND_IF)
 /*11*/		return ("AND_IF");
-	if (i == 10)
+	if (i == DLESS)
 /*12*/		return ("HERE_DOC");
-	if (i == 11)
-/*13*/		return ("DGREAT");
-	if (i == 12)
+	if (i == DGREAT)
+/*13*/		return ("REDIRECT_O_A");
+	if (i == CMD)
 /*14*/		return ("CMD");
-	if (i == 13)
+	if (i == FILENAME)
 /*15*/		return ("FILENAME");
-	if (i == 14)
+	if (i == EOL)
 /*16*/		return ("EOL");
-	if (i == 15)
+	if (i == ERROR)
 /*17*/		return ("ERROR");
-	if (i == 16)
+	if (i == SUBSHELL)
 /*18*/		return ("SUBSHELL");
 	return (NULL);
 }

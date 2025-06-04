@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/04 10:18:32 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/04 14:36:32 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -45,12 +45,7 @@ t_node	*parse_pipeline(t_token **token)
 			return (NULL);
 		new->left = node;
 		if ((*token)->type != EOL)
-		{
 			new->right = parse_pipeline(token);
-/*			if ((new->right)->type != CMD &&
-				(new->right)->type != SUBSHELL)
-				new->right = create_node(NULL, ERROR);*/
-		}
 	}
 	else
 		new = node;

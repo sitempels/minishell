@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:16:13 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/03 16:31:47 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:37:38 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,18 @@ t_token	*token_create(int type, char *start, size_t size)
 	return (new);
 }
 
-int	token_addback(t_token **token_lst, t_token *new)
+t_token	*token_addback(t_token **token_lst, t_token *new)
 {
 	t_token	*last;
 
 	if (!(*token_lst))
 	{
 		*token_lst = new;
-		return (SUCCESS);
+		return (*token_lst);
 	}
 	last = token_last(token_lst);
 	last->next = new;
-	return (SUCCESS);
+	return (*token_lst);
 }
 
 t_token	*token_last(t_token **token_lst)

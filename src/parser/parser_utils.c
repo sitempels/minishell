@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:51:06 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/02 17:18:30 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/04 14:05:14 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ t_node	*create_node(t_token **token, int type)
 		return (NULL);
 	new->type = type;
 	if (token)
-	{
-		new->use.content = *token;
-		*token = munch_token(token);
-	}
+		new->use.content = munch_token(token);
 	else
 		new->use.content = NULL;
 	new->left = NULL;
@@ -36,9 +33,10 @@ t_token	*munch_token(t_token **token)
 {
 	t_token	*tmp;
 
-	tmp = (*token)->next;
-	*token = tmp;
-	return (*token);
+	tmp = *token;
+	*token = (*token)->next;
+	tmp->next = NULL;
+	return (tmp);
 }
 
 t_node	*node_addback(t_node *node, t_node *new, int mode)

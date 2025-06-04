@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/04 10:19:38 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/04 14:43:05 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_node	*parse_cmd(t_token **token)
 		if ((*token)->type != RIGHT_PAREN)
 			return (create_node(NULL, ERROR));
 		if ((*token)->type == RIGHT_PAREN)
-			munch_token(token);
+			free(munch_token(token));
 	}
 	else
 	{
@@ -41,18 +41,25 @@ t_node	*parse_cmd(t_token **token)
 
 t_node	*parse_simple_cmd(t_token **token)
 {
+	t_token	*tmp;
 	t_node	*new;
 
 	new = create_node(NULL, CMD);
+	if (!new)
+		return (NULL);
 	while ((*token)->type == LESS || (*token)->type == DLESS
 		|| (*token)->type == GREAT
 		|| (*token)->type == DGREAT || (*token)->type == WORD)
 	{
-		if ((*token)->type == LESS || (*token)->type == GREAT
-			|| (*token)->type == DLESS || (*token)->type == DGREAT)
+		if ((*token)->type == LESS || (*token)->type == DLESS)
 			new = node_addback(new, parse_io_redirect(token), LEFT);
+		else if ((*token)->type == GREAT || (*token)->type == DGREAT)
+			new = node_addback(new, parse_io_redirect(token), RIGHT);
 		else if ((*token)->type == WORD)
-			new = node_addback(new, parse_word(token), RIGHT);
+		{
+			tmp = new->use.content;
+			new->use.content = token_addback(&tmp, munch_token(token));
+		}
 		else
 			break ;
 	}

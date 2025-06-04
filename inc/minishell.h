@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/04 10:20:05 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:37:52 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_token
 typedef union u_usage
 {
 	void	(*fct)();
-	char	*arg;
+	char	**arg;
 	t_token	*content;
 }		t_usage;
 
@@ -87,7 +87,6 @@ typedef struct s_node
 {
 	t_type			type;
 	t_usage			use;
-	struct s_node	*parent;
 	struct s_node	*left;
 	struct s_node	*right;
 }				t_node;
@@ -97,7 +96,7 @@ typedef struct s_node
 t_token	*lexer(t_token **token_lst, char *cli);
 
 /*____________UTILS_____________*/
-int		token_addback(t_token **tokens, t_token *new);
+t_token	*token_addback(t_token **tokens, t_token *new);
 t_token	*token_create(int type, char *start, size_t size);
 t_token	*token_last(t_token **token_lst);
 
