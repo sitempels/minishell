@@ -50,7 +50,7 @@ void	show_tree(t_node *tree, int indent)
 	}
 	if (!tree->use.content)
 		printf("  %s\n", get_enum(tree->type));
-	else if (tmp->type != CMD)
+	else if (tree->type != CMD)
 	{
 		
 		tmp = tree->use.content;
