@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/02 16:43:03 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/04 10:19:38 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_node	*parse_cmd(t_token **token)
 		new = create_node(token, SUBSHELL);
 		if (!new)
 			return (NULL);
-		new->right = parse_cmd(token);
+		new->right = parse_pipeline(token);
 		if ((*token)->type != RIGHT_PAREN)
 			return (create_node(NULL, ERROR));
 		if ((*token)->type == RIGHT_PAREN)

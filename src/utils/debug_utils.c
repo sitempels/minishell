@@ -74,29 +74,29 @@ static char *get_enum(int i)
 /*3*/		return ("REDIRECT_I");
 	if (i == 4)
 /*4*/		return ("REDIRECT_O");
+//	if (i == 5)
+///*5*/		return ("QUOTE");
+//	if (i == 6)
+///*6*/		return ("DQUOTE");
 	if (i == 5)
-/*5*/		return ("QUOTE");
-	if (i == 6)
-/*6*/		return ("DQUOTE");
-	if (i == 7)
 /*7*/		return ("SUBSHELL");
-	if (i == 10)
+	if (i == 8)
 /*10*/		return ("OR_IF");
-	if (i == 11)
+	if (i == 9)
 /*11*/		return ("AND_IF");
-	if (i == 12)
+	if (i == 10)
 /*12*/		return ("HERE_DOC");
-	if (i == 13)
+	if (i == 11)
 /*13*/		return ("DGREAT");
-	if (i == 14)
+	if (i == 12)
 /*14*/		return ("CMD");
-	if (i == 15)
+	if (i == 13)
 /*15*/		return ("FILENAME");
-	if (i == 16)
+	if (i == 14)
 /*16*/		return ("EOL");
-	if (i == 17)
+	if (i == 15)
 /*17*/		return ("ERROR");
-	if (i == 18)
+	if (i == 16)
 /*18*/		return ("SUBSHELL");
 	return (NULL);
 }

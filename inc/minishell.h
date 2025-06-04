@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/03 16:21:43 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/04 10:20:05 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ typedef enum e_type
 	IF,			/*2*/
 	LESS,			/*3*/
 	GREAT,			/*4*/
-	QUOTE,			/*5*/
-	DQUOTE,			/*6*/
+//	QUOTE,			/*5*/
+//	DQUOTE,			/*6*/
 	LEFT_PAREN,		/*7*/
 	RIGHT_PAREN,		/*8*/
 	NEW_LINE,		/*9*/
@@ -103,6 +103,7 @@ t_token	*token_last(t_token **token_lst);
 
 /*_________________________________PARSER_____________________________________*/
 t_node	*parser(t_token *token);
+t_node	*parse_pipeline(t_token **token);
 
 /*____________CMD_______________*/
 t_node	*parse_cmd(t_token **token);
