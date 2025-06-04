@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/04 18:21:11 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/04 19:22:33 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	execute(t_node *tree, char **env)
 {
 	if (!tree)
 		return (1);
-	tree->use.fct();
+	tree->use.fct(tree, env);
 	if (tree)
 	{
 		if (tree->left)
@@ -35,7 +35,7 @@ int	execute_cmd(t_node *tree, char **env)
 	argv = get_arg((tree->right)->use.content, 0);
 	if (!argv)
 		return (1); //free rest of the t_tokens
-	tree->use.arg = argv;
+	(tree->right)->use.arg = argv;
 	path = path_cmd(argv[0], env); 
 	execv(path, argv);
 	return (1);
@@ -50,10 +50,11 @@ char	**get_arg(t_token *arg, int nbr)
 		argv = (char **) ft_calloc(nbr + 2, sizeof(char *));
 		if (!argv)
 			return (NULL);
+		return (argv);
 	}
 	argv = get_arg(arg->next, nbr + 1);
 	if (!argv)
-		return (free_array(argv, nbr + 1));
+		return (NULL);
 	argv[nbr] = process_arg(arg);
 	if (!argv[nbr])
 		return (NULL);
@@ -62,23 +63,24 @@ char	**get_arg(t_token *arg, int nbr)
 
 char	*process_arg(t_token *arg)
 {
-	int	i;
+	size_t	i;
 	char	*str;
+	char	*test;
 	size_t	size;
 
+	test = (arg->start);
 	size = arg->size;
 //	size = calc_expand(arg);
 	str = (char *) ft_calloc(size + 1, sizeof(char));
 	if (!str)
 		return (NULL);
 	i = 0;
-	while ((arg->start)[i])
+	while (i < size)
 	{
-		str[i] = (arg->start)[i];
+		str[i] = test[i];
 		i++;
 	}
 //	str = fill_expand(arg, str);
-	free(arg);
 	return (str);
 }
 

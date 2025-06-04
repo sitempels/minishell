@@ -6,7 +6,7 @@
 #    By: stempels <stempels@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/06/04 18:13:35 by stempels         ###   ########.fr        #
+#    Updated: 2025/06/04 18:50:32 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #
@@ -18,9 +18,9 @@ debug: NAME = $(addprefix debug_, $(NAME_PROJECT))
 TYPE = EXEC
 #----------------------------COMPILER------------------------------------------#
 CC = cc
-debug: CC = clang 
+debug: CC = gcc 
 CCFLAGS = -Wall -Wextra -Werror
-debug: CCFLAGS += -g
+debug: CCFLAGS = -g
 CPPFLAGS = $(INC_FLAG)
 #
 #----------------------------LINKER--------------------------------------------#
