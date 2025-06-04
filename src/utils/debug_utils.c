@@ -107,5 +107,7 @@ static char *get_enum(int i)
 /*17*/		return ("ERROR");
 	if (i == SUBSHELL)
 /*18*/		return ("SUBSHELL");
+	if (i == ARGUMENT)
+/*19*/		return ("ARGUMENT");
 	return (NULL);
 }

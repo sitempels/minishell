@@ -6,13 +6,13 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/04 13:40:50 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/04 18:16:24 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		minishell(int mode);
+int		minishell(int mode, char **environ);
 char	*read_line(const char *prompt);
 void	ft_display_prompt(void);
 static void	display_banner(void);
@@ -20,6 +20,7 @@ static void	display_prompt(void);
 
 int	main(int argc, char **argv)
 {
+	extern char **environ;
 	int	mode;
 
 	mode = 1;
@@ -27,10 +28,10 @@ int	main(int argc, char **argv)
 		return (write(1, "Error Arg!\n", 10));
 	if (argc == 2)
 		mode = argv[1][0] - 48;
-	return (minishell(mode));
+	return (minishell(mode, environ));
 }
 
-int	minishell(int mode)
+int	minishell(int mode, char **env)
 {
 	char	*line;
 	t_token	*token_lst;
@@ -58,6 +59,7 @@ int	minishell(int mode)
 			return (1);
 		if (mode == 1 || mode == 3)
 			show_tree(tree, 1);
+		execute(tree, env);
 		free(line);
 		line = NULL;
 	}

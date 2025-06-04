@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/04 14:43:05 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/04 18:18:39 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,22 @@ t_node	*parse_simple_cmd(t_token **token)
 	t_node	*new;
 
 	new = create_node(NULL, CMD);
+	new->use.fct = &execute_cmd;
 	if (!new)
 		return (NULL);
 	while ((*token)->type == LESS || (*token)->type == DLESS
 		|| (*token)->type == GREAT
 		|| (*token)->type == DGREAT || (*token)->type == WORD)
 	{
-		if ((*token)->type == LESS || (*token)->type == DLESS)
+		if ((*token)->type == LESS || (*token)->type == DLESS ||
+			(*token)->type == GREAT || (*token)->type == DGREAT)
 			new = node_addback(new, parse_io_redirect(token), LEFT);
-		else if ((*token)->type == GREAT || (*token)->type == DGREAT)
-			new = node_addback(new, parse_io_redirect(token), RIGHT);
 		else if ((*token)->type == WORD)
 		{
-			tmp = new->use.content;
-			new->use.content = token_addback(&tmp, munch_token(token));
+			if (!new->right)
+				new->right = create_node(NULL, ARGUMENT);
+			tmp = (new->right)->use.content;
+			(new->right)->use.content = token_addback(&tmp, munch_token(token));
 		}
 		else
 			break ;

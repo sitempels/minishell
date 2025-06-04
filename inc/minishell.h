@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/04 13:37:52 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/04 18:19:45 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef enum e_type
 	EOL,			/*16*/
 	ERROR,			/*17*/
 	SUBSHELL,		/*18*/
+	ARGUMENT,		/*19*/
 }					t_type;
 
 /**/
@@ -78,7 +79,7 @@ typedef struct s_token
 
 typedef union u_usage
 {
-	void	(*fct)();
+	int	(*fct)();
 	char	**arg;
 	t_token	*content;
 }		t_usage;
@@ -126,6 +127,17 @@ void	*expander(t_token *token);
 /**/
 /*_________________________________EXEC_______________________________________*/
 /**/
+int	execute(t_node *tree, char **env);
+int	execute_cmd(t_node *tree, char **env);
+
+/*____________UTILS_____________*/
+char	**get_arg(t_token *arg, int nbr);
+char	*process_arg(t_token *arg);
+/**/
+/*_________________________________UTILS______________________________________*/
+/**/
+char	**free_array(char **array, int pos);
+char	*path_cmd(char *cmd, char **env);
 /**/
 /*_________________________________CLEAN______________________________________*/
 /**/
