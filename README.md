@@ -5,13 +5,17 @@
 ### Lexer
 
 [] - Creer une fonction qui check les quotes unclosed
+
 [] - Here Doc
+
 [] - Se renseigner sur l'ampersand (background job)
 
 ### Parser
 
 [] - AND_IF (&&)
+
 [] - OR_IF (||)
+
 [] - Infinite loop in parse_simple_cmd
 
 ### Expander
