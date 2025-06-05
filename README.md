@@ -12,13 +12,9 @@
 
 ### Parser
 
-[] - AND_IF (&&)
-
-[] - OR_IF (||)
-
 [] - Infinite loop in parse_simple_cmd
 
-[] - Simon: il manque une regle au parser
+[] - complete_commandS
 
 ### Expander
 
