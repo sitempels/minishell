@@ -6,7 +6,11 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
+<<<<<<< HEAD:src/input/input.c
+/*   Updated: 2025/06/05 16:31:59 by stempels         ###   ########.fr       */
+=======
 /*   Updated: 2025/06/05 16:43:07 by sjacquet         ###   ########.fr       */
+>>>>>>> origin/work:src/utils/display.c
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:01:09 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/05 12:36:11 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:59:13 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,8 @@ char	*process_arg(t_token *arg)
 {
 	size_t	i;
 	char	*str;
-	char	*test;
 	size_t	size;
 
-	test = (arg->start);
 //	size = calc_expand(arg);
 	size = arg->size;
 //	str = fill_expand(arg, str);
@@ -64,7 +62,7 @@ char	*process_arg(t_token *arg)
 	i = 0;
 	while (i < size)
 	{
-		str[i] = test[i];
+		str[i] = (arg->start)[i];
 		i++;
 	}
 	return (str);
