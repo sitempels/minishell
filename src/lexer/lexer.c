@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/03 16:32:15 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/05 14:07:33 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static int	match(char c, char *match_lst)
 	return (0);
 }
 
+//HANDLE HERE DOC HERE
 static int	token_found(t_token **token_lst, char *cli, int *i)
 {
 	int		type;

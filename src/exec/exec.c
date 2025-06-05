@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/05 12:10:48 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:51:00 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int	execute(t_node *tree, char **env)
 		return (1);
 	if (tree->type == CMD)
 	{
-		if (tree->right)
-			execute(tree->right, env);
+		if (tree->left)
+			execute(tree->left, env);
 		tree->use.fct(tree, env);
 		return (1);
 	}

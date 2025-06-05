@@ -38,14 +38,14 @@ void	show_tree(t_node *tree, int indent)
 	if (indent == 1)
 	{
 		printf("\nPARSER OUTPUT: \n\n");
-		printf("DESCENT		NODE_RANK	NODE_TYPE	CONTENT \n\n");
-		printf("	");
+		printf("DESCENT\t\tNODE_RANK\tNODE_TYPE\t\tCONTENT \n\n");
+		printf("\t");
 	}
-	printf("	  %d		  %s	", indent, get_enum(tree->type));
+	printf("\t%d\t\t%s\t", indent, get_enum(tree->type));
 	i = 0;
 	while (i < indent)	
 	{
-		printf("	");
+		printf("\t");
 		i++;
 	}
 	if (!tree->use.content)
@@ -56,19 +56,24 @@ void	show_tree(t_node *tree, int indent)
 		tmp = tree->use.content;
 		while (tmp)
 		{
-			printf("  %.*s	", (int)tmp->size, tmp->start);
+			printf("\t%.*s ", (int)tmp->size, tmp->start);
 			tmp = tmp->next;
 		}
 		printf("\n");
 	}
+	else
+	{
+		printf("\t%s", get_enum(tree->type));
+		printf("\n");
+	}
 	if (tree->left)
 	{
-		printf("LEFT	");
+		printf("LEFT\t");
 		show_tree(tree->left, indent + 1);
 	}
 	if (tree->right)
 	{
-		printf("RIGHT	");
+		printf("RIGHT\t");
 		show_tree(tree->right, indent + 1);
 	}
 	return ;
