@@ -12,6 +12,7 @@
 
 [] - AND_IF (&&)
 [] - OR_IF (||)
+[] - Infinite loop in parse_simple_cmd
 
 ### Expander
 
