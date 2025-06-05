@@ -6,11 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/05/28 12:40:50 by stempels         ###   ########.fr       */
-=======
-/*   Updated: 2025/05/28 13:22:23 by sjacquet         ###   ########.fr       */
->>>>>>> dev---sjacquet
+/*   Updated: 2025/06/05 12:36:17 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +15,22 @@
 
 # include "dependencies.h"
 
-/* ************************************************************************** */
-/*                                  MACROS                                    */
-/* ************************************************************************** */
-# define DELIMITERS " |&()\"<>\n"
+/**/
+/*_________________________________MACRO______________________________________*/
+/**/
+# define DELIMITERS " |&()<>\n\t\0"
 /* MAKE SURE OPERATOR MACRO ORDER MATCH ENUM ORDER */
-# define OPERATOR "|&<>()\"\n"
-# define DOUBLE_ADJUST (OR_IF - OR)
+# define OPERATOR "|&<>()"
+# define DOUBLE_ADJUST (OR_IF - OR) /*equivalent to (OR_IF - OR) but cannot 'cause norme */
 # define SEPARATOR " "
-# define TOKEN token
-# define TYPE (TOKEN->type)
-# define N_TOKEN (TOKEN->next)
-# define N_TYPE N_TOKEN->type
-/* ************************************************************************** */
-/*                                  ENUMS                                     */
-/* ************************************************************************** */
+/**/
+/*_________________________________ENUM_______________________________________*/
+/**/
+typedef enum e_descend
+{
+	LEFT,
+	RIGHT
+}		t_descend;
 
 typedef enum e_level
 {
@@ -42,135 +39,113 @@ typedef enum e_level
 	WARN,
 }					t_level;
 
-/* FILL ENUM IN THIS ORDER: SINGLE CHARACTER TOKENS THEN DOUBLE CHARACTER TOKENS */
+/* FILL ENUM IN THIS ORDER: SINGLE CHARACTER THEN DOUBLE CHARACTER TOKENS */
 /* MAKE SURE THE ORDER MATCH OPERATOR MACRO */
 typedef enum e_type
 {
-/*0*/	WORD,
-/*1*/	OR,
-/*2*/	IF,
-/*3*/	LESS,
-/*4*/	GREAT,
-/*5*/	LEFT_PAREN,
-/*6*/	RIGHT_PAREN,
-/*7*/	DQUOTE,
-/*8*/	NEW_LINE,
-/*9*/	OR_IF,
-/*10*/	AND_IF,
-/*11*/	DLESS,
-/*12*/	DGREAT,
-/*13*/	CMD,
-/*14*/	FILENAME,
-/*15*/	EOL
+	WORD,			/*0*/
+	OR,			/*1*/
+	IF,			/*2*/
+	LESS,			/*3*/
+	GREAT,			/*4*/
+//	QUOTE,			/*5*/
+//	DQUOTE,			/*6*/
+	LEFT_PAREN,		/*7*/
+	RIGHT_PAREN,		/*8*/
+	NEW_LINE,		/*9*/
+	OR_IF,			/*10*/
+	AND_IF,			/*11*/
+	DLESS,			/*12*/
+	DGREAT,			/*13*/
+	CMD,			/*14*/
+	FILENAME,		/*15*/
+	EOL,			/*16*/
+	ERROR,			/*17*/
+	SUBSHELL,		/*18*/
+	ARGUMENT,		/*19*/
 }					t_type;
 
-/* ************************************************************************** */
-/*                                  STRUCTS                                   */
-/* ************************************************************************** */
+/**/
+/*_________________________________STRUCT_____________________________________*/
+/**/
 
 typedef struct s_token
 {
-	t_type		type;
-	char		*start;
-	size_t		size;
-	struct s_token		*next;
-}					t_token;
+	t_type			type;
+	char			*start;
+	size_t			size;
+	struct s_token	*next;
+}				t_token;
 
 typedef union u_usage
 {
-	void	(*fct)();
-	void	*content;
+	int	(*fct)();
+	char	**arg;
+	t_token	*content;
 }		t_usage;
 
 typedef struct s_node
 {
-	t_type				type;
-	t_usage				use;
-	struct s_node		*parent;
-	struct s_node		*left;
-	struct s_node		*right;
-}					t_node;
+	t_type			type;
+	t_usage			use;
+	struct s_node	*left;
+	struct s_node	*right;
+}				t_node;
+/*_________________________________SETUP______________________________________*/
+/*_________________________________DISPLAY____________________________________*/
+/*_________________________________LEXER______________________________________*/
+t_token	*lexer(t_token **token_lst, char *cli);
 
-int	ft_add_token(t_token **tokens, t_token *token);
-t_token	**lexer(t_token **token_lst, char *cli);
+/*____________UTILS_____________*/
+t_token	*token_addback(t_token **tokens, t_token *new);
+t_token	*token_create(int type, char *start, size_t size);
+t_token	*token_last(t_token **token_lst);
+
+/*_________________________________PARSER_____________________________________*/
 t_node	*parser(t_token *token);
-int	visit(t_node *tree, int indent);
+t_node	*parse_pipeline(t_token **token);
 
-//typedef struct s_shell
-//{
-	//const char		*cmds;
-	//char			**envs;
-	//struct s_token			*tokens;
-	//t_token			*tree;
-//}					t_shell;
+/*____________CMD_______________*/
+t_node	*parse_cmd(t_token **token);
+t_node	*parse_simple_cmd(t_token **token);
+t_node	*parse_word(t_token **token);
 
-//typedef int			(*t_fncmp)(void *a, void *b);
+/*____________REDIRECT__________*/
+t_node	*parse_cmd_affix(t_token **tokens);
+t_node	*parse_io_redirect(t_token **token);
+t_node	*parse_io_here(t_token **token);
+t_node	*parse_io_file(t_token **token);
+t_node	*parse_filename(t_token **token);
 
-/* ************************************************************************** */
-/*                                  SETUP                                     */
-/* ************************************************************************** */
+/*____________UTILS_____________*/
+t_node	*create_node(t_token **token, int type);
+t_token	*munch_token(t_token **token);
+t_node	*node_addback(t_node *node, t_node *new, int mode);
+/**/
+/*_________________________________EXPAND_____________________________________*/
+void	*expander(t_token *token);
+/**/
+/*_________________________________EXEC_______________________________________*/
+int	execute(t_node *tree, char **env);
+int	execute_cmd(t_node *tree, char **env);
+int	execute_redir_input(t_node *tree, char **env);
+int	execute_redir_output(t_node *tree, char **env);
+int	execute_redir_output_A(t_node *tree, char **env);
 
-//int					ft_setup_signals(void);
-//int					ft_isinteractive(void);
-//t_shell				*ft_new_shell(char **envp);
-//void				ft_minishell(t_shell *shell);
-
-/* ************************************************************************** */
-/*                                 DISPLAY                                    */
-/* ************************************************************************** */
-
-//const char			*ft_read_line(const char *prompt);
-//void				ft_display_banner(void);
-//void				ft_display_prompt(void);
-//void				ft_logdebug(t_level level, const char *log);
-
-/* ************************************************************************** */
-/*                                 TOKENIZER                                  */
-/* ************************************************************************** */
-
-//t_token				*ft_new_token(t_type type, char *value);
-//t_token				*ft_last_token(t_token **tokens);
-//int					ft_add_token(t_token **tokens, t_token *token);
-//void				ft_print_tokens(t_token **tokens);
-//t_token				*ft_tokenize_cmds(const char *cmds);
-
-/* Token handlers */
-//int					ft_handl_word(t_token **tokens, const char *cmds, int *i);
-//int					ft_handl_oper(t_token **tokens, const char *cmds, int *i);
-//int					ft_handl_pipe(t_token **tokens, const char *cmds, int *i);
-//int					ft_handl_amper(t_token **tokens, const char *cmds, int *i);
-//int					ft_handl_redir(t_token **tokens, const char *cmds, int *i);
-//int					ft_handl_paren(t_token **tokens, const char *cmds, int *i);
-//int					ft_handl_wild(t_token **tokens, const char *cmds, int *i);
-//int					ft_handl_env(t_token **tokens, const char *cmds, int *i);
-
-/* ************************************************************************** */
-/*                                 PARSER                                     */
-/* ************************************************************************** */
-
-//t_tree				*ft_new_tree(int type, char *cmd, char **args);
-//int					ft_add2tree(void);
-//t_tree				*ft_parse_tokens(t_token *tokens);
-
-/* ************************************************************************** */
-/*                                 EXPANDER                                   */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                 EXECUTION                                  */
-/* ************************************************************************** */
-
-//int					ft_execute_tree(t_tree *tree);
-
-/* ************************************************************************** */
-/*                                  CLEANUP                                   */
-/* ************************************************************************** */
-
-//void				ft_free_cmds(const char *cmds);
-//void				ft_free_arr(char **arr);
-//void				ft_free_args(char **args);
-//void				ft_free_tokens(t_token *tokens);
-//void				ft_free_tree(t_tree *tree);
-//void				ft_free_shell(t_shell *shell);
-
+/*____________UTILS_____________*/
+char	**get_arg(t_token *arg, int nbr);
+char	*process_arg(t_token *arg);
+/**/
+/*_________________________________UTILS______________________________________*/
+char	*get_path(char *cmd, char **env, int mode);
+/**/
+/*_________________________________CLEAN______________________________________*/
+char	**free_array(char **array, int pos);
+/**/
+/*_________________________________DEBUG______________________________________*/
+/**/
+int		visit(t_node *tree, int indent);
+void	show_lexeme(t_token *token_lst);
+void	show_tree(t_node *tree, int indent);
+/**/
 #endif /* MINISHELL_H */
