@@ -18,6 +18,8 @@
 
 [] - Infinite loop in parse_simple_cmd
 
+[] - Simon: il manque une regle au parser
+
 ### Expander
 
 ### Executor
