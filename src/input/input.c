@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/04 19:23:21 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/05 10:27:57 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,15 @@ int	minishell(int mode, char **env)
 		token_lst = lexer(&token_lst, line);
 		if (!token_lst)
 			return (1);
-		if (mode == 1 || mode == 2)
+		if (mode >= 2 && mode != 4)
 			show_lexeme(token_lst);
 		tree = parser(token_lst);
 		if (!tree)
 			return (1);
-		if (mode == 1 || mode == 3)
+		if (mode >= 3)
 			show_tree(tree, 1);
-		execute(tree, env);
+		if (mode <= 1)	
+			execute(tree, env);
 		free(line);
 		line = NULL;
 	}

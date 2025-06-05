@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/04 18:19:45 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/05 12:36:17 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,21 +126,21 @@ t_node	*node_addback(t_node *node, t_node *new, int mode);
 void	*expander(t_token *token);
 /**/
 /*_________________________________EXEC_______________________________________*/
-/**/
 int	execute(t_node *tree, char **env);
 int	execute_cmd(t_node *tree, char **env);
+int	execute_redir_input(t_node *tree, char **env);
+int	execute_redir_output(t_node *tree, char **env);
+int	execute_redir_output_A(t_node *tree, char **env);
 
 /*____________UTILS_____________*/
 char	**get_arg(t_token *arg, int nbr);
 char	*process_arg(t_token *arg);
 /**/
 /*_________________________________UTILS______________________________________*/
-/**/
-char	**free_array(char **array, int pos);
-char	*path_cmd(char *cmd, char **env);
+char	*get_path(char *cmd, char **env, int mode);
 /**/
 /*_________________________________CLEAN______________________________________*/
-/**/
+char	**free_array(char **array, int pos);
 /**/
 /*_________________________________DEBUG______________________________________*/
 /**/

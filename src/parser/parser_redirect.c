@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:58:37 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/04 15:17:17 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/05 12:32:57 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,14 @@ t_node	*parse_cmd_affix(t_token **token)
 	return (new);
 }
 */
+static void	get_usage(t_node *node, int type);
+
 t_node	*parse_io_redirect(t_token **token)
 {
 	t_node	*new;
 
 	new = create_node(token, (*token)->type);
+	get_usage(new, (*token)->type);
 	if (!new)
 		return (NULL);
 	if (new->type == DLESS)
@@ -46,6 +49,17 @@ t_node	*parse_io_redirect(t_token **token)
 			return (NULL);
 	}
 	return (new);
+}
+
+static void	get_usage(t_node *node, int type)
+{
+	if (type == LESS || type == DLESS)
+		node->use.fct = &execute_redir_input;
+	if (type == GREAT)
+		node->use.fct = &execute_redir_output;
+	if (type == DGREAT)
+		node->use.fct = &execute_redir_output_A;
+	return ;
 }
 /*
 t_node	*parse_io_here(t_token **token)

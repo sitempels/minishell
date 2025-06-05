@@ -6,30 +6,30 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 15:52:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/04 18:23:48 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/05 10:56:02 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**get_paths(char *name, char **env);
+static char	**get_all_paths(char *name, char **env);
 static char	*get_full_path(char const *s1, char const *s2);
 
-char	*path_cmd(char *cmd, char **env)
+char	*get_path(char *cmd, char **env, int mode)
 {
 	int		i;
 	int		error;
 	char	*path_full;
 	char	**paths;
 
-	paths = get_paths("PATH", env);
+	paths = get_all_paths("PATH", env);
 	if (!paths)
 		return (NULL);
 	i = 0;
 	while (paths[i])
 	{
 		path_full = get_full_path(paths[i], cmd);
-		error = access(path_full, F_OK | X_OK);
+		error = access(path_full, mode);
 		if (error == 0)
 			return (path_full);
 		free(path_full);
@@ -39,7 +39,7 @@ char	*path_cmd(char *cmd, char **env)
 	return (NULL);
 }
 
-static char	**get_paths(char *name, char **env)
+static char	**get_all_paths(char *name, char **env)
 {
 	int		i;
 	char	**paths;

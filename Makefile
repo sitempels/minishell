@@ -6,7 +6,7 @@
 #    By: stempels <stempels@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/06/04 18:50:32 by stempels         ###   ########.fr        #
+#    Updated: 2025/06/05 11:49:10 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #
@@ -40,7 +40,7 @@ PARSER_DIR = parser
 SRC_PARSER = $(addprefix $(PARSER_DIR)/, parser parser_cmd parser_redirect parser_utils)
 #
 EXEC_DIR = exec
-SRC_EXEC = $(addprefix $(EXEC_DIR)/, exec)
+SRC_EXEC = $(addprefix $(EXEC_DIR)/, exec execute_cmd execute_redir)
 #
 EXPAND_DIR = expand
 SRC_EXPAND = $(addprefix $(EXPAND_DIR)/, expander)
