@@ -20,7 +20,7 @@
    ------------------------------------------------------- */
 %start program
 %%
-complete_commands: complete_commands newline_list complete_command EOL
+complete_commandS: complete_commandS newline_list complete_command EOL
                  |                                complete_command EOL
 		 |						   EOL
                  ;
@@ -40,7 +40,7 @@ pipe_sequence    :                             command
 
 command          : simple_command
                  | subshell
-                 | subshell redirect_list
+                 | subshell redirect_list (-->to do)
                  ;
 
 subshell         : '(' compound_list ')'

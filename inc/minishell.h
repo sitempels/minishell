@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/05 16:36:30 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:14:18 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ t_env				*new_env(char *env);
 t_env				*env_from_envp(char **envp);
 char				**env_fromlist(t_env *env);
 t_env				*env_getlast(t_env *lst);
-t_env				*env_getone(t_env *head, char *key);
+t_env				*env_getone(t_env *head, char *key, size_t len);
 char				*env_getpath(t_env *env);
 char				**env_getallpaths(char *path);
 int					env_export(t_env **head, t_env *new);
@@ -128,6 +128,7 @@ t_token				*token_last(t_token **token_lst);
 /*_________________________________PARSER_____________________________________*/
 t_node				*parser(t_token *token);
 t_node				*parse_pipeline(t_token **token);
+t_node				*parse_complete_cmd(t_token **token);
 
 /*____________CMD_______________*/
 t_node				*parse_cmd(t_token **token);

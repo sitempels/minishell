@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 10:59:47 by user              #+#    #+#             */
-/*   Updated: 2025/06/05 16:36:54 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:14:06 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*env_getpath(t_env *env)
 	char	*path;
 	t_env	*tmp;
 
-	tmp = env_getone(env, "PATH");
+	tmp = env_getone(env, "PATH", 4);
 	if (!tmp)
 		return (NULL);
 	path = tmp->value;
@@ -185,7 +185,7 @@ int	env_addfront(t_env **head, t_env *new)
 }
 
 // Get one node from the list where key = key
-t_env	*env_getone(t_env *head, char *key)
+t_env	*env_getone(t_env *head, char *key, size_t len)
 {
 	t_env	*tmp;
 
@@ -194,7 +194,7 @@ t_env	*env_getone(t_env *head, char *key)
 	tmp = head;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->key, key) == 0)
+		if (ft_strncmp(tmp->key, key, len) == 0)
 			return (tmp);
 		tmp = tmp->next;
 	}
