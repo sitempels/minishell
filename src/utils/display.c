@@ -1,84 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.c                                            :+:      :+:    :+:   */
+/*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/05 14:03:23 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:43:07 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		minishell(int mode, char **environ);
-char	*read_line(const char *prompt);
-void	ft_display_prompt(void);
-static void	display_banner(void);
-static void	display_prompt(void);
-
-int	main(int argc, char **argv)
-{
-	extern char **environ;
-	int	mode;
-
-	mode = 1;
-	if (argc > 2)
-		return (write(1, "Error Arg!\n", 10));
-	if (argc == 2)
-		mode = argv[1][0] - 48;
-	return (minishell(mode, environ));
-}
-
-int	minishell(int mode, char **env)
-{
-	char	*line;
-	t_token	*token_lst;
-	t_node	*tree;
-
-	display_banner();
-	while (1)
-	{
-		token_lst = NULL;
-		tree = NULL;
-		line = read_line("");
-		add_history(line);
-		if (!line)
-		{
-			printf("%sLEAVING the minishell...\n", BOLD_RED);
-			exit (0);
-		}
-		token_lst = lexer(&token_lst, line);
-		if (!token_lst)
-			return (1);
-		if (mode == 1 || (mode >= 2 && mode != 4))
-			show_lexeme(token_lst);
-		tree = parser(token_lst);
-		if (!tree)
-			return (1);
-		if (mode == 1 || mode >= 3)
-			show_tree(tree, 1);
-		if (mode <= 1)	
-			execute(tree, env);
-		free(line);
-		line = NULL;
-	}
-	return (0);
-}
-
-char	*read_line(const char *prompt)
-{
-	char	*line;
-
-	display_prompt();
-	line = readline(prompt);
-	if (!line)
-		return (NULL);
-	return (line);
-}
-
-static void	display_banner(void)
+void	display_banner(void)
 {
 	const char	*b;
 
@@ -96,7 +30,7 @@ static void	display_banner(void)
 	printf(RESET);
 }
 
-static void	display_prompt(void)
+void	display_prompt(void)
 {
 	char	*home;
 	char	*cwd;
@@ -109,8 +43,8 @@ static void	display_prompt(void)
 	fcwd = ft_strrpl(cwd, home, "~");
 	tty = ttyname(STDIN_FILENO);
 	ttys = ttyslot();
-	printf("📁 %s%s 💻 %s%s 🎰 %s%d\n%s%c%s ", BOLD_CYAN, fcwd, BOLD_MAGENTA, tty,
-		BOLD_YELLOW, ttys, BOLD_GREEN, '$', RESET);
+	printf("📁 %s%s 💻 %s%s 🎰 %s%d%s\n ", BOLD_CYAN, fcwd, BOLD_MAGENTA, tty,
+		BOLD_YELLOW, ttys, RESET);
 	free(cwd);
 	free(fcwd);
 }

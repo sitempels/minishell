@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:50 by user              #+#    #+#             */
-/*   Updated: 2025/05/28 13:29:14 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:25:23 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	sigint(int sig)
 		if (g_signal != SIGINT)
 			g_signal = SIGINT;
 		write(STDOUT_FILENO, "\n", 1);
-		prompt();
+		display_prompt();
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
