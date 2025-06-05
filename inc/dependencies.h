@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 17:30:18 by user              #+#    #+#             */
-/*   Updated: 2025/05/28 13:23:06 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:29:54 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@
 /* ************************************************************************** */
 
 # include "../libft/inc/bool.h"
+# include "../libft/inc/const.h"
 # include "../libft/inc/crypto.h"
 # include "../libft/inc/file.h"
 # include "../libft/inc/get.h"

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path_cmd_utils.c                                   :+:      :+:    :+:   */
+/*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 15:52:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/05 10:56:02 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:15:38 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static char	*get_full_path(char const *s1, char const *s2)
 		return ((char *)s2);
 	lens1 = ft_strlen(s1);
 	lens2 = ft_strlen(s2);
-	s3 = (char *) malloc (sizeof(char) * (lens1 + lens2 + 2));
+	s3 = (char *)malloc(sizeof(char) * (lens1 + lens2 + 2));
 	if (!s3)
 		return (NULL);
 	i = 0;
