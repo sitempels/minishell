@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/04 18:18:39 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:31:39 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ t_node	*parse_simple_cmd(t_token **token)
 		|| (*token)->type == GREAT
 		|| (*token)->type == DGREAT || (*token)->type == WORD)
 	{
-		if ((*token)->type == LESS || (*token)->type == DLESS ||
-			(*token)->type == GREAT || (*token)->type == DGREAT)
+		if ((*token)->type == LESS || (*token)->type == DLESS
+			|| (*token)->type == GREAT || (*token)->type == DGREAT)
 			new = node_addback(new, parse_io_redirect(token), LEFT);
 		else if ((*token)->type == WORD)
 		{
