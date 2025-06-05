@@ -22,9 +22,13 @@
 
 ### Expander
 
+[] - 
+
 ### Executor
+
+[] - 
 
 ### Environ
 
-1 - Creer une fonction qui check si le nom de la nouvelle env var est valide sinon return une erreur.
+[] - Creer une fonction qui check si le nom de la nouvelle env var est valide sinon return une erreur.
 
