@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 10:59:47 by user              #+#    #+#             */
-/*   Updated: 2025/05/28 13:22:15 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:36:54 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 char	**env_fromlist(t_env *env)
 {
+	(void)env;
+	return (NULL);
 }
 
 // Get all the paths in an array of string

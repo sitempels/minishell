@@ -3,13 +3,13 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: stempels <stempels@student.s19.be>         +#+  +:+       +#+         #
+#    By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/06/05 11:49:10 by stempels         ###   ########.fr        #
+#    Updated: 2025/06/05 16:44:54 by sjacquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-#
+
 #MAKEFLAGS += --silent
 #
 NAME_PROJECT = minishell 
@@ -30,7 +30,7 @@ INC_DIR = inc
 INC_FLAG = -I$(INC_DIR)
 #
 #----------------------------SRC-----------------------------------------------#
-MAIN = input/input
+MAIN = main
 SRC_DIR = src
 #
 LEXER_DIR = lexer
@@ -46,7 +46,7 @@ EXPAND_DIR = expand
 SRC_EXPAND = $(addprefix $(EXPAND_DIR)/, expander)
 #
 UTILS_DIR = utils
-SRC_UTILS = $(addprefix $(UTILS_DIR)/, debug_utils path_cmd_utils)
+SRC_UTILS = $(addprefix $(UTILS_DIR)/, debug path env signal display)
 #
 SRCS ::= $(MAIN) $(SRC_LEXER) $(SRC_PARSER) $(SRC_EXEC) $(SRC_EXPAND) $(SRC_UTILS)
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 
@@ -75,6 +75,9 @@ $(LIBFT):
 $(NAME): $(OBJ) $(LIBFT) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
 	@echo "$(NAME) $(GREEN)created !$(NC)"
+
+run: $(NAME)
+	@./$(NAME)
 #
 clean:
 	rm -rf $(OBJ_DIR)
@@ -96,12 +99,11 @@ re: ffclean all
 #
 debug: clean $(OBJ) $(LIBFT) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
-	@echo "$(NAME) $(GREEN)created !$(NC)"
+	@echo "$(NAME) created !$"
 #
 .PHONY: all clean libclean fclean ffclean re debug
 #----------------------------TEXT----------------------------------------------#
-GREEN=\033[0;32m
-NC=\033[0m
+
 #
 #----------------------------MISC----------------------------------------------#
 #

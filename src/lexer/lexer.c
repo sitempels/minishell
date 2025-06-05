@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/05 14:07:33 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:22:47 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	match(char c, char *match_lst)
 	return (0);
 }
 
-//HANDLE HERE DOC HERE
+// HANDLE HERE DOC HERE
 static int	token_found(t_token **token_lst, char *cli, int *i)
 {
 	int		type;
@@ -68,7 +68,7 @@ static int	token_found(t_token **token_lst, char *cli, int *i)
 		size = handle_word(&cli[*i]);
 	new = token_create(type, &cli[*i], size);
 	if (!new)
-		return (FAILURE);
+		return (1);
 	token_addback(token_lst, new);
 	*i = *i + size;
 	return (0);
