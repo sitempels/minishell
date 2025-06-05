@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/05 16:25:25 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:43:07 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void	display_prompt(void)
 	fcwd = ft_strrpl(cwd, home, "~");
 	tty = ttyname(STDIN_FILENO);
 	ttys = ttyslot();
-	printf("📁 %s%s 💻 %s%s 🎰 %s%d\n%s%c%s ", BOLD_CYAN, fcwd, BOLD_MAGENTA, tty,
-		BOLD_YELLOW, ttys, BOLD_GREEN, '$', RESET);
+	printf("📁 %s%s 💻 %s%s 🎰 %s%d%s\n ", BOLD_CYAN, fcwd, BOLD_MAGENTA, tty,
+		BOLD_YELLOW, ttys, RESET);
 	free(cwd);
 	free(fcwd);
 }

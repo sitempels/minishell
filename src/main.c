@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/05 16:30:27 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:45:22 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	minishell(int mode, char **env)
 	{
 		token_lst = NULL;
 		tree = NULL;
-		line = read_line("");
+		line = read_line("\033[1;32m$\033[0m ");
 		add_history(line);
 		if (!line)
 		{

@@ -6,7 +6,7 @@
 #    By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/06/05 16:32:30 by sjacquet         ###   ########.fr        #
+#    Updated: 2025/06/05 16:44:54 by sjacquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,6 +75,9 @@ $(LIBFT):
 $(NAME): $(OBJ) $(LIBFT) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
 	@echo "$(NAME) $(GREEN)created !$(NC)"
+
+run: $(NAME)
+	@./$(NAME)
 #
 clean:
 	rm -rf $(OBJ_DIR)
@@ -96,12 +99,11 @@ re: ffclean all
 #
 debug: clean $(OBJ) $(LIBFT) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
-	@echo "$(NAME) $(GREEN)created !$(NC)"
+	@echo "$(NAME) created !$"
 #
 .PHONY: all clean libclean fclean ffclean re debug
 #----------------------------TEXT----------------------------------------------#
-GREEN=\033[0;32m
-NC=\033[0m
+
 #
 #----------------------------MISC----------------------------------------------#
 #
