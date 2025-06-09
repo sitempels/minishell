@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 10:59:47 by user              #+#    #+#             */
-/*   Updated: 2025/06/09 03:17:41 by user             ###   ########.fr       */
+/*   Updated: 2025/06/09 03:18:44 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	**envp_from_env(t_env *env)
 	i = 0;
 	while (tmp)
 	{
-		result[i] = env_getvalue(tmp);
+		result[i] = envp_getone(tmp);
 		if (!result[i])
 		{
 			free(result);
