@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:01:09 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/09 10:06:24 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:22:20 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 int	execute_cmd(t_node *tree, char **env)
 {
-	int		pid;
 	char	*path;
 	char	**argv;
 
@@ -24,16 +23,7 @@ int	execute_cmd(t_node *tree, char **env)
 		return (1); //free rest of the t_tokens
 	(tree->right)->use.arg = argv;
 	path = get_path(argv[0], env, F_OK + X_OK); 
-	pid = fork();
-	if (pid < 0)
-		return (1);
-	else if (pid == 0)
-	{
-		execve(path, argv, env);
-		return (1);
-	}
-	else
-		waitpid(pid);
+	execve(path, argv, env);
 	return (0);
 }
 

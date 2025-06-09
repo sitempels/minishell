@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 17:30:18 by user              #+#    #+#             */
-/*   Updated: 2025/06/05 16:29:54 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:49:43 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 # include <termios.h>
 # include <time.h>
 # include <unistd.h>
+# define OPEN_SYS
+# include <sys/wait.h>
 
 /* ************************************************************************** */
 /*                               READLINE                                     */

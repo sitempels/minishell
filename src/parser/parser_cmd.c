@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/05 18:37:34 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:43:54 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_node	*parse_cmd(t_token **token)
 	if ((*token)->type == LEFT_PAREN)
 	{
 		new = create_node(token, SUBSHELL);
+		new->use.fct = &execute_subshell;
 		if (!new)
 			return (NULL);
 		new->right = parse_complete_cmd(token);

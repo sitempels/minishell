@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:58:37 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/09 11:17:49 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:31:49 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_node	*parse_io_redirect(t_token **token)
 {
 	t_node	*new;
 
+	if ((*token)->type == EOL)
+		return (NULL);
 	new = create_node(token, (*token)->type);
 	get_usage(new, (new)->type);
 	if (!new)

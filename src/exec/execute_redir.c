@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/09 12:12:49 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:32:58 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,12 @@ int	execute_redir_output(t_node *tree, char **env)
 //	(tree->right)->use.arg = get_arg((tree->right)->use.content, 0);
 	path = get_path(((tree->right)->use.arg)[0], env, F_OK + W_OK);
 	if (!path)
-		fd = open(path, O_CREAT, O_CLOEXEC);	
+	{
+		path = (tree->right)->use.arg[0];	
+		fd = open(path, O_RDWR | O_CREAT);	
+	}
+	else
+		fd = open(path, O_WRONLY);	
 	dup2(fd, fd_out);
 	close(fd);
 	return (0);
@@ -55,9 +60,8 @@ int	execute_redir_output_A(t_node *tree, char **env)
 //	(tree->right)->use.arg = get_arg((tree->right)->use.content, 0);
 	path = get_path(((tree->right)->use.arg)[0], env, F_OK + W_OK);
 	if (!path)
-		return (1);
-	else
-		fd = open(path, O_WRONLY, O_CLOEXEC, O_APPEND, O_CREAT);	
+		path = (tree->right)->use.arg[0];	
+	fd = open(path, O_WRONLY, O_CLOEXEC, O_APPEND, O_CREAT);	
 	dup2(fd, fd_out);
 	close(fd);
 	return (0);

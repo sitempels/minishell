@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/09 11:51:15 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:53:30 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char	*read_line(const char *prompt)
 
 int	minishell(int mode, char **env)
 {
-	int	pid;
+	pid_t	pid;
 	char	*line;
 	t_token	*token_lst;
 	t_node	*tree;
@@ -61,7 +61,7 @@ int	minishell(int mode, char **env)
 			else if (pid == 0)
 				execute(tree, env);
 			else 
-				waitpid(pid);
+				wait(pid);
 		}
 		free(line);
 		line = NULL;

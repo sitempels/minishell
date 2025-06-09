@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/05 18:15:35 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:16:20 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -41,11 +41,11 @@ t_node	*parse_complete_cmd(t_token **token)
 	if ((*token)->type == AND_IF || (*token)->type == OR_IF)
 	{
 		new = create_node(token, (*token)->type);
+		new->use.fct = &execute_and_or_if;
 		if (!new)
 			return (NULL);
 		new->left = node;
-		if ((*token)->type != EOL)
-			new->right = parse_complete_cmd(token);
+		new->right = parse_complete_cmd(token);
 	}
 	else
 		new = node;
@@ -64,6 +64,7 @@ t_node	*parse_pipeline(t_token **token)
 	if ((*token)->type == OR)
 	{
 		new = create_node(token, OR);
+		new->use.fct = &execute_pipe;
 		if (!new)
 			return (NULL);
 		new->left = node;

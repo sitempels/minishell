@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/09 03:17:52 by user             ###   ########.fr       */
+/*   Updated: 2025/06/09 14:52:05 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,10 @@ void				*expander(t_token *token);
 /**/
 /*_________________________________EXEC_______________________________________*/
 int					execute(t_node *tree, char **env);
+int					execute_descend(t_node *tree, char **env);
+int					execute_and_or_if(t_node *tree, char **env);
+int					execute_subshell(t_node *tree, char **env);
+int					execute_pipe(t_node *tree, char **env);
 int					execute_cmd(t_node *tree, char **env);
 int					execute_redir_input(t_node *tree, char **env);
 int					execute_redir_output(t_node *tree, char **env);
