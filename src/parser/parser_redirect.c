@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:58:37 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/09 10:24:05 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/09 11:17:49 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ t_node	*parse_io_redirect(t_token **token)
 		return (new);
 	if ((*token)->type == WORD)
 	{
+//		if (!new->right)
+//		{
+		new->right = create_node(NULL, FILENAME);
 		if (!new->right)
-		{
-			new->right = create_node(NULL, FILENAME);
-			if (!new->right)
-				return (NULL);
-		}
+			return (NULL);
+//		}
 		(new->right)->use.arg = get_arg(munch_token(token), 0);
 	}
 	else

@@ -52,12 +52,16 @@ void	show_tree(t_node *tree, int indent)
 		printf("  %s\n", get_enum(tree->type));
 	else if (tree->type == FILENAME || tree->type == ARGUMENT)
 	{
-		
-		tmp = tree->use.content;
-		while (tmp)
+		if (tree->type == ARGUMENT)	
 		{
-			printf("\t%.*s ", (int)tmp->size, tmp->start);
-			tmp = tmp->next;
+			tmp = tree->use.content;
+			while (tmp)
+			{
+				printf("\t%.*s ", (int)tmp->size, tmp->start);
+				tmp = tmp->next;
+			}
+		if (tree->type == FILENAME)
+			printf("\t%s ", (tree->use.arg)[0]);
 		}
 		printf("\n");
 	}

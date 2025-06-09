@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/09 10:03:33 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:06:38 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ int	execute(t_node *tree, char **env)
 			execute(tree->left, env);
 		if (tree->use.fct(tree, env))
 			return (1);
+		return (0);
 	}
-	if (tree->use.fct(tree, env));
+	if (tree->use.fct(tree, env))
 		return (1);
 	if (tree)
 	{

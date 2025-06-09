@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 15:52:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/05 16:15:38 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/06/09 11:45:07 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ char	*get_path(char *cmd, char **env, int mode)
 	paths = get_all_paths("PATH", env);
 	if (!paths)
 		return (NULL);
+	error = access(cmd, mode);
+	if (error == 0)
+		return (cmd);
 	i = 0;
 	while (paths[i])
 	{
