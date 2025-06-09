@@ -13,14 +13,15 @@
 ### Parser
 
 [] - complete_commandS
+[] - infinite loop in subshell_handler still there if io_redirect uncommented
 
 ### Expander
 
-[] - 
+[] - TO DO, basic version implemented 
 
 ### Executor
 
-[] - 
+[] - mostly done, investigation on the inverse behaviour of && an || needed
 
 ### Environ
 
