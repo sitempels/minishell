@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/09 14:43:54 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/09 16:01:02 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ t_node	*parse_cmd(t_token **token)
 			return (create_node(NULL, ERROR));
 		if ((*token)->type == RIGHT_PAREN)
 			free(munch_token(token));
-		if ((*token)->type == LESS || (*token)->type == GREAT
-			|| (*token)->type == DLESS || (*token)->type == DGREAT)
-			new->left = node_addback(new, parse_io_redirect(token), LEFT);
+//		while ((*token)->type == LESS || (*token)->type == GREAT
+//			|| (*token)->type == DLESS || (*token)->type == DGREAT)
+//			new->left = node_addback(new, parse_io_redirect(token), LEFT);
 	}
 	else
 	{
