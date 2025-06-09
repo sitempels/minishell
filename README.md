@@ -12,8 +12,6 @@
 
 ### Parser
 
-[] - Infinite loop in parse_simple_cmd
-
 [] - complete_commandS
 
 ### Expander
