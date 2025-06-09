@@ -6,7 +6,7 @@
 #    By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/06/05 17:14:56 by stempels         ###   ########.fr        #
+#    Updated: 2025/06/09 09:16:33 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ TYPE = EXEC
 CC = cc
 debug: CC = gcc 
 CCFLAGS = -Wall -Wextra -Werror
-debug: CCFLAGS = -g
+debug: CCFLAGS = -g3
 CPPFLAGS = $(INC_FLAG)
 #
 #----------------------------LINKER--------------------------------------------#
@@ -99,7 +99,7 @@ re: ffclean all
 #
 debug: clean $(OBJ) $(LIBFT) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
-	@echo "$(NAME) created !$"
+	@echo "$(NAME) created !"
 #
 .PHONY: all clean libclean fclean ffclean re debug
 #----------------------------TEXT----------------------------------------------#
