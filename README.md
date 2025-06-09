@@ -12,19 +12,19 @@
 
 ### Parser
 
-[] - AND_IF (&&)
-
-[] - OR_IF (||)
-
 [] - Infinite loop in parse_simple_cmd
 
-[] - Simon: il manque une regle au parser
+[] - complete_commandS
 
 ### Expander
 
+[] - 
+
 ### Executor
+
+[] - 
 
 ### Environ
 
-1 - Creer une fonction qui check si le nom de la nouvelle env var est valide sinon return une erreur.
+[] - Creer une fonction qui check si le nom de la nouvelle env var est valide sinon return une erreur.
 
