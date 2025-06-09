@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/05 18:14:18 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/09 03:17:52 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,23 @@ typedef struct s_node
 	struct s_node	*left;
 	struct s_node	*right;
 }					t_node;
+
+typedef struct s_shell
+{
+	char			*cli;
+	t_env			*env;
+	t_token			*tokens;
+	t_node			*tree;
+	int				mode;
+	int				status;
+}					t_shell;
 /*_________________________________SETUP______________________________________*/
 void				signals(void);
 /*__________________________________ENV_______________________________________*/
 t_env				*new_env(char *env);
 t_env				*env_from_envp(char **envp);
-char				**env_fromlist(t_env *env);
+char				*envp_getone(t_env *env);
+char				**envp_from_env(t_env *env);
 t_env				*env_getlast(t_env *lst);
 t_env				*env_getone(t_env *head, char *key, size_t len);
 char				*env_getpath(t_env *env);
@@ -173,4 +184,4 @@ int					visit(t_node *tree, int indent);
 void				show_lexeme(t_token *token_lst);
 void				show_tree(t_node *tree, int indent);
 /**/
-#endif /* MINISHELL_H */
+#endif

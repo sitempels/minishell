@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:50 by user              #+#    #+#             */
-/*   Updated: 2025/06/05 16:25:23 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/06/09 03:03:32 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 
 volatile sig_atomic_t	g_signal;
 
-//
+/*
+ * We should find another way to handle the prompt redisplay logic by
+ * using the global variable
+ */
 static void	sigint(int sig)
 {
 	if (sig == SIGINT)
@@ -31,7 +34,6 @@ static void	sigint(int sig)
 	}
 }
 
-//
 void	signals(void)
 {
 	struct sigaction	sa;

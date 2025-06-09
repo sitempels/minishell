@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/05 16:45:22 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/06/09 02:58:41 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,14 @@ int	minishell(int mode, char **env)
 	return (0);
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
-	extern char	**environ;
-	int			mode;
+	int	mode;
 
 	mode = 1;
 	if (argc > 2)
 		return (write(1, "Error Arg!\n", 10));
 	if (argc == 2)
 		mode = argv[1][0] - 48;
-	return (minishell(mode, environ));
+	return (minishell(mode, envp));
 }

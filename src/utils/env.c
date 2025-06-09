@@ -3,21 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 10:59:47 by user              #+#    #+#             */
-/*   Updated: 2025/06/05 18:14:06 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/09 03:17:41 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Only need to split the value using ft_split with the ':' delimiter
-
-char	**env_fromlist(t_env *env)
+// Return the complete env value as a string "KEY=VALUE"
+char	*envp_getone(t_env *env)
 {
-	(void)env;
-	return (NULL);
+	char	*result;
+
+	if (!env || !env->key || !env->value)
+		return (NULL);
+	result = ft_strjoin(env->key, "=");
+	if (!result)
+		return (NULL);
+	result = ft_strjoin(result, env->value);
+	return (result);
+}
+
+// Return the complete env as an array of strings "KEY=VALUE"
+char	**envp_from_env(t_env *env)
+{
+	char	**result;
+	t_env	*tmp;
+	size_t	i;
+
+	if (!env)
+		return (NULL);
+	result = ft_calloc(env_size(env) + 1, sizeof(char *));
+	if (!result)
+		return (NULL);
+	tmp = env;
+	i = 0;
+	while (tmp)
+	{
+		result[i] = env_getvalue(tmp);
+		if (!result[i])
+		{
+			free(result);
+			return (NULL);
+		}
+		tmp = tmp->next;
+		i++;
+	}
+	return (result);
 }
 
 // Get all the paths in an array of string
