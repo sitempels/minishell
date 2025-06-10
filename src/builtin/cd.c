@@ -1,37 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander.c                                         :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/02 16:18:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/10 02:32:05 by user             ###   ########.fr       */
+/*   Created: 2025/06/09 21:43:28 by user              #+#    #+#             */
+/*   Updated: 2025/06/10 02:52:38 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*expander(t_token *token)
+// Something like this
+int	builtin_cd(t_env *env, char *path)
 {
-	int		i;
-	int		size;
-	char	*start;
-	char	*new;
+	char	*oldpwd;
+	char	*newpwd;
+	t_env	*var;
 
-	if (token->type == EOL)
-		return (NULL);
-	start = (token->start);
-	size = token->size;
-	new = (char *)malloc(sizeof(char) * (size + 1));
-	if (!new)
-		return (NULL);
-	new[size] = '\0';
-	i = 0;
-	while (i < size)
+	if (!path)
 	{
-		new[i] = start[i];
-		i++;
+		var = env_getone(env, "HOME", 4);
+		path = var->value;
 	}
-	return ((void *)new);
+	oldpwd = getcwd(NULL, 0);
+	chdir(path);
+	newpwd = getcwd(NULL, 0);
+	env_updateone(&env, "OLDPWD", oldpwd);
+	env_updateone(&env, "PWD", newpwd);
+	free(oldpwd);
+	free(newpwd);
+	return (0);
 }

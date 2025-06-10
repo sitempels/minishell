@@ -1,37 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander.c                                         :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/02 16:18:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/10 02:32:05 by user             ###   ########.fr       */
+/*   Created: 2025/06/09 21:42:56 by user              #+#    #+#             */
+/*   Updated: 2025/06/10 02:50:59 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*expander(t_token *token)
+// Exit the shell and free resources
+void	builtin_exit(void)
 {
-	int		i;
-	int		size;
-	char	*start;
-	char	*new;
-
-	if (token->type == EOL)
-		return (NULL);
-	start = (token->start);
-	size = token->size;
-	new = (char *)malloc(sizeof(char) * (size + 1));
-	if (!new)
-		return (NULL);
-	new[size] = '\0';
-	i = 0;
-	while (i < size)
-	{
-		new[i] = start[i];
-		i++;
-	}
-	return ((void *)new);
+	exit(0);
 }

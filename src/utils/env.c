@@ -6,11 +6,28 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 10:59:47 by user              #+#    #+#             */
-/*   Updated: 2025/06/09 03:18:44 by user             ###   ########.fr       */
+/*   Updated: 2025/06/09 22:01:50 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// Update the value of an environment variable in the env list.
+int	env_updateone(t_env **head, char *key, char *value)
+{
+	t_env	*tmp;
+
+	if (!head || !*head || !key || !value)
+		return (1);
+	tmp = env_getone(*head, key, ft_strlen(key));
+	if (!tmp)
+		return (1);
+	free(tmp->value);
+	tmp->value = ft_strdup(value);
+	if (!tmp->value)
+		return (1);
+	return (0);
+}
 
 // Return the complete env value as a string "KEY=VALUE"
 char	*envp_getone(t_env *env)
@@ -78,61 +95,6 @@ char	*env_getpath(t_env *env)
 	if (!path)
 		return (NULL);
 	return (path);
-}
-
-// Print all env
-void	env_print(t_env *env)
-{
-	t_env	*tmp;
-
-	tmp = env;
-	while (tmp)
-	{
-		printf("%s=%s\n", tmp->key, tmp->value);
-		tmp = tmp->next;
-	}
-}
-
-// Unset an env where key = key
-int	env_unset(t_env **head, char *key)
-{
-	t_env	*tmp;
-	t_env	*prev;
-
-	tmp = *head;
-	prev = NULL;
-	while (tmp)
-	{
-		if (ft_strcmp(tmp->key, key) == 0)
-		{
-			if (prev)
-				prev->next = tmp->next;
-			else
-				*head = tmp->next;
-			env_freeone(tmp);
-			return (0);
-		}
-		prev = tmp;
-		tmp = tmp->next;
-	}
-	return (1);
-}
-
-// Add a new env to the list
-int	env_export(t_env **head, t_env *new)
-{
-	t_env	*last;
-
-	if (!new)
-		return (1);
-	if (!*head)
-	{
-		*head = new;
-		return (0);
-	}
-	last = env_getlast(*head);
-	last->next = new;
-	return (0);
 }
 
 // Extract the key from an env string
@@ -265,7 +227,7 @@ t_env	*env_from_envp(char **envp)
 			env_freeall(head);
 			return (NULL);
 		}
-		if (env_export(&head, env) != 0)
+		if (builtin_export(&head, env) != 0)
 		{
 			env_freeall(head);
 			env_freeone(env);

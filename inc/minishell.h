@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/09 14:52:05 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/09 22:06:48 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,21 +114,25 @@ t_env				*env_getlast(t_env *lst);
 t_env				*env_getone(t_env *head, char *key, size_t len);
 char				*env_getpath(t_env *env);
 char				**env_getallpaths(char *path);
-int					env_export(t_env **head, t_env *new);
 int					env_addfront(t_env **head, t_env *new);
-int					env_unset(t_env **head, char *key);
 char				*extract_key(char *env);
 char				*extract_value(char *env);
 int					envp_size(char **envp);
 size_t				env_size(t_env *env);
-void				env_print(t_env *env);
 void				env_freeone(t_env *env);
 void				env_freeall(t_env *env);
+int					env_updateone(t_env **head, char *key, char *value);
+
+/*_________________________________BUILTINS___________________________________*/
+void				builtin_env(t_env *env);
+int					builtin_export(t_env **head, t_env *new);
+int					builtin_unset(t_env **head, char *key);
 
 /*_________________________________DISPLAY____________________________________*/
 void				display_banner(void);
 void				display_prompt(void);
-/*_________________________________LEXER______________________________________*/
+/*__________________________________LEXER_____________________________________*/
+int					is_valid_cli(const char *cli);
 t_token				*lexer(t_token **token_lst, char *cli);
 
 /*____________UTILS_____________*/

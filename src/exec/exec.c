@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/09 15:19:27 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/09 21:52:04 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	execute(t_node *tree, char **env)
 {
-	int	status;
+	int		status;
 	pid_t	pid;
 
 	pid = fork();
@@ -47,7 +47,8 @@ int	execute_descend(t_node *tree, char **env)
 	{
 		if (tree->left)
 			execute_descend(tree->left, env);
-		if (tree->right && ((tree->right)->type != ARGUMENT && (tree->right)->type != FILENAME))
+		if (tree->right && ((tree->right)->type != ARGUMENT
+				&& (tree->right)->type != FILENAME))
 			execute_descend(tree->right, env);
 	}
 	return (0);
@@ -58,9 +59,9 @@ int	execute_and_or_if(t_node *tree, char **env)
 	int	status;
 
 	status = execute(tree->left, env);
-	if (status = 0 && tree->type == AND_IF)
+	if (status == 0 && tree->type == AND_IF)
 		execute_descend(tree->right, env);
-	if (status = 1 && tree->type == OR_IF)
+	if (status == 1 && tree->type == OR_IF)
 		execute_descend(tree->right, env);
 	return (1);
 }
@@ -105,7 +106,7 @@ int	execute_pipe(t_node *tree, char **env)
 char	**free_array(char **array, int pos)
 {
 	if (!array)
-		return (NULL);	
+		return (NULL);
 	while (array[pos])
 	{
 		if (array[pos])

@@ -6,22 +6,11 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/09 13:53:30 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/10 02:57:12 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*read_line(const char *prompt)
-{
-	char	*line;
-
-	display_prompt();
-	line = readline(prompt);
-	if (!line)
-		return (NULL);
-	return (line);
-}
 
 int	minishell(int mode, char **env)
 {
@@ -36,13 +25,14 @@ int	minishell(int mode, char **env)
 	{
 		token_lst = NULL;
 		tree = NULL;
-		line = read_line("\033[1;32m$\033[0m ");
-		add_history(line);
+		display_prompt();
+		line = readline("\033[1;32m$\033[0m ");
 		if (!line)
 		{
 			printf("%sLEAVING the minishell...\n", BOLD_RED);
-			exit(0);
+			break ;
 		}
+		add_history(line);
 		token_lst = lexer(&token_lst, line);
 		if (!token_lst)
 			return (1);
@@ -60,8 +50,8 @@ int	minishell(int mode, char **env)
 				return (1);
 			else if (pid == 0)
 				execute(tree, env);
-			else 
-				wait(pid);
+			else
+				wait(&pid);
 		}
 		free(line);
 		line = NULL;

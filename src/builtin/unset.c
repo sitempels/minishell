@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander.c                                         :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/02 16:18:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/10 02:32:05 by user             ###   ########.fr       */
+/*   Created: 2025/06/09 21:42:06 by user              #+#    #+#             */
+/*   Updated: 2025/06/10 02:51:18 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*expander(t_token *token)
+int	builtin_unset(t_env **head, char *key)
 {
-	int		i;
-	int		size;
-	char	*start;
-	char	*new;
+	t_env	*tmp;
+	t_env	*prev;
 
-	if (token->type == EOL)
-		return (NULL);
-	start = (token->start);
-	size = token->size;
-	new = (char *)malloc(sizeof(char) * (size + 1));
-	if (!new)
-		return (NULL);
-	new[size] = '\0';
-	i = 0;
-	while (i < size)
+	tmp = *head;
+	prev = NULL;
+	while (tmp)
 	{
-		new[i] = start[i];
-		i++;
+		if (ft_strncmp(tmp->key, key, ft_strlen(key)) == 0)
+		{
+			if (prev)
+				prev->next = tmp->next;
+			else
+				*head = tmp->next;
+			env_freeone(tmp);
+			return (0);
+		}
+		prev = tmp;
+		tmp = tmp->next;
 	}
-	return ((void *)new);
+	return (1);
 }
