@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/06/09 21:53:57 by user             ###   ########.fr        #
+#    Updated: 2025/06/10 04:15:24 by user             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,7 @@ BUILTIN_DIR = builtin
 SRC_BUILTIN = $(addprefix $(BUILTIN_DIR)/, cd echo env exit export pwd unset)
 #
 UTILS_DIR = utils
-SRC_UTILS = $(addprefix $(UTILS_DIR)/, debug path env signal display)
+SRC_UTILS = $(addprefix $(UTILS_DIR)/, debug path env signal display shell)
 #
 SRCS ::= $(MAIN) $(SRC_LEXER) $(SRC_PARSER) $(SRC_EXEC) $(SRC_EXPAND) $(SRC_BUILTIN) $(SRC_UTILS)
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 

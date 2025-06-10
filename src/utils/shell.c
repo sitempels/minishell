@@ -6,13 +6,13 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 21:00:47 by user              #+#    #+#             */
-/*   Updated: 2025/06/09 02:58:45 by user             ###   ########.fr       */
+/*   Updated: 2025/06/10 04:11:20 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_shell	*init_shell(char **envp)
+t_shell	*init_shell(int mode, char **envp)
 {
 	t_shell	*shell;
 
@@ -28,7 +28,7 @@ t_shell	*init_shell(char **envp)
 	}
 	shell->tokens = NULL;
 	shell->tree = NULL;
-	shell->mode = 0;
+	shell->mode = mode;
 	shell->status = 0;
 	return (shell);
 }
