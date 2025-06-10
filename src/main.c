@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/10 04:24:34 by user             ###   ########.fr       */
+/*   Updated: 2025/06/10 05:29:36 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ int	minishell(int mode, char **env)
 	shell = init_shell(mode, env);
 	while (1)
 	{
+		shell->cli = NULL;
+		shell->tokens = NULL;
+		shell->tree = NULL;
 		display_prompt();
 		shell->cli = readline("\033[1;32m$\033[0m ");
 		if (!shell->cli)
@@ -32,31 +35,36 @@ int	minishell(int mode, char **env)
 		}
 		if (!is_valid_cli(shell->cli))
 		{
-			printf("%sUnclosed quotes\n", BOLD_RED);
+			printf("%sUnclosed quotes%s\n", BOLD_RED, RESET);
+			free(shell->cli);
+			shell->cli = NULL;
 		}
-		add_history(shell->cli);
-		shell->tokens = lexer(&shell->tokens, shell->cli);
-		if (!shell->tokens)
-			return (1);
-		if (shell->mode == 1 || (shell->mode >= 2 && shell->mode != 4))
-			show_lexeme(shell->tokens);
-		shell->tree = parser(shell->tokens);
-		if (!shell->tree)
-			return (1);
-		if (shell->mode == 1 || shell->mode >= 3)
-			show_tree(shell->tree, 1);
-		if (shell->mode <= 1)
+		else
 		{
-			pid = fork();
-			if (pid < 0)
+			add_history(shell->cli);
+			shell->tokens = lexer(&shell->tokens, shell->cli);
+			if (!shell->tokens)
 				return (1);
-			else if (pid == 0)
-				execute(shell->tree, envp_from_env(shell->env));
-			else
-				wait(&pid);
+			if (shell->mode == 1 || (shell->mode >= 2 && shell->mode != 4))
+				show_lexeme(shell->tokens);
+			shell->tree = parser(shell->tokens);
+			if (!shell->tree)
+				return (1);
+			if (shell->mode == 1 || shell->mode >= 3)
+				show_tree(shell->tree, 1);
+			if (shell->mode <= 1)
+			{
+				pid = fork();
+				if (pid < 0)
+					return (1);
+				else if (pid == 0)
+					execute(shell->tree, envp_from_env(shell->env));
+				else
+					wait(&pid);
+			}
+			free(shell->cli);
+			shell->cli = NULL;
 		}
-		free(shell->cli);
-		shell->cli = NULL;
 	}
 	return (0);
 }
