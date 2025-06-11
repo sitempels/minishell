@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/11 07:32:52 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/11 09:56:54 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,16 @@ int	execute_subshell(t_node *tree, char **env)
 int	execute_pipe(t_node *tree, char **env)
 {
 	int		pipefd[2];
-	pid_t	pid;
+	int		status;
+	pid_t	pid1;
+	//pid_t	pid2;
 
 	if (pipe(pipefd) == -1)
 		return (EXIT_FAILURE);
-	pid = fork();
-	if (pid < 0)
+	pid1 = fork();
+	if (pid1 < 0)
 		return (EXIT_FAILURE);
-	if (pid == 0)
+	if (pid1 == 0)
 	{
 		close(pipefd[0]);
 		dup2(pipefd[1], 1);
@@ -86,8 +88,17 @@ int	execute_pipe(t_node *tree, char **env)
 	close(pipefd[1]);
 	dup2(pipefd[0], 0);
 	close(pipefd[0]);
+//	pid2 = fork();
+//	if (pid2 < 0)
+//		return (EXIT_FAILURE); //-->handle of other child needed
+//	if (pid2 == 0)
+//	{
 	execute_descend(tree->right, env);
-	return (0);
+//		return (1);
+//	}
+	wait(&status);
+	wait(&status);
+	return (status);
 }
 
 char	**free_array(char **array, int pos)
