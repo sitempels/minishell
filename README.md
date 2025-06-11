@@ -20,7 +20,7 @@
 
 ### Executor
 
-[] - mostly done, investigation on the inverse behaviour of && an || needed
+[] - mostly done, some strange occurence with SUBSHELL & PIPE to investigate, but otherwise pretty neath. 
 
 ### Environ
 

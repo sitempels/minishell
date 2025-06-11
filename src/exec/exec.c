@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/10 04:24:40 by user             ###   ########.fr       */
+/*   Updated: 2025/06/11 07:32:52 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	execute(t_node *tree, char **env)
 		return (1);
 	}
 	waitpid(pid, &status, 0);
+	printf("Program exited with %d\n", status);
 	return (status);
 }
 
@@ -33,24 +34,10 @@ int	execute_descend(t_node *tree, char **env)
 {
 	if (!tree)
 		return (1);
-	if (tree->type == CMD)
-	{
-		if (tree->left)
-			execute_descend(tree->left, env);
-		if (tree->use.fct(tree, env))
-			return (1);
-		return (0);
-	}
 	if (tree->use.fct(tree, env))
 		return (1);
-	if (tree)
-	{
-		if (tree->left)
-			execute_descend(tree->left, env);
-		if (tree->right && ((tree->right)->type != ARGUMENT
-				&& (tree->right)->type != FILENAME))
-			execute_descend(tree->right, env);
-	}
+	free(tree);
+	tree = NULL;
 	return (0);
 }
 
@@ -61,7 +48,7 @@ int	execute_and_or_if(t_node *tree, char **env)
 	status = execute(tree->left, env);
 	if (status == 0 && tree->type == AND_IF)
 		execute_descend(tree->right, env);
-	if (status == 1 && tree->type == OR_IF)
+	if (status == 256 && tree->type == OR_IF)
 		execute_descend(tree->right, env);
 	return (1);
 }

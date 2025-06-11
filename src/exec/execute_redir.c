@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/09 13:32:58 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/11 07:34:45 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	execute_redir_input(t_node *tree, char **env)
 	fd = open(path, O_RDONLY, O_CLOEXEC);	
 	dup2(fd, fd_in);
 	close(fd);
+	if (tree->left)
+		execute_descend(tree->left, env);
 	return (0);
 }
 
@@ -47,6 +49,8 @@ int	execute_redir_output(t_node *tree, char **env)
 		fd = open(path, O_WRONLY);	
 	dup2(fd, fd_out);
 	close(fd);
+	if (tree->left)
+		execute_descend(tree->left, env);
 	return (0);
 }
 
@@ -64,5 +68,7 @@ int	execute_redir_output_A(t_node *tree, char **env)
 	fd = open(path, O_WRONLY, O_CLOEXEC, O_APPEND, O_CREAT);	
 	dup2(fd, fd_out);
 	close(fd);
+	if (tree->left)
+		execute_descend(tree->left, env);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/11 06:28:45 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/11 07:44:37 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 t_node	*parse_cmd(t_token **token)
 {
-	t_node	*node;
 	t_node	*new;
 
 	if ((*token)->type == EOL)
 		return (NULL);
 	new = NULL;
-	node = parse_simple_cmd(token);
-	if ((*token)->type == LEFT_PAREN)
+	if ((*token)->type != LEFT_PAREN)
+		new = parse_simple_cmd(token);
+	else
 	{
 		new = create_node(token, SUBSHELL);
 		new->use.fct = &execute_subshell;
@@ -35,10 +35,6 @@ t_node	*parse_cmd(t_token **token)
 		while ((*token)->type == LESS || (*token)->type == GREAT
 			|| (*token)->type == DLESS || (*token)->type == DGREAT)
 			new = node_addback(new, parse_io_redirect(token), LEFT);
-	}
-	else
-	{
-		new = node;
 	}
 	return (new);
 }

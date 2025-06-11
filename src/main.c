@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/10 05:29:36 by user             ###   ########.fr       */
+/*   Updated: 2025/06/11 06:34:22 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 // TODO: Implement the new t_shell structure
 int	minishell(int mode, char **env)
 {
-	pid_t	pid;
 	t_shell	*shell;
 
 	signals();
@@ -54,13 +53,7 @@ int	minishell(int mode, char **env)
 				show_tree(shell->tree, 1);
 			if (shell->mode <= 1)
 			{
-				pid = fork();
-				if (pid < 0)
-					return (1);
-				else if (pid == 0)
-					execute(shell->tree, envp_from_env(shell->env));
-				else
-					wait(&pid);
+				execute(shell->tree, envp_from_env(shell->env));
 			}
 			free(shell->cli);
 			shell->cli = NULL;
