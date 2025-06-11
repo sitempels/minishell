@@ -13,7 +13,6 @@
 ### Parser
 
 [] - complete_commandS
-[] - infinite loop in subshell_handler still there if io_redirect uncommented
 
 ### Expander
 
