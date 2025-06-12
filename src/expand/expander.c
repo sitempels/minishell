@@ -6,21 +6,21 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:18:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/12 10:03:44 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/12 21:38:35 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*TO DO: .Brace expansion --> NOT NEEDED?
-	 .Tilde expansion --> NOT NEEDED?
-	 .Shell Parameter expansionn --> $ handled here
-	 .Command Substitutionn --> NOT NEEDED?
-	 .Arithmetic expansionn --> NOT NEEDED?
-	 .Process Substitutionn --> NOT NEEDED?
-	 .Word splitting --> split function IFS( \t\n)
-	 .Filename expansion --> * handled here
-	 .Quote removal --> remove '' || ""
+		.Tilde expansion --> NOT NEEDED?
+		.Shell Parameter expansionn --> $ handled here
+		.Command Substitutionn --> NOT NEEDED?
+		.Arithmetic expansionn --> NOT NEEDED?
+		.Process Substitutionn --> NOT NEEDED?
+		.Word splitting --> split function IFS( \t\n)
+		.Filename expansion --> * handled here
+		.Quote removal --> remove '' || ""
 */
 
 void	*expander(t_token *token)
@@ -49,7 +49,7 @@ void	*expander(t_token *token)
 
 int	calc_expand(t_token *arg)
 {
-	int	i;
+	int		i;
 	char	quote;
 
 	i = 0;
