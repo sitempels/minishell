@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/12 15:36:13 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:48:18 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,12 @@ t_token	*handle_heredoc(t_token *end)
 	char	*line;
 	char	*here_name;
 
-	here_name = create_heredoc("here_doc/heredoc");
+	here_name = create_heredoc(".here_doc/heredoc");
 	fd = open(here_name, O_WRONLY | O_CREAT, 00644);
 	while (1)
 	{
 		line = readline(">");
-		if (!line)
-			return (NULL);
-		if (!strncmp(line, end->start, end->size))
+		if (!line || !strncmp(line, end->start, end->size))
 			break ;
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
