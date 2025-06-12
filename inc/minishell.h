@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/12 10:48:17 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:35:56 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@
 # define DELIMITERS " |&()<>\n\t\0"
 /* MAKE SURE OPERATOR MACRO ORDER MATCH ENUM ORDER */
 # define OPERATOR "|&<>()"
-# define DOUBLE_ADJUST                   \
-	(OR_IF - OR) /*equivalent to (OR_IF \
-- OR) but cannot 'cause norme */
 # define SEPARATOR " "
 /**/
 /*_________________________________ENUM_______________________________________*/
@@ -64,6 +61,13 @@ typedef enum e_type
 /*_________________________________STRUCT_____________________________________*/
 /**/
 
+typedef union u_usage
+{
+	int				(*fct)();
+	char			**arg;
+	struct s_token			*content;
+}					t_usage;
+
 typedef struct s_env
 {
 	char			*key;
@@ -78,13 +82,6 @@ typedef struct s_token
 	size_t			size;
 	struct s_token	*next;
 }					t_token;
-
-typedef union u_usage
-{
-	int				(*fct)();
-	char			**arg;
-	t_token			*content;
-}					t_usage;
 
 typedef struct s_node
 {

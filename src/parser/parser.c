@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/09 15:16:20 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/12 12:59:38 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -35,7 +35,7 @@ t_node	*parse_complete_cmd(t_token **token)
 	t_node	*new;
 
 	if ((*token)->type == EOL)
-		return (NULL);
+		return (create_node(token, (*token)->type));
 	new = NULL;
 	node = parse_pipeline(token);
 	if ((*token)->type == AND_IF || (*token)->type == OR_IF)
