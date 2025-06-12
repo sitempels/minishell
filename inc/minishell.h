@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/10 04:19:07 by user             ###   ########.fr       */
+/*   Updated: 2025/06/12 10:48:17 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ typedef enum e_type
 	LEFT_PAREN,  /*7*/
 	RIGHT_PAREN, /*8*/
 	NEW_LINE,    /*9*/
+	EOL,         /*16*/
 	OR_IF,       /*10*/
 	AND_IF,      /*11*/
 	DLESS,       /*12*/
 	DGREAT,      /*13*/
 	CMD,         /*14*/
 	FILENAME,    /*15*/
-	EOL,         /*16*/
 	ERROR,       /*17*/
 	SUBSHELL,    /*18*/
 	ARGUMENT,    /*19*/
