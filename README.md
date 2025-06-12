@@ -6,7 +6,7 @@
 
 [] - Creer une fonction qui check les quotes unclosed
 
-[] - Here Doc
+[] - Here Doc ->pretty much done, some verifications needed
 
 [] - Se renseigner sur l'ampersand (background job)
 

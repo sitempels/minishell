@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/12 13:37:43 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:40:11 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	match(char c, char *match_lst);
 static int	token_found(t_token **new, char *cli, int *i);
 static int	handle_word(char *cli);
-static int	handle_special(t_token *new, char *cli, int *i);
+static int	handle_case(t_token **new, char *cli, int *i);
 
 t_token	*lexer(t_token **token_lst, char *cli)
 {
@@ -28,7 +28,7 @@ t_token	*lexer(t_token **token_lst, char *cli)
 	{
 		if (token_found(&new, cli, &i))
 			break ;
-		if (handle_special(new, cli, &i))
+		if (handle_case(&new, cli, &i))
 			return (NULL);
 		token_addback(token_lst, new);
 	}
@@ -38,25 +38,6 @@ t_token	*lexer(t_token **token_lst, char *cli)
 		token_addback(token_lst, new);
 	}
 	return (*token_lst);
-}
-
-static int	handle_special(t_token *new, char *cli, int *i)
-{
-	t_token *next;
-
-	next = next;
-	if (new->type == IF)
-		return (write(1, "& not handled\n", 14));
-	if (new->type == DLESS)
-	{
-		token_found(&next, cli, i);
-		if (next->type != WORD)
-			return (1);
-		new->start = next->start;
-		new->size = next->size;
-		return (0);
-	}
-	return (0);
 }
 
 static int	match(char c, char *match_lst)
@@ -75,14 +56,11 @@ static int	match(char c, char *match_lst)
 	return (0);
 }
 
-// HANDLE HERE DOC HERE
 static int	token_found(t_token **new, char *cli, int *i)
 {
 	int	type;
 	int	size;
 
-//	if (!cli[*i])
-//		return (0);
 	while (cli[*i] && match(cli[*i], SEPARATOR))
 		*i = *i + 1;
 	if (!cli[*i])
@@ -119,4 +97,20 @@ static int	handle_word(char *cli)
 		i++;
 	}
 	return (i);
+}
+
+static int	handle_case(t_token **new, char *cli, int *i)
+{
+	t_token	*next;
+
+	if (*new && (*new)->type == IF)
+		return (write(1, "& not handled\n", 14));
+	if (*new && (*new)->type == DLESS)
+	{
+		token_found(&next, cli, i);
+		if (next->type != WORD)
+			return (1);
+		(*new)->next = handle_heredoc(next);
+	}
+	return (0);
 }

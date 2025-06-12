@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/12 13:35:56 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:44:52 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 /* MAKE SURE OPERATOR MACRO ORDER MATCH ENUM ORDER */
 # define OPERATOR "|&<>()"
 # define SEPARATOR " "
+/* 0 or less prevent HERE_DOC creation */
+# define MAX_HEREDOC 50
 /**/
 /*_________________________________ENUM_______________________________________*/
 /**/
@@ -133,6 +135,7 @@ void				display_prompt(void);
 /*__________________________________LEXER_____________________________________*/
 int					is_valid_cli(const char *cli);
 t_token				*lexer(t_token **token_lst, char *cli);
+t_token				*handle_heredoc(t_token *end);
 
 /*____________UTILS_____________*/
 t_token				*token_addback(t_token **tokens, t_token *new);
@@ -173,7 +176,7 @@ int					execute_pipe(t_node *tree, char **env);
 int					execute_cmd(t_node *tree, char **env);
 int					execute_redir_input(t_node *tree, char **env);
 int					execute_redir_output(t_node *tree, char **env);
-int					execute_redir_output_A(t_node *tree, char **env);
+int					execute_redir_output_a(t_node *tree, char **env);
 
 /*____________UTILS_____________*/
 char				**get_arg(t_token *arg, int nbr);

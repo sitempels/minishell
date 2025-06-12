@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:16:13 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/10 04:18:15 by user             ###   ########.fr       */
+/*   Updated: 2025/06/12 15:38:07 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_token	*token_create(int type, char *start, size_t size)
 	return (new);
 }
 
-// No need to return the new token, as it is added to the list
 t_token	*token_addback(t_token **token_lst, t_token *new)
 {
 	t_token	*last;
@@ -58,7 +57,6 @@ t_token	*token_addback(t_token **token_lst, t_token *new)
 	}
 	last = token_last(token_lst);
 	last->next = new;
-	new->next = NULL;
 	return (*token_lst);
 }
 
