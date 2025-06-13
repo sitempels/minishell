@@ -6,32 +6,42 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:06 by user              #+#    #+#             */
-/*   Updated: 2025/06/10 02:51:18 by user             ###   ########.fr       */
+/*   Updated: 2025/06/13 04:05:50 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builtin_unset(t_env **head, char *key)
+static int	is_valid_identifier(const char *s)
 {
-	t_env	*tmp;
-	t_env	*prev;
+	int	i;
 
-	tmp = *head;
-	prev = NULL;
-	while (tmp)
+	if (!s || (!ft_isalpha(s[0]) && s[0] != '_'))
+		return (0);
+	i = 1;
+	while (s[i])
 	{
-		if (ft_strncmp(tmp->key, key, ft_strlen(key)) == 0)
-		{
-			if (prev)
-				prev->next = tmp->next;
-			else
-				*head = tmp->next;
-			env_freeone(tmp);
+		if (!ft_isalnum(s[i]) && s[i] != '_')
 			return (0);
-		}
-		prev = tmp;
-		tmp = tmp->next;
+		i++;
 	}
 	return (1);
+}
+
+int	builtin_unset(t_env **env, char **args)
+{
+	int	i;
+
+	if (!args[1])
+		return (0);
+	i = 1;
+	while (args[i])
+	{
+		if (!is_valid_identifier(args[i]))
+			printf("unset: `%s': not a valid identifier\n", args[i]);
+		else
+			env_delone(env, args[i]);
+		i++;
+	}
+	return (0);
 }

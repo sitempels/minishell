@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 10:59:47 by user              #+#    #+#             */
-/*   Updated: 2025/06/09 22:01:50 by user             ###   ########.fr       */
+/*   Updated: 2025/06/13 04:02:43 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,49 @@ t_env	*env_getone(t_env *head, char *key, size_t len)
 	return (NULL);
 }
 
+int	env_addback(t_env **head, t_env *new)
+{
+	t_env	*last;
+
+	if (!new)
+		return (1);
+	if (!*head)
+	{
+		*head = new;
+		return (0);
+	}
+	last = env_getlast(*head);
+	last->next = new;
+	return (0);
+}
+
+// get one, free one
+int	env_delone(t_env **head, char *key)
+{
+	t_env	*curr;
+	t_env	*prev;
+
+	if (!head || !*head || !key)
+		return (1);
+	curr = *head;
+	prev = NULL;
+	while (curr)
+	{
+		if (ft_strcmp(curr->key, key) == 0)
+		{
+			if (prev)
+				prev->next = curr->next;
+			else
+				*head = curr->next;
+			env_freeone(curr);
+			return (0);
+		}
+		prev = curr;
+		curr = curr->next;
+	}
+	return (1);
+}
+
 // Get the size of envp
 int	envp_size(char **envp)
 {
@@ -227,7 +270,7 @@ t_env	*env_from_envp(char **envp)
 			env_freeall(head);
 			return (NULL);
 		}
-		if (builtin_export(&head, env) != 0)
+		if (env_addback(&head, env) != 0)
 		{
 			env_freeall(head);
 			env_freeone(env);
@@ -270,4 +313,66 @@ size_t	env_size(t_env *env)
 	while (env)
 		env = env->next, i++;
 	return (i);
+}
+// sorting
+static t_env	*env_dup(t_env *src)
+{
+	t_env	*copy;
+	t_env	*new;
+
+	copy = NULL;
+	while (src)
+	{
+		new = ft_calloc(1, sizeof(t_env));
+		if (!new)
+			return (env_freeall(copy), NULL);
+		new->key = ft_strdup(src->key);
+		new->value = src->value ? ft_strdup(src->value) : NULL;
+		if (!new->key || (src->value && !new->value))
+			return (env_freeall(copy), env_freeone(new), NULL);
+		env_addback(&copy, new);
+		src = src->next;
+	}
+	return (copy);
+}
+
+static void	env_swap_content(t_env *a, t_env *b)
+{
+	char	*tmp_key;
+	char	*tmp_value;
+
+	tmp_key = a->key;
+	tmp_value = a->value;
+	a->key = b->key;
+	a->value = b->value;
+	b->key = tmp_key;
+	b->value = tmp_value;
+}
+
+int	env_sortkey(t_env **head)
+{
+	t_env	*i;
+	t_env	*j;
+	t_env	*copy;
+
+	if (!head || !*head)
+		return (1);
+	copy = env_dup(*head);
+	if (!copy)
+		return (1);
+	i = copy;
+	while (i)
+	{
+		j = i->next;
+		while (j)
+		{
+			if (ft_strcmp(i->key, j->key) > 0)
+				env_swap_content(i, j);
+			j = j->next;
+		}
+		i = i->next;
+	}
+	env_freeall(*head);
+	*head = copy;
+	return (0);
 }

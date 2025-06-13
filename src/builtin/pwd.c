@@ -6,17 +6,33 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:37:26 by user              #+#    #+#             */
-/*   Updated: 2025/06/10 02:51:09 by user             ###   ########.fr       */
+/*   Updated: 2025/06/13 02:51:28 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// return status code:
+// ENOMEM code:12 not enough memory
+// ENOENT code:2 no such file or directory
+// EACCES code:13 permission denied
 int	builtin_pwd(void)
 {
-	char *cwd;
+	char	*cwd;
 
 	cwd = getcwd(NULL, 0);
+	if (!cwd)
+	{
+		if (errno == ENOMEM)
+			return (printf("pwd: not enough memory (ENOMEM)\n"), 12);
+		else if (errno == ENOENT)
+			return (printf("pwd: current directory no longer exists (ENOENT)\n"),
+				2);
+		else if (errno == EACCES)
+			return (printf("pwd: permission denied (EACCES)\n"), 13);
+		else
+			return (perror("pwd"), 1);
+	}
 	printf("%s\n", cwd);
 	free(cwd);
 	return (0);

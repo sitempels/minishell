@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/13 02:23:43 by user             ###   ########.fr       */
+/*   Updated: 2025/06/13 03:55:48 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,11 +123,12 @@ size_t				env_size(t_env *env);
 void				env_freeone(t_env *env);
 void				env_freeall(t_env *env);
 int					env_updateone(t_env **head, char *key, char *value);
+int					env_addback(t_env **head, t_env *new);
+int					env_delone(t_env **head, char *key);
+int					env_sortkey(t_env **head);
 
 /*_________________________________BUILTINS___________________________________*/
 void				builtin_env(t_env *env);
-int					builtin_export(t_env **head, t_env *new);
-int					builtin_unset(t_env **head, char *key);
 
 /*_________________________________DISPLAY____________________________________*/
 void				display_banner(void);
