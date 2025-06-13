@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 10:59:47 by user              #+#    #+#             */
-/*   Updated: 2025/06/13 04:02:43 by user             ###   ########.fr       */
+/*   Updated: 2025/06/13 05:42:40 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,7 +315,7 @@ size_t	env_size(t_env *env)
 	return (i);
 }
 // sorting
-static t_env	*env_dup(t_env *src)
+t_env	*env_dup(t_env *src)
 {
 	t_env	*copy;
 	t_env	*new;

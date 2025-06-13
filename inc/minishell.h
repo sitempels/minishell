@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/13 03:55:48 by user             ###   ########.fr       */
+/*   Updated: 2025/06/13 05:42:45 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ int					env_updateone(t_env **head, char *key, char *value);
 int					env_addback(t_env **head, t_env *new);
 int					env_delone(t_env **head, char *key);
 int					env_sortkey(t_env **head);
+t_env				*env_dup(t_env *src);
 
 /*_________________________________BUILTINS___________________________________*/
 void				builtin_env(t_env *env);
