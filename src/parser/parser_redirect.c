@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_redirect.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:58:37 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/12 15:47:33 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/13 02:28:23 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_node	*parse_io_redirect(t_token **token)
 		new->right = create_node(NULL, FILENAME);
 		if (!new->right)
 			return (NULL);
-		(new->right)->use.arg = get_arg(munch_token(token), 0);
+		(new->right)->use.arg = get_arg(munch_token(token), 0, NULL, 0);
 	}
 	else
 	{
