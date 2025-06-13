@@ -6,63 +6,143 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:18:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/12 21:38:35 by user             ###   ########.fr       */
+/*   Updated: 2025/06/13 02:25:23 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*TO DO: .Brace expansion --> NOT NEEDED?
-		.Tilde expansion --> NOT NEEDED?
-		.Shell Parameter expansionn --> $ handled here
-		.Command Substitutionn --> NOT NEEDED?
-		.Arithmetic expansionn --> NOT NEEDED?
-		.Process Substitutionn --> NOT NEEDED?
-		.Word splitting --> split function IFS( \t\n)
-		.Filename expansion --> * handled here
-		.Quote removal --> remove '' || ""
-*/
-
-void	*expander(t_token *token)
+char	*get_env_value(t_env *env, const char *key)
 {
-	int		i;
-	int		size;
-	char	*start;
-	char	*new;
-
-	if (token->type == EOL)
-		return (NULL);
-	start = (token->start);
-	size = token->size;
-	new = (char *)malloc(sizeof(char) * (size + 1));
-	if (!new)
-		return (NULL);
-	new[size] = '\0';
-	i = 0;
-	while (i < size)
+	while (env)
 	{
-		new[i] = start[i];
-		i++;
+		if (ft_strcmp(env->key, key) == 0)
+			return (env->value);
+		env = env->next;
 	}
-	return ((void *)new);
+	return ("");
 }
 
-int	calc_expand(t_token *arg)
+static char	*append_char(char *s, char c)
 {
-	int		i;
-	char	quote;
+	char	*new;
+	size_t	len;
+
+	len = ft_strlen(s);
+	new = malloc(len + 2);
+	if (!new)
+		return (NULL);
+	ft_strlcpy(new, s, len + 1);
+	new[len] = c;
+	new[len + 1] = '\0';
+	free(s);
+	return (new);
+}
+
+static char	*append_str(char *s1, char *s2)
+{
+	char	*joined;
+
+	joined = ft_strjoin(s1, s2);
+	free(s1);
+	return (joined);
+}
+
+static char	*expand_exit_code(char *res, int exit_status)
+{
+	char	*code;
+
+	code = ft_itoa(exit_status);
+	if (!code)
+		return (res);
+	res = append_str(res, code);
+	free(code);
+	return (res);
+}
+
+static char	*expand_variable(const char *input, size_t *i, t_env *env,
+		char *res)
+{
+	char	*key;
+	char	*val;
+	size_t	start;
+
+	start = *i;
+	while (ft_isalnum(input[*i]) || input[*i] == '_')
+		(*i)++;
+	key = ft_strsub(input, start, *i - start);
+	if (!key)
+		return (res);
+	val = get_env_value(env, key);
+	free(key);
+	if (val)
+		res = append_str(res, ft_strdup(val));
+	return (res);
+}
+
+char	*expand_string(const char *input, t_env *env, int exit_status)
+{
+	size_t	i;
+	char	*res;
 
 	i = 0;
-	while (i < (int)(arg->size))
+	res = ft_strdup("");
+	if (!res)
+		return (NULL);
+	while (input[i])
 	{
-		if (arg->start[i] == '\'' || arg->start[i] == '\"')
+		if (input[i] == '$')
 		{
-			quote = arg->start[i];
 			i++;
-			while (arg->start[i] != quote)
+			if (input[i] == '?')
+			{
+				res = expand_exit_code(res, exit_status);
 				i++;
+			}
+			else if (ft_isalpha(input[i]) || input[i] == '_')
+				res = expand_variable(input, &i, env, res);
+			else
+				res = append_char(res, '$');
 		}
-		i++;
+		else
+		{
+			res = append_char(res, input[i]);
+			i++;
+		}
 	}
-	return (0);
+	return (res);
+}
+
+char	*process_arg(t_token *arg, t_env *env, int status)
+{
+	char	*raw;
+	char	*expanded;
+
+	raw = (char *)ft_calloc(arg->size + 1, sizeof(char));
+	if (!raw)
+		return (NULL);
+	ft_memcpy(raw, arg->start, arg->size);
+	expanded = expand_string(raw, env, status);
+	free(raw);
+	return (expanded);
+}
+
+char	**get_arg(t_token *arg, int nbr, t_env *env, int status)
+{
+	char	**argv;
+
+	if (!arg)
+	{
+		argv = (char **)ft_calloc(nbr + 1, sizeof(char *));
+		if (!argv)
+			return (NULL);
+		return (argv);
+	}
+	argv = get_arg(arg->next, nbr + 1, env, status);
+	if (!argv)
+		return (NULL);
+	argv[nbr] = process_arg(arg, env, status);
+	if (!argv[nbr])
+		return (NULL);
+	return (argv);
 }

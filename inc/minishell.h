@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/12 15:44:52 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/13 02:23:43 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef union u_usage
 {
 	int				(*fct)();
 	char			**arg;
-	struct s_token			*content;
+	struct s_token	*content;
 }					t_usage;
 
 typedef struct s_env
@@ -179,8 +179,9 @@ int					execute_redir_output(t_node *tree, char **env);
 int					execute_redir_output_a(t_node *tree, char **env);
 
 /*____________UTILS_____________*/
-char				**get_arg(t_token *arg, int nbr);
-char				*process_arg(t_token *arg);
+char				**get_arg(t_token *arg, int nbr, t_env *env, int status);
+char				*process_arg(t_token *arg, t_env *env, int status);
+
 /**/
 /*_________________________________UTILS______________________________________*/
 char				*get_path(char *cmd, char **env, int mode);

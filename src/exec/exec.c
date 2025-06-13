@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/11 09:56:54 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/13 02:17:00 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ int	execute_pipe(t_node *tree, char **env)
 	int		pipefd[2];
 	int		status;
 	pid_t	pid1;
-	//pid_t	pid2;
 
+	// pid_t	pid2;
 	if (pipe(pipefd) == -1)
 		return (EXIT_FAILURE);
 	pid1 = fork();
@@ -88,14 +88,14 @@ int	execute_pipe(t_node *tree, char **env)
 	close(pipefd[1]);
 	dup2(pipefd[0], 0);
 	close(pipefd[0]);
-//	pid2 = fork();
-//	if (pid2 < 0)
-//		return (EXIT_FAILURE); //-->handle of other child needed
-//	if (pid2 == 0)
-//	{
+	//	pid2 = fork();
+	//	if (pid2 < 0)
+	//		return (EXIT_FAILURE); //-->handle of other child needed
+	//	if (pid2 == 0)
+	//	{
 	execute_descend(tree->right, env);
-//		return (1);
-//	}
+	//		return (1);
+	//	}
 	wait(&status);
 	wait(&status);
 	return (status);

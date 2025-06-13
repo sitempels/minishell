@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/12 12:59:38 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/13 01:19:46 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 /*UTILS FUNCTIONS*/
-void	*expander(t_token *token);
+// void	*expander(t_token *token);
 /**/
 /*DESCENT FUNCTIONS - BY ORDER OF DESCENT*/
 t_node	*parse_pipeline(t_token **token);
