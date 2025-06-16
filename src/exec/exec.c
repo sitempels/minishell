@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/16 10:17:03 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:54:04 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	execute(t_node *tree, char **env)
 		return (1);
 	}
 	waitpid(pid, &status, 0);
-//	clean_tree(&tree);
+	clean_tree(&tree);
 	printf("Program exited with %d\n", status);
 	return (status);
 }
@@ -104,5 +104,6 @@ int	execute_pipe(t_node *tree, char **env)
 		wait(&status);
 		child_nbr--;
 	}
+	clean_tree(&tree);
 	return (status);
 }

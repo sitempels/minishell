@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/16 11:54:04 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:02:02 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	clean_tree(t_node **tree)
 {
-	//t_node	*tmp;
-
-	//tmp = tree;
 	if (!tree || !*tree)
 		return ;
 	if ((*tree)->left)

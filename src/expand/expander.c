@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:18:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/16 09:20:09 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:39:07 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,9 @@ char	*process_arg(t_token *arg, t_env *env, int status)
 	if (!raw)
 		return (NULL);
 	ft_memcpy(raw, arg->start, arg->size);
+	free(arg);
 	expanded = expand_string(raw, env, status);
 	free(raw);
-	free(arg);
 	return (expanded);
 }
 

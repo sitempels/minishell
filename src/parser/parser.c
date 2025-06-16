@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/16 11:13:51 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:21:46 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ t_node	*parser(t_token **token)
 	if (!token)
 		return (NULL);
 	tree = parse_complete_cmd(token);
+	if ((*token)->type == EOL)
+	{
+		free(*token);
+		*token = NULL;
+	}
 	if (!tree)
 		return (NULL);
 	return (tree);
@@ -36,7 +41,7 @@ t_node	*parse_complete_cmd(t_token **token)
 	t_node	*new;
 
 	if ((*token)->type == EOL)
-		return (create_node(token, (*token)->type));
+			return (NULL);
 	new = NULL;
 	node = parse_pipeline(token);
 	if ((*token)->type == AND_IF || (*token)->type == OR_IF)

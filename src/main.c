@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/16 11:14:36 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:56:03 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	minishell(int mode, char **env)
 				execute(shell->tree, envp_from_env(shell->env));
 			}
 			clean_tree(&(shell->tree));
-			clean_token_lst(&(shell->tokens));
+		//	clean_token_lst(&(shell->tokens));
 			free(shell->cli);
 			shell->cli = NULL;
 		}
