@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/13 02:17:00 by user             ###   ########.fr       */
+/*   Updated: 2025/06/16 10:17:03 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	execute(t_node *tree, char **env)
 		return (1);
 	}
 	waitpid(pid, &status, 0);
+//	clean_tree(&tree);
 	printf("Program exited with %d\n", status);
 	return (status);
 }
@@ -36,8 +37,6 @@ int	execute_descend(t_node *tree, char **env)
 		return (1);
 	if (tree->use.fct(tree, env))
 		return (1);
-	free(tree);
-	tree = NULL;
 	return (0);
 }
 
@@ -68,51 +67,42 @@ int	execute_subshell(t_node *tree, char **env)
 int	execute_pipe(t_node *tree, char **env)
 {
 	int		pipefd[2];
+	int		child_nbr;
 	int		status;
-	pid_t	pid1;
+	pid_t	pid;
 
 	// pid_t	pid2;
+	child_nbr = 0;
 	if (pipe(pipefd) == -1)
 		return (EXIT_FAILURE);
-	pid1 = fork();
-	if (pid1 < 0)
+	pid = fork();
+	if (pid < 0)
 		return (EXIT_FAILURE);
-	if (pid1 == 0)
+	if (pid == 0)
 	{
 		close(pipefd[0]);
 		dup2(pipefd[1], 1);
 		close(pipefd[1]);
 		execute_descend(tree->left, env);
-		return (1);
+		exit (1);
 	}
+	child_nbr++;
 	close(pipefd[1]);
 	dup2(pipefd[0], 0);
 	close(pipefd[0]);
-	//	pid2 = fork();
-	//	if (pid2 < 0)
-	//		return (EXIT_FAILURE); //-->handle of other child needed
-	//	if (pid2 == 0)
-	//	{
-	execute_descend(tree->right, env);
-	//		return (1);
-	//	}
-	wait(&status);
-	wait(&status);
-	return (status);
-}
-
-char	**free_array(char **array, int pos)
-{
-	if (!array)
-		return (NULL);
-	while (array[pos])
+	pid = fork();
+	if (pid < 0)
+		return (EXIT_FAILURE); //-->handle of other child needed
+	if (pid == 0)
 	{
-		if (array[pos])
-		{
-			free(array[pos]);
-			array[pos] = NULL;
-		}
-		pos++;
+		execute_descend(tree->right, env);
+		exit (1);
 	}
-	return (NULL);
+	child_nbr++;
+	while (child_nbr > 0)
+	{
+		wait(&status);
+		child_nbr--;
+	}
+	return (status);
 }

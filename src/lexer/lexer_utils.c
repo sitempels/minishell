@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:16:13 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/12 15:38:07 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/16 11:47:41 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,17 @@ int	is_valid_cli(const char *cli)
 
 t_token	*token_create(int type, char *start, size_t size)
 {
-	t_token	*new;
+	t_token	*token;
 
-	new = (t_token *)ft_calloc(1, sizeof(t_token));
-	if (!new)
+	printf("sizeof t_token: %ld \n", sizeof(t_token));
+	token = (t_token *) malloc(sizeof(t_token) * 1);
+	if (!token)
 		return (NULL);
-	new->type = type;
-	new->start = start;
-	new->size = size;
-	new->next = NULL;
-	return (new);
+	token->type = type;
+	token->start = start;
+	token->size = size;
+	token->next = NULL;
+	return (token);
 }
 
 t_token	*token_addback(t_token **token_lst, t_token *new)

@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/12 15:40:11 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/16 11:44:32 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ t_token	*lexer(t_token **token_lst, char *cli)
 	t_token	*new;
 
 	i = 0;
-	new = NULL;
 	while (cli[i])
 	{
+		new = NULL;
 		if (token_found(&new, cli, &i))
 			break ;
 		if (handle_case(&new, cli, &i))

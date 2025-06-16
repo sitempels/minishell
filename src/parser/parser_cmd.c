@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/11 07:44:37 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/16 09:56:19 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_node	*parse_cmd(t_token **token)
 		if ((*token)->type != RIGHT_PAREN)
 			return (create_node(NULL, ERROR));
 		if ((*token)->type == RIGHT_PAREN)
-			free(munch_token(token));
+			munch_token(token, 1);
 		while ((*token)->type == LESS || (*token)->type == GREAT
 			|| (*token)->type == DLESS || (*token)->type == DGREAT)
 			new = node_addback(new, parse_io_redirect(token), LEFT);
@@ -60,18 +60,18 @@ t_node	*parse_simple_cmd(t_token **token)
 			if (!new->right)
 				new->right = create_node(NULL, ARGUMENT);
 			tmp = (new->right)->use.content;
-			(new->right)->use.content = token_addback(&tmp, munch_token(token));
+			(new->right)->use.content = token_addback(&tmp, munch_token(token, 0));
 		}
 		else
 			break ;
 	}
 	return (new);
 }
-
+/*
 t_node	*parse_word(t_token **token)
 {
 	t_node	*new;
 
 	new = create_node(token, WORD);
 	return (new);
-}
+}*/

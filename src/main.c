@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/13 01:27:40 by user             ###   ########.fr       */
+/*   Updated: 2025/06/16 11:14:36 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	minishell(int mode, char **env)
 				return (1);
 			if (shell->mode == 1 || (shell->mode >= 2 && shell->mode != 4))
 				show_lexeme(shell->tokens);
-			shell->tree = parser(shell->tokens);
+			shell->tree = parser(&(shell->tokens));
 			if (!shell->tree)
 				return (1);
 			if (shell->mode == 1 || shell->mode >= 3)
@@ -55,6 +55,8 @@ int	minishell(int mode, char **env)
 			{
 				execute(shell->tree, envp_from_env(shell->env));
 			}
+			clean_tree(&(shell->tree));
+			clean_token_lst(&(shell->tokens));
 			free(shell->cli);
 			shell->cli = NULL;
 		}

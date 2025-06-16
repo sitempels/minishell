@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/13 05:42:45 by user             ###   ########.fr       */
+/*   Updated: 2025/06/16 11:14:17 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_env
 
 typedef struct s_token
 {
-	t_type			type;
+	enum e_type			type;
 	char			*start;
 	size_t			size;
 	struct s_token	*next;
@@ -145,7 +145,7 @@ t_token				*token_create(int type, char *start, size_t size);
 t_token				*token_last(t_token **token_lst);
 
 /*_________________________________PARSER_____________________________________*/
-t_node				*parser(t_token *token);
+t_node				*parser(t_token **token);
 t_node				*parse_pipeline(t_token **token);
 t_node				*parse_complete_cmd(t_token **token);
 
@@ -163,7 +163,7 @@ t_node				*parse_filename(t_token **token);
 
 /*____________UTILS_____________*/
 t_node				*create_node(t_token **token, int type);
-t_token				*munch_token(t_token **token);
+t_token				*munch_token(t_token **token, int clean);
 t_node				*node_addback(t_node *node, t_node *new, int mode);
 /**/
 /*_________________________________EXPAND_____________________________________*/
@@ -190,6 +190,8 @@ char				*get_path(char *cmd, char **env, int mode);
 /**/
 /*_________________________________CLEAN______________________________________*/
 char				**free_array(char **array, int pos);
+void				clean_tree(t_node **tree);
+void	clean_token_lst(t_token **token_lst);
 /**/
 /*_________________________________DEBUG______________________________________*/
 /**/

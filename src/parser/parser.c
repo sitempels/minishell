@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/13 01:19:46 by user             ###   ########.fr       */
+/*   Updated: 2025/06/16 11:13:51 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@
 /*DESCENT FUNCTIONS - BY ORDER OF DESCENT*/
 t_node	*parse_pipeline(t_token **token);
 
-t_node	*parser(t_token *token)
+t_node	*parser(t_token **token)
 {
 	t_node	*tree;
 
 	if (!token)
 		return (NULL);
-	tree = parse_complete_cmd(&token);
+	tree = parse_complete_cmd(token);
 	if (!tree)
 		return (NULL);
 	return (tree);
