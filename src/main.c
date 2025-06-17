@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/17 15:10:25 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/17 15:56:36 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	minishell(int mode, char **env)
 		else
 		{
 			add_history(shell->cli);
-			subshell == fork();
+			subshell = fork();
 			if (subshell < 0)
 				ft_error(shell, "MINISHELL CRASHED !!!!!", N_PRINT);
 			if (subshell == 0)
@@ -59,9 +59,10 @@ int	minishell(int mode, char **env)
 				if (shell->mode <= 1)
 				{
 					execute(shell->tree, envp_from_env(shell->env));
+					return (0);
 				}
 			}
-			waitpid(subshell, &status,0);
+			waitpid(subshell, &status, 0);
 			clean_shell(shell);
 			free(shell->cli);
 			shell->cli = NULL;

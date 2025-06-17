@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/17 14:55:50 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/17 15:27:42 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	ft_error(t_shell *shell, char *context, int error)
 	if (context)
 		printf("MINISHELL ERROR: %s %s \n", context, get_errnum(error));
 	clean_shell(shell);
+	exit (1);
 }
 
 void	clean_shell(t_shell *shell)
@@ -90,5 +91,5 @@ void	clean_shell(t_shell *shell)
 	if (shell->tree)
 		clean_tree(&shell->tree);
 	shell->tree = NULL;
-	exit (1);
+	return ;
 }

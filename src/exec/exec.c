@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/16 14:19:10 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/17 15:43:01 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	execute(t_node *tree, char **env)
 {
-	int		status;
+/*	int		status;
 	pid_t	pid;
 
 	dup2(STDIN_FILENO, 0);
@@ -23,13 +23,14 @@ int	execute(t_node *tree, char **env)
 	if (pid < 0)
 		return (1);
 	if (pid == 0)
-	{
-		execute_descend(tree, env);
-		return (1);
+	{*/
+	execute_descend(tree, env);
+/*		return (1);
 	}
 	waitpid(pid, &status, 0);
 	printf("Program exited with %d\n", status);
-	return (status);
+	return (status);*/
+	return (0);
 }
 
 int	execute_descend(t_node *tree, char **env)
