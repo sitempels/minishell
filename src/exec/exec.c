@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/16 14:05:56 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/16 14:19:10 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	execute(t_node *tree, char **env)
 	int		status;
 	pid_t	pid;
 
+	dup2(STDIN_FILENO, 0);
+	dup2(STDOUT_FILENO, 1);
 	pid = fork();
 	if (pid < 0)
 		return (1);
