@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/16 13:56:03 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/17 15:10:25 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 // TODO: Implement the new t_shell structure
 int	minishell(int mode, char **env)
 {
+	int	status;
+	pid_t	subshell;
 	t_shell	*shell;
 
 	signals();
@@ -41,22 +43,26 @@ int	minishell(int mode, char **env)
 		else
 		{
 			add_history(shell->cli);
-			shell->tokens = lexer(&shell->tokens, shell->cli);
-			if (!shell->tokens)
-				return (1);
-			if (shell->mode == 1 || (shell->mode >= 2 && shell->mode != 4))
-				show_lexeme(shell->tokens);
-			shell->tree = parser(&(shell->tokens));
-			if (!shell->tree)
-				return (1);
-			if (shell->mode == 1 || shell->mode >= 3)
-				show_tree(shell->tree, 1);
-			if (shell->mode <= 1)
+			subshell == fork();
+			if (subshell < 0)
+				ft_error(shell, "MINISHELL CRASHED !!!!!", N_PRINT);
+			if (subshell == 0)
 			{
-				execute(shell->tree, envp_from_env(shell->env));
+				shell->tokens = lexer(shell, &shell->tokens, shell->cli);
+				if (shell->mode == 1 || (shell->mode >= 2 && shell->mode != 4))
+					show_lexeme(shell->tokens);
+				shell->tree = parser(&(shell->tokens));
+				if (!shell->tree)
+					return (1);
+				if (shell->mode == 1 || shell->mode >= 3)
+				show_tree(shell->tree, 1);
+				if (shell->mode <= 1)
+				{
+					execute(shell->tree, envp_from_env(shell->env));
+				}
 			}
-			clean_tree(&(shell->tree));
-		//	clean_token_lst(&(shell->tokens));
+			waitpid(subshell, &status,0);
+			clean_shell(shell);
 			free(shell->cli);
 			shell->cli = NULL;
 		}

@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:16:13 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/16 13:10:50 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/17 14:47:46 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ t_token	*token_create(int type, char *start, size_t size)
 {
 	t_token	*token;
 
-	printf("sizeof t_token: %ld \n", sizeof(t_token));
 	token = (t_token *) malloc(sizeof(t_token) * 1);
 	if (!token)
 		return (NULL);

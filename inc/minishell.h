@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/16 13:38:40 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/17 14:53:06 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,18 @@
 /**/
 /*_________________________________ENUM_______________________________________*/
 /**/
+typedef enum e_errnum
+{
+	N_PRINT,
+	CREAT_FILE,
+	OPEN_FILE,
+	CLOSE_FILE,
+	CREAT_TOKEN,
+	CREAT_NODE,
+	NOT_H,
+	MISS,
+}		t_errnum;
+
 typedef enum e_descend
 {
 	LEFT,
@@ -135,9 +147,9 @@ void				builtin_env(t_env *env);
 void				display_banner(void);
 void				display_prompt(void);
 /*__________________________________LEXER_____________________________________*/
-int					is_valid_cli(const char *cli);
-t_token				*lexer(t_token **token_lst, char *cli);
-t_token				*handle_heredoc(t_token *end);
+int			is_valid_cli(const char *cli);
+t_token		*lexer(t_shell *shell, t_token **token_lst, char *cli);
+t_token		*handle_heredoc(t_shell *shell, t_token *end);
 
 /*____________UTILS_____________*/
 t_token				*token_addback(t_token **tokens, t_token *new);
@@ -189,9 +201,11 @@ char				*process_arg(t_token *arg, t_env *env, int status);
 char				*get_path(char *cmd, char **env, int mode);
 /**/
 /*_________________________________CLEAN______________________________________*/
-char				**free_array(char **array, int pos);
-void				clean_tree(t_node **tree);
+void	ft_error(t_shell *shell, char *context, int error);
+char	**free_array(char **array, int pos);
 void	clean_token_lst(t_token **token_lst);
+void	clean_tree(t_node **tree);
+void	clean_shell(t_shell *shell);
 /**/
 /*_________________________________DEBUG______________________________________*/
 /**/

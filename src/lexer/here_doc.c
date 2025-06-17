@@ -6,22 +6,24 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/12 16:48:18 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/17 14:55:11 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*create_heredoc(char *here_doc);
+static char	*create_heredoc(t_shell *shell, char *here_doc);
 
-t_token	*handle_heredoc(t_token *end)
+t_token	*handle_heredoc(t_shell *shell, t_token *end)
 {
 	int		fd;
 	char	*line;
 	char	*here_name;
 
-	here_name = create_heredoc(".here_doc/heredoc");
+	here_name = create_heredoc(shell, ".here_doc/heredoc");
 	fd = open(here_name, O_WRONLY | O_CREAT, 00644);
+	if (fd == -1)
+		ft_error(shell, "LEXER: HERE_DOC:", OPEN_FILE);
 	while (1)
 	{
 		line = readline(">");
@@ -33,11 +35,12 @@ t_token	*handle_heredoc(t_token *end)
 	}
 	end->start = here_name;
 	end->size = ft_strlen(here_name);
-	close(fd);
+	if (-close(fd))
+		ft_error(shell, "LEXER: HERE_DOC:", CLOSE_FILE);
 	return (end);
 }
 
-static char	*create_heredoc(char *here_doc)
+static char	*create_heredoc(t_shell *shell, char *here_doc)
 {
 	int		nbr;
 	int		found;
@@ -48,10 +51,14 @@ static char	*create_heredoc(char *here_doc)
 	while (found >= 0 && nbr < MAX_HEREDOC)
 	{
 		here_name = ft_strjoin(here_doc, ft_itoa(nbr));
+		if (!here_name)
+			ft_error(shell, "LEXER: HERE_DOC:", CREAT_FILE);
 		found = access(here_name, F_OK);
 		if (found == -1)
 			return (here_name);
 		nbr++;
+		free(here_name);
 	}
+	ft_error(shell, "LEXER: HERE_DOC: Maximum here_doc reached", N_PRINT);
 	return (NULL);
 }
