@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/17 15:56:36 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/19 09:54:11 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@ int	minishell(int mode, char **env)
 	shell = init_shell(mode, env);
 	while (1)
 	{
-		shell->cli = NULL;
-		shell->tokens = NULL;
-		shell->tree = NULL;
 		display_prompt();
 		shell->cli = readline("\033[1;32m$\033[0m ");
 		if (!shell->cli)
@@ -51,7 +48,7 @@ int	minishell(int mode, char **env)
 				shell->tokens = lexer(shell, &shell->tokens, shell->cli);
 				if (shell->mode == 1 || (shell->mode >= 2 && shell->mode != 4))
 					show_lexeme(shell->tokens);
-				shell->tree = parser(&(shell->tokens));
+				shell->tree = parser(shell, &(shell->tokens));
 				if (!shell->tree)
 					return (1);
 				if (shell->mode == 1 || shell->mode >= 3)
@@ -64,8 +61,6 @@ int	minishell(int mode, char **env)
 			}
 			waitpid(subshell, &status, 0);
 			clean_shell(shell);
-			free(shell->cli);
-			shell->cli = NULL;
 		}
 	}
 	return (0);

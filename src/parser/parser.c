@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/16 13:21:46 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/19 09:59:49 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,49 +16,46 @@
 // void	*expander(t_token *token);
 /**/
 /*DESCENT FUNCTIONS - BY ORDER OF DESCENT*/
-t_node	*parse_pipeline(t_token **token);
 
-t_node	*parser(t_token **token)
+t_node	*parser(t_shell *shell, t_token **token)
 {
 	t_node	*tree;
 
 	if (!token)
 		return (NULL);
-	tree = parse_complete_cmd(token);
+	tree = parse_complete_cmd(shell, token);
 	if ((*token)->type == EOL)
 	{
 		free(*token);
 		*token = NULL;
 	}
 	if (!tree)
-		return (NULL);
+		ft_error(shell, "PARSER: Tree not planted !\n", 0);
 	return (tree);
 }
 
-t_node	*parse_complete_cmd(t_token **token)
+t_node	*parse_complete_cmd(t_shell *shell, t_token **token)
 {
 	t_node	*node;
 	t_node	*new;
 
 	if ((*token)->type == EOL)
-			return (NULL);
+		return (NULL);
 	new = NULL;
-	node = parse_pipeline(token);
+	node = parse_pipeline(shell, token);
 	if ((*token)->type == AND_IF || (*token)->type == OR_IF)
 	{
-		new = create_node(token, (*token)->type);
+		new = create_node(shell, token, (*token)->type);
 		new->use.fct = &execute_and_or_if;
-		if (!new)
-			return (NULL);
 		new->left = node;
-		new->right = parse_complete_cmd(token);
+		new->right = parse_complete_cmd(shell, token);
 	}
 	else
 		new = node;
 	return (new);
 }
 
-t_node	*parse_pipeline(t_token **token)
+t_node	*parse_pipeline(t_shell *shell, t_token **token)
 {
 	t_node	*node;
 	t_node	*new;
@@ -66,16 +63,14 @@ t_node	*parse_pipeline(t_token **token)
 	if ((*token)->type == EOL)
 		return (NULL);
 	new = NULL;
-	node = parse_cmd(token);
+	node = parse_cmd(shell, token);
 	if ((*token)->type == OR)
 	{
-		new = create_node(token, OR);
+		new = create_node(shell, token, OR);
 		new->use.fct = &execute_pipe;
-		if (!new)
-			return (NULL);
 		new->left = node;
 		if ((*token)->type != EOL)
-			new->right = parse_pipeline(token);
+			new->right = parse_pipeline(shell, token);
 	}
 	else
 		new = node;

@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/06/16 08:20:21 by stempels         ###   ########.fr        #
+#    Updated: 2025/06/19 09:55:54 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ LEXER_DIR = lexer
 SRC_LEXER = $(addprefix $(LEXER_DIR)/, lexer lexer_utils here_doc)
 #
 PARSER_DIR = parser
-SRC_PARSER = $(addprefix $(PARSER_DIR)/, parser parser_cmd parser_redirect parser_utils)
+SRC_PARSER = $(addprefix $(PARSER_DIR)/, parser parser_cmd parser_utils)
 #
 EXEC_DIR = exec
 SRC_EXEC = $(addprefix $(EXEC_DIR)/, exec execute_cmd execute_redir)

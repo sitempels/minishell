@@ -6,19 +6,19 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:51:06 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/16 09:04:06 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/19 09:44:35 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_node	*create_node(t_token **token, int type)
+t_node	*create_node(t_shell *shell, t_token **token, int type)
 {
 	t_node	*new;
 
 	new = (t_node *) ft_calloc(1, sizeof(t_node));
 	if (!new)
-		return (NULL);
+		ft_error(shell, "PARSER", CREAT_NODE);
 	new->type = type;
 	if (new->type == ARGUMENT || new->type == FILENAME)
 		new->use.content = munch_token(token, 0);

@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/17 14:53:06 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/19 09:57:16 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,24 +157,17 @@ t_token				*token_create(int type, char *start, size_t size);
 t_token				*token_last(t_token **token_lst);
 
 /*_________________________________PARSER_____________________________________*/
-t_node				*parser(t_token **token);
-t_node				*parse_pipeline(t_token **token);
-t_node				*parse_complete_cmd(t_token **token);
+t_node				*parser(t_shell *shell, t_token **token);
+t_node				*parse_pipeline(t_shell *shell, t_token **token);
+t_node				*parse_complete_cmd(t_shell *shell, t_token **token);
 
 /*____________CMD_______________*/
-t_node				*parse_cmd(t_token **token);
-t_node				*parse_simple_cmd(t_token **token);
-t_node				*parse_word(t_token **token);
-
-/*____________REDIRECT__________*/
-t_node				*parse_cmd_affix(t_token **tokens);
-t_node				*parse_io_redirect(t_token **token);
-t_node				*parse_io_here(t_token **token);
-t_node				*parse_io_file(t_token **token);
-t_node				*parse_filename(t_token **token);
+t_node				*parse_cmd(t_shell *shell, t_token **token);
+t_node				*parse_simple_cmd(t_shell *shell, t_token **token);
+t_node				*parse_io_redirect(t_shell *shell, t_token **token);
 
 /*____________UTILS_____________*/
-t_node				*create_node(t_token **token, int type);
+t_node				*create_node(t_shell *shell, t_token **token, int type);
 t_token				*munch_token(t_token **token, int clean);
 t_node				*node_addback(t_node *node, t_node *new, int mode);
 /**/

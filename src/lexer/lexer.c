@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/17 15:03:00 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/19 09:57:52 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i)
 			free(*new);
 			if (next)
 				free(next);
-			ft_error(shell, "LEXER: Input file", MISS);
+			ft_error(shell, "LEXER: Input", MISS);
 		}
 		(*new)->next = handle_heredoc(shell, next);
 		if (!(*new)->next)

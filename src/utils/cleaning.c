@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/17 15:27:42 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/19 09:50:39 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,10 @@ void	clean_shell(t_shell *shell)
 	if (shell->tree)
 		clean_tree(&shell->tree);
 	shell->tree = NULL;
+	if (shell->cli)
+	{
+		free(shell->cli);
+		shell->cli = NULL;
+	}
 	return ;
 }
