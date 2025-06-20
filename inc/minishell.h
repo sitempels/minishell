@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/20 13:04:39 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:25:45 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ typedef enum e_errnum
 	CREAT_FILE,
 	OPEN_FILE,
 	CLOSE_FILE,
-	CREAT_TOKEN,
-	CREAT_NODE,
+	N_CREAT,
 	NOT_H,
-	MISS,
+	I_MISS,
+	O_MISS,
 }		t_errnum;
 
 typedef enum e_descend
@@ -195,7 +195,8 @@ char				*process_arg(t_token *arg, t_env *env, int status);
 char				*get_path(char *cmd, char **env, int mode);
 /**/
 /*_________________________________CLEAN______________________________________*/
-void	ft_error(t_shell *shell, char *context, int error);
+void	ft_error(t_shell *shell, int nbr_error, ...);
+char	*get_errnum(int	error);
 char	**free_array(char **array, int pos);
 void	clean_token_lst(t_token **token_lst);
 void	clean_tree(t_node **tree);

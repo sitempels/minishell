@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/20 14:16:38 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:26:16 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	execute_pipe(t_shell *shell, t_node *tree, char **env)
 
 	child_nbr = 0;
 	if (pipe(pipefd) == -1)
-		return (EXIT_FAILURE);
+		ft_error(shell, 2, "EXEC: PIPE", get_errnum(N_CREAT));
 	pid = create_fork(&child_nbr, shell, pipefd);
 	if (pid == 0)
 		execute_descend(shell, tree->left, env);
@@ -83,7 +83,7 @@ static pid_t	create_fork(int *child_nbr, t_shell *shell, int *pipefd)
 
 	pid = fork();
 	if (pid < 0)
-		ft_error(shell, "EXEC: PIPE went wrong\n", N_PRINT);
+		ft_error(shell, 2, "EXEC: PIPE", get_errnum(N_CREAT));
 	if (pid == 0 && *child_nbr == 0)
 	{
 		close(pipefd[0]);

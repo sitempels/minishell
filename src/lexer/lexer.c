@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/19 09:57:52 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:24:22 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_token	*lexer(t_shell *shell, t_token **token_lst, char *cli)
 	{
 		new = token_create(EOL, &cli[i], 1);
 		if (!new)
-			ft_error(shell, "LEXER", CREAT_TOKEN);
+			ft_error(shell, 2, "LEXER: TOKEN", get_errnum(N_CREAT));
 		token_addback(token_lst, new);
 	}
 	return (*token_lst);
@@ -77,7 +77,7 @@ static int	token_found(t_shell *shell, t_token **new, char *cli, int *i)
 		size = handle_word(&cli[*i]);
 	*new = token_create(type, &cli[*i], size);
 	if (!new)
-		ft_error(shell, "LEXER:", CREAT_TOKEN);
+		ft_error(shell, 3, "LEXER", "TOKEN", get_errnum(N_CREAT));
 	*i = *i + size;
 	return (0);
 }
@@ -106,7 +106,7 @@ static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i)
 
 	next = NULL;
 	if (*new && (*new)->type == IF)
-		ft_error(shell, "LEXER: &", NOT_H);
+		ft_error(shell, 3, "LEXER", "&", get_errnum(NOT_H));
 	if (*new && (*new)->type == DLESS)
 	{
 		token_found(shell, &next, cli, i);
@@ -115,11 +115,11 @@ static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i)
 			free(*new);
 			if (next)
 				free(next);
-			ft_error(shell, "LEXER: Input", MISS);
+			ft_error(shell, 2, "<<", get_errnum(I_MISS));
 		}
 		(*new)->next = handle_heredoc(shell, next);
 		if (!(*new)->next)
-			ft_error(shell, "LEXER: Input file", MISS);
+			ft_error(shell, 2, "<<", get_errnum(I_MISS));
 	}
 	return (0);
 }

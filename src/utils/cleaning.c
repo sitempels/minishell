@@ -6,13 +6,11 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/19 09:50:39 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:20:56 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*get_errnum(int	error);
 
 void	clean_tree(t_node **tree)
 {
@@ -54,7 +52,7 @@ void	clean_token_lst(t_token **token_lst)
 	return ;
 }
 
-static char	*get_errnum(int	error)
+char	*get_errnum(int	error)
 {
 	if (error == N_PRINT)
 		return ("");
@@ -64,21 +62,36 @@ static char	*get_errnum(int	error)
 		return ("Could not open file");
 	if (error == CLOSE_FILE)
 		return ("could not close file");
-	if (error == CREAT_TOKEN)
-		return ("Could not create token");
-	if (error == CREAT_NODE)
-		return ("Could not create node");
-	if (error == MISS)
-		return ("file missing");
+	if (error == N_CREAT)
+		return ("Could not create");
+	if (error == I_MISS)
+		return ("Input file missing");
+	if (error == O_MISS)
+		return ("Output file missing");
 	if (error == NOT_H)
 		return ("not handled");
 	return (NULL);
 }
 
-void	ft_error(t_shell *shell, char *context, int error)
+void	ft_error(t_shell *shell, int nbr_context, ...)
 {
-	if (context)
-		printf("MINISHELL ERROR: %s %s \n", context, get_errnum(error));
+	char	*error;
+	va_list	error_msg;
+
+	if (nbr_context > 0)
+	{
+		write(2, "minishell", 10);
+		va_start(error_msg, nbr_context);
+		while (nbr_context > 0)
+		{
+			error =	va_arg(error_msg, char *);
+			write(2, ": ", 2); 
+			write(2, error, ft_strlen(error)); 
+			nbr_context--;
+		}
+		write(2, "\n", 1);
+		va_end(error_msg);
+	}
 	clean_shell(shell);
 	exit (1);
 }
