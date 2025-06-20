@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/20 13:07:15 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:30:56 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	minishell(int mode, char **env)
 			add_history(shell->cli);
 			subshell = fork();
 			if (subshell < 0)
-				ft_error(shell, "MINISHELL CRASHED !!!!!", N_PRINT);
+				ft_error(shell, 1, "MINISHELL CRASHED !!!!!");
 			if (subshell == 0)
 			{
 				shell->tokens = lexer(shell, &shell->tokens, shell->cli);

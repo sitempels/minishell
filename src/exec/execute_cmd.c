@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:01:09 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/20 13:34:10 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:31:47 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ int	execute_cmd(t_shell *shell, t_node *tree, char **env)
 	(tree->right)->use.arg = argv;
 	path = get_path(argv[0], env, F_OK + X_OK);
 	execve(path, argv, env);
-	ft_error(shell, "EXEC:", N_PRINT);
+	ft_error(shell, 1, "EXEC:", strerror(errno));
 	return (1);
 }
