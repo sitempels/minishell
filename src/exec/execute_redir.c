@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/17 16:20:26 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/20 09:12:55 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	execute_redir_output(t_node *tree, char **env)
 		fd = open(path, O_RDWR | O_CREAT, 00644);
 	}
 	else
-		fd = open(path, O_WRONLY);
+		fd = open(path, O_WRONLY | O_TRUNC);
 	dup2(fd, fd_out);
 	close(fd);
 	if (tree->left)

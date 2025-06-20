@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/19 09:57:16 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/19 11:19:50 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 /* MAKE SURE OPERATOR MACRO ORDER MATCH ENUM ORDER */
 # define OPERATOR "|&<>()"
 # define SEPARATOR " "
+# define IFS " "
 /* 0 or less prevent HERE_DOC creation */
 # define MAX_HEREDOC 50
 /**/
