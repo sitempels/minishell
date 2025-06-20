@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/19 09:59:49 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:26:51 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ t_node	*parser(t_shell *shell, t_token **token)
 		free(*token);
 		*token = NULL;
 	}
+	else
+		ft_error(shell, "PARSER: SOMETHING WENT WRONG !!!\n", N_PRINT);
 	if (!tree)
-		ft_error(shell, "PARSER: Tree not planted !\n", 0);
+		ft_error(shell, "PARSER: Tree not planted !\n", N_PRINT);
 	return (tree);
 }
 

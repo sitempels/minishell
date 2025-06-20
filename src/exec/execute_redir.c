@@ -6,13 +6,13 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/20 09:12:55 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:06:41 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	execute_redir_input(t_node *tree, char **env)
+int	execute_redir_input(t_shell *shell, t_node *tree, char **env)
 {
 	int		fd;
 	int		fd_in;
@@ -26,11 +26,11 @@ int	execute_redir_input(t_node *tree, char **env)
 	dup2(fd, fd_in);
 	close(fd);
 	if (tree->left)
-		execute_descend(tree->left, env);
+		execute_descend(shell, tree->left, env);
 	return (0);
 }
 
-int	execute_redir_output(t_node *tree, char **env)
+int	execute_redir_output(t_shell *shell, t_node *tree, char **env)
 {
 	int		fd;
 	int		fd_out;
@@ -48,11 +48,11 @@ int	execute_redir_output(t_node *tree, char **env)
 	dup2(fd, fd_out);
 	close(fd);
 	if (tree->left)
-		execute_descend(tree->left, env);
+		execute_descend(shell, tree->left, env);
 	return (0);
 }
 
-int	execute_redir_output_a(t_node *tree, char **env)
+int	execute_redir_output_a(t_shell *shell, t_node *tree, char **env)
 {
 	int		fd;
 	int		fd_out;
@@ -70,6 +70,6 @@ int	execute_redir_output_a(t_node *tree, char **env)
 	dup2(fd, fd_out);
 	close(fd);
 	if (tree->left)
-		execute_descend(tree->left, env);
+		execute_descend(shell, tree->left, env);
 	return (0);
 }
