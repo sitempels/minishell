@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/23 09:23:26 by stempels         ###   ########.fr       */
+/*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
+/*   Updated: 2025/06/23 11:33:35 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,7 @@ int	minishell(int mode, char **env)
 		else
 		{
 			add_history(shell->cli);
-			subshell = fork();
-			if (subshell < 0)
-				ft_error(shell, 1, "MINISHELL CRASHED !!!!!");
-			if (subshell == 0)
+			if (create_fork(shell, &subshell))
 			{
 				shell->tokens = lexer(shell, &shell->tokens, shell->cli);
 				if (shell->mode == 1 || (shell->mode >= 2 && shell->mode != 4))

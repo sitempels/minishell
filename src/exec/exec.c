@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/23 09:20:58 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/23 10:54:29 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	execute_and_or_if(t_shell *shell, t_node *tree, char **env)
 {
-	int	status;
+	int		status;
 	pid_t	pid;
 
 	if (create_fork(shell, &pid))

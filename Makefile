@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/06/23 09:21:46 by stempels         ###   ########.fr        #
+#    Updated: 2025/06/23 11:45:39 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,12 +64,16 @@ LIBFT = $(LIBFT_DIR)/libft.a
 INC_FLAG += -I $(LIBFT_DIR)/$(INC_DIR)
 LIB_FLAG = -lft -lreadline 
 #
+#----------------------------MISC----------------------------------------------#
+DEPENDS = $(patsubst %.c, %.d, $(SRC))
+#
 #----------------------------RULES---------------------------------------------#
+#
 all: $(NAME)
 #
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile
 	@mkdir -p $(@D)
-	$(CC) $(CCFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(CC) $(CCFLAGS) $(CPPFLAGS) -MMD -MP -c $< -o $@
 #
 lib:	$(LIBFT) 
 $(LIBFT):
@@ -84,7 +88,7 @@ run: $(NAME)
 	@./$(NAME)
 #
 clean:
-	rm -rf $(OBJ_DIR)
+	rm -rf $(OBJ_DIR) $(DEPENDS)
 	@echo "$(NAME) $(GREEN)$@ed !$(NC)"
 #
 libclean:
@@ -105,6 +109,8 @@ re: ffclean all
 debug: clean $(OBJ) $(LIBFT) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
 	@echo "$(NAME) created !"
+#
+-include $(DEPENDS)
 #
 .PHONY: all clean libclean fclean ffclean re debug
 #----------------------------TEXT----------------------------------------------#

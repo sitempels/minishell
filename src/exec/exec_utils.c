@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/23 09:22:01 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/23 10:54:13 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	execute_node(t_shell *shell, t_node *tree, char **env)
 
 int	create_fork(t_shell *shell, pid_t *pid)
 {
-
 	*pid = fork();
 	if (*pid < 0)
 		ft_error(shell, 2, "EXEC: FORK", get_errnum(N_CREAT));
