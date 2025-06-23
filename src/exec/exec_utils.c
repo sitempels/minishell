@@ -6,13 +6,13 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/23 10:54:13 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/23 13:38:43 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	execute_node(t_shell *shell, t_node *tree, char **env)
+int	execute_node(t_shell *shell, t_node *tree, t_env *env)
 {
 	if (tree && tree->use.fct(shell, tree, env))
 		return (1);

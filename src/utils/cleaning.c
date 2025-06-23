@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/20 15:20:56 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:17:40 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	clean_shell(t_shell *shell)
 	if (shell->cli)
 	{
 		free(shell->cli);
-		shell->cli = NULL;
+	//	shell->cli = NULL;
 	}
 	return ;
 }

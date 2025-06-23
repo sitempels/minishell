@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/23 11:33:35 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/23 16:39:40 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 // TODO: Implement the new t_shell structure
 int	minishell(int mode, char **env)
 {
-	int	status;
-	pid_t	subshell;
+//	int	status;
+//	pid_t	subshell;
 	t_shell	*shell;
 
 	signals();
@@ -40,23 +40,21 @@ int	minishell(int mode, char **env)
 		else
 		{
 			add_history(shell->cli);
-			if (create_fork(shell, &subshell))
-			{
-				shell->tokens = lexer(shell, &shell->tokens, shell->cli);
-				if (shell->mode == 1 || (shell->mode >= 2 && shell->mode != 4))
-					show_lexeme(shell->tokens);
-				shell->tree = parser(shell, &(shell->tokens));
-				if (!shell->tree)
-					return (1);
-				if (shell->mode == 1 || shell->mode >= 3)
-				show_tree(shell->tree, 1);
-				if (shell->mode <= 1)
-				{
-					execute_node(shell, shell->tree, envp_from_env(shell->env));
-					return (0);
-				}
-			}
-			waitpid(subshell, &status, 0);
+			shell->tokens = lexer(shell, &shell->tokens, shell->cli);
+			if (shell->mode == 1 || (shell->mode >= 2 && shell->mode != 4))
+				show_lexeme(shell->tokens);
+			shell->tree = parser(shell, &(shell->tokens));
+			if (!shell->tree)
+				return (1);
+			if (shell->mode == 1 || shell->mode >= 3)
+			show_tree(shell->tree, 1);
+			if (shell->mode <= 1)
+				execute_node(shell, shell->tree, shell->env);
+			//waitpid(subshell, &status, 0);
+			close(0);
+			dup2(STDOUT_FILENO, 0);
+			close(1);
+			dup2(STDIN_FILENO, 1);
 			clean_shell(shell);
 		}
 	}

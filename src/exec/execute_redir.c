@@ -6,13 +6,13 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/23 10:35:23 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/23 16:48:04 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	execute_redir_input(t_shell *shell, t_node *tree, char **env)
+int	execute_redir_input(t_shell *shell, t_node *tree, t_env *env)
 {
 	int		fd;
 	int		fd_in;
@@ -32,13 +32,11 @@ int	execute_redir_input(t_shell *shell, t_node *tree, char **env)
 	return (0);
 }
 
-int	execute_redir_output(t_shell *shell, t_node *tree, char **env)
+int	execute_redir_output(t_shell *shell, t_node *tree, t_env *env)
 {
 	int		fd;
-	int		fd_out;
 	char	*path;
 
-	fd_out = 1;
 	path = get_path(((tree->right)->use.arg)[0], env, F_OK + W_OK);
 	if (!path)
 	{
@@ -47,20 +45,18 @@ int	execute_redir_output(t_shell *shell, t_node *tree, char **env)
 	}
 	else
 		fd = open(path, O_WRONLY | O_TRUNC);
-	dup2(fd, fd_out);
+	dup2(fd, 1);
 	close(fd);
 	if (tree->left)
 		execute_node(shell, tree->left, env);
 	return (0);
 }
 
-int	execute_redir_output_a(t_shell *shell, t_node *tree, char **env)
+int	execute_redir_output_a(t_shell *shell, t_node *tree, t_env *env)
 {
 	int		fd;
-	int		fd_out;
 	char	*path;
 
-	fd_out = 1;
 	path = get_path(((tree->right)->use.arg)[0], env, F_OK + W_OK);
 	if (!path)
 	{
@@ -69,7 +65,7 @@ int	execute_redir_output_a(t_shell *shell, t_node *tree, char **env)
 	}
 	else
 		fd = open(path, O_WRONLY | O_APPEND, 00644);
-	dup2(fd, fd_out);
+	dup2(fd, 1);
 	close(fd);
 	if (tree->left)
 		execute_node(shell, tree->left, env);

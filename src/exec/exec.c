@@ -6,13 +6,15 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/23 10:54:29 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:21:49 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	execute_and_or_if(t_shell *shell, t_node *tree, char **env)
+static int	isbuiltin(t_shell *shell, t_env *env, char **argv);
+
+int	execute_and_or_if(t_shell *shell, t_node *tree, t_env *env)
 {
 	int		status;
 	pid_t	pid;
@@ -27,7 +29,7 @@ int	execute_and_or_if(t_shell *shell, t_node *tree, char **env)
 	return (1);
 }
 
-int	execute_pipe(t_shell *shell, t_node *tree, char **env)
+int	execute_pipe(t_shell *shell, t_node *tree, t_env *env)
 {
 	int		pipefd[2];
 	int		child_nbr;
@@ -51,19 +53,49 @@ int	execute_pipe(t_shell *shell, t_node *tree, char **env)
 	return (status);
 }
 
-int	execute_cmd(t_shell *shell, t_node *tree, char **env)
+int	execute_cmd(t_shell *shell, t_node *tree, t_env *env)
 {
+	int		status;
 	char	*path;
 	char	**argv;
+	pid_t	pid;
 
+	pid = 0;
 	if (tree->left)
 		execute_node(shell, tree->left, env);
-	argv = get_arg((tree->right)->use.content, 0, env_from_envp(env), 0);
+	argv = get_arg((tree->right)->use.content, 0, shell->env, 0);
 	if (!argv)
 		return (1);
 	(tree->right)->use.arg = argv;
-	path = get_path(argv[0], env, F_OK + X_OK);
-	execve(path, argv, env);
-	ft_error(shell, 1, "EXEC:", strerror(errno));
+	if (isbuiltin(shell, env, argv))
+		return (0);
+	if (create_fork(shell, &pid))
+	{
+		path = get_path(argv[0], env, F_OK + X_OK);
+		execve(path, argv, envp_from_env(env));
+		ft_error(shell, 1, "EXEC:", strerror(errno));
+	}
+	waitpid(pid, &status, 0);
+	return (status);
+}
+
+static int	isbuiltin(t_shell *shell, t_env *env, char **argv)
+{
+	if (!ft_strcmp(argv[0], "cd"))
+		builtin_cd(env, argv[1]);
+	else if (!ft_strcmp(argv[0], "echo"))
+		builtin_echo(argv);
+	else if (!ft_strcmp(argv[0], "env"))
+		builtin_env(env);
+	else if (!ft_strcmp(argv[0], "exit"))
+		builtin_exit(shell);
+	else if (!ft_strcmp(argv[0], "export"))
+		builtin_export(env, argv);
+	else if (!ft_strcmp(argv[0], "pwd"))
+		builtin_pwd();
+	else if (!ft_strcmp(argv[0], "unset"))
+		builtin_unset(&env, argv);
+	else
+		return (0);
 	return (1);
 }

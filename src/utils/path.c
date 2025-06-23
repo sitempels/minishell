@@ -6,25 +6,24 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 15:52:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/20 14:37:33 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:35:01 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**get_all_paths(char *name, char **env);
+//static char	**get_all_paths(char *name, char **env);
 //static char	*get_full_path(char const *s1, char const *s2);
 
-char	*get_path(char *cmd, char **env, int mode)
+char	*get_path(char *cmd, t_env *env, int mode)
 {
 	int		i;
 	int		error;
 	char	*path_full;
 	char	**paths;
 
-/*	if (is_builtin(cmd, path_full))
-		return (path_full);*/
-	paths = get_all_paths("PATH", env);
+	paths = ft_strsplit((env_getone(env, "PATH", 4))->value, ':');
+//	paths = get_all_paths("PATH", env);
 	if (!paths)
 		return (NULL);
 	error = access(cmd, mode);
@@ -49,7 +48,7 @@ int	is_builtin(char *cmd, char *path)
 	return (0);
 }
 */
-static char	**get_all_paths(char *name, char **env)
+/*static char	**get_all_paths(char *name, char **env)
 {
 	int		i;
 	char	**paths;
@@ -67,7 +66,7 @@ static char	**get_all_paths(char *name, char **env)
 		return (NULL);
 	paths = ft_strsplit(&env[i][n_size + 1], ':');
 	return (paths);
-}
+}*/
 /*
 static char	*get_full_path(char const *s1, char const *s2)
 {
