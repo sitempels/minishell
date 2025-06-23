@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/20 15:17:36 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/23 09:25:05 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_node	*parse_cmd(t_shell *shell, t_token **token)
 	else
 	{
 		new = create_node(shell, token, SUBSHELL);
-		new->use.fct = &execute_subshell;
+		new->use.fct = &execute_node;
 		new->right = parse_complete_cmd(shell, token);
 		if ((*token)->type != RIGHT_PAREN)
 			ft_error(shell, 1, "PARSER: Unexpected ')'");

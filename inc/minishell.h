@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/20 15:25:45 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/23 09:21:08 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,20 +176,22 @@ t_node				*node_addback(t_node *node, t_node *new, int mode);
 void				*expander(t_token *token);
 /**/
 /*_________________________________EXEC_______________________________________*/
-int					execute(t_shell *shell, t_node *tree, char **env);
-int					execute_descend(t_shell *shell, t_node *tree, char **env);
-int					execute_and_or_if(t_shell *shell, t_node *tree, char **env);
-int					execute_subshell(t_shell *shell, t_node *tree, char **env);
-int					execute_pipe(t_shell *shell, t_node *tree, char **env);
-int					execute_cmd(t_shell *shell, t_node *tree, char **env);
-int					execute_redir_input(t_shell *shell, t_node *tree, char **env);
-int					execute_redir_output(t_shell *shell, t_node *tree, char **env);
-int					execute_redir_output_a(t_shell *shell, t_node *tree, char **env);
-
+int		execute_and_or_if(t_shell *shell, t_node *tree, char **env);
+int		execute_subshell(t_shell *shell, t_node *tree, char **env);
+int		execute_pipe(t_shell *shell, t_node *tree, char **env);
+int		execute_cmd(t_shell *shell, t_node *tree, char **env);
+/**/
+/*____________REDIR_____________*/
+int		execute_redir_input(t_shell *shell, t_node *tree, char **env);
+int		execute_redir_output(t_shell *shell, t_node *tree, char **env);
+int		execute_redir_output_a(t_shell *shell, t_node *tree, char **env);
+/**/
 /*____________UTILS_____________*/
-char				**get_arg(t_token *arg, int nbr, t_env *env, int status);
-char				*process_arg(t_token *arg, t_env *env, int status);
-
+int		execute_node(t_shell *shell, t_node *tree, char **env);
+int		create_fork(t_shell *shell, pid_t *pid);
+int		create_pipe(int *nbr, t_shell *shell, int *pipefd, pid_t *pid);
+char	**get_arg(t_token *arg, int nbr, t_env *env, int status);
+char	*process_arg(t_token *arg, t_env *env, int status);
 /**/
 /*_________________________________UTILS______________________________________*/
 char				*get_path(char *cmd, char **env, int mode);

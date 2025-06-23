@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/20 15:30:56 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/23 09:23:26 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	minishell(int mode, char **env)
 				show_tree(shell->tree, 1);
 				if (shell->mode <= 1)
 				{
-					execute(shell, shell->tree, envp_from_env(shell->env));
+					execute_node(shell, shell->tree, envp_from_env(shell->env));
 					return (0);
 				}
 			}

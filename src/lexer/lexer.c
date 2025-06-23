@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/20 15:24:22 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/23 09:42:18 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	token_found(t_shell *shell, t_token **new, char *cli, int *i)
 	while (cli[*i] && match(cli[*i], SEPARATOR))
 		*i = *i + 1;
 	if (!cli[*i])
-		return (0);
+		return (1);
 	size = 1;
 	type = match(cli[*i], OPERATOR);
 	if (type > 0 && cli[*i + 1] && cli[*i] == cli[*i + 1])
