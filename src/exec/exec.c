@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/23 17:21:49 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/24 13:37:06 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,22 @@ int	execute_pipe(t_shell *shell, t_node *tree, t_env *env)
 	if (pipe(pipefd) == -1)
 		ft_error(shell, 2, "EXEC: PIPE", get_errnum(N_CREAT));
 	if (create_pipe(&child_nbr, shell, pipefd, &pid))
-		execute_node(shell, tree->left, env);
-	if (create_pipe(&child_nbr, shell, pipefd, &pid))
-		execute_node(shell, tree->right, env);
+	{
+		if (execute_node(shell, tree->left, env))
+			ft_error(shell, 2, "EXEC:", "TRUC");
+		clean_shell(shell);
+		exit(0);
+	}	
+	else
+	{
+		if (create_pipe(&child_nbr, shell, pipefd, &pid))
+		{
+			if (execute_node(shell, tree->right, env))
+				ft_error(shell, 2, "EXEC:", "TRUC");
+			clean_shell(shell);
+			exit(0);
+		}
+	}	
 	close(pipefd[0]);
 	close(pipefd[1]);
 	while (child_nbr > 0)

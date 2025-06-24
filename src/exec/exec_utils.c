@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/23 13:38:43 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/24 13:21:50 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 int	execute_node(t_shell *shell, t_node *tree, t_env *env)
 {
-	if (tree && tree->use.fct(shell, tree, env))
+	int	status;
+
+	if (!tree)
 		return (1);
-	return (0);
+	status = tree->use.fct(shell, tree, env);
+	return (status);
 }
 
 int	create_fork(t_shell *shell, pid_t *pid)

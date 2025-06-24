@@ -6,17 +6,19 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/20 15:15:52 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/24 11:41:06 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static char	*create_heredoc(t_shell *shell, char *here_doc);
+static	int	heredoc_cmp(char *line, char *end, size_t len, int *quoted);
 
 t_token	*handle_heredoc(t_shell *shell, t_token *end)
 {
 	int		fd;
+	int		quoted;
 	char	*line;
 	char	*here_name;
 
@@ -27,7 +29,7 @@ t_token	*handle_heredoc(t_shell *shell, t_token *end)
 	while (1)
 	{
 		line = readline(">");
-		if (!line || !strncmp(line, end->start, end->size))
+		if (!line || !heredoc_cmp(line, end->start, end->size, &quoted))
 			break ;
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
@@ -61,4 +63,21 @@ static char	*create_heredoc(t_shell *shell, char *here_doc)
 	}
 	ft_error(shell, 1, "HERE_DOC: Maximum here_doc reached");
 	return (NULL);
+}
+
+static	int	heredoc_cmp(char *line, char *end, size_t len, int *quoted)
+{
+	size_t	i;
+
+	i = 0;
+	*quoted = 0;
+	while ((line[i] || end[i + *quoted]) && i < len)
+	{
+		if (end[i + *quoted] == '\'' || end[i + *quoted] == '\"')
+			(*quoted)++;
+		if (line[i] != end[i + *quoted])
+			return (1);
+		i++;
+	}
+	return (0);
 }
