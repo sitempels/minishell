@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/24 11:06:19 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/24 15:04:55 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 int	minishell(int mode, char **env)
 {
 //	int	status;
-	int	fd_in;
 //	pid_t	subshell;
 	t_shell	*shell;
 

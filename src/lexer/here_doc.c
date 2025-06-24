@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/24 11:41:06 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/24 15:29:40 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,25 @@ static char	*create_heredoc(t_shell *shell, char *here_doc)
 static	int	heredoc_cmp(char *line, char *end, size_t len, int *quoted)
 {
 	size_t	i;
+	size_t	j;
 
 	i = 0;
+	j = 0;
 	*quoted = 0;
-	while ((line[i] || end[i + *quoted]) && i < len)
+	while ((line[i + j] || end[i + *quoted]) && i + *quoted < len)
 	{
-		if (end[i + *quoted] == '\'' || end[i + *quoted] == '\"')
-			(*quoted)++;
-		if (line[i] != end[i + *quoted])
+		//if (end[i + *quoted] == '\\')
+		//{
+		if (end[i + *quoted] && (end[i + *quoted] == '\'' ||
+			end[i + *quoted] == '\"'))
+			*quoted = *quoted + 1;
+//		if (line[i + j] == '\\')
+//		{
+		if (line[i + j] && (line[i + j] == '\'' ||
+			line[i + j] == '\"'))
+			j = j + 1;
+//		}
+		if (line[i + j] != end[i + *quoted])
 			return (1);
 		i++;
 	}
