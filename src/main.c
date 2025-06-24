@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/23 16:39:40 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/24 11:06:19 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 int	minishell(int mode, char **env)
 {
 //	int	status;
+	int	fd_in;
 //	pid_t	subshell;
 	t_shell	*shell;
 
@@ -50,11 +51,10 @@ int	minishell(int mode, char **env)
 			show_tree(shell->tree, 1);
 			if (shell->mode <= 1)
 				execute_node(shell, shell->tree, shell->env);
-			//waitpid(subshell, &status, 0);
-			close(0);
-			dup2(STDOUT_FILENO, 0);
-			close(1);
-			dup2(STDIN_FILENO, 1);
+			close(STDOUT_FILENO);
+			open(shell->std_io[0], O_RDWR);
+			close(STDIN_FILENO);
+			open(shell->std_io[1], O_RDWR);
 			clean_shell(shell);
 		}
 	}

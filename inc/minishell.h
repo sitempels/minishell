@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/23 13:52:48 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/24 11:02:22 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ typedef struct s_shell
 	t_node			*tree;
 	int				mode;
 	int				status;
+	char			*std_io[2];
 }					t_shell;
 /*_________________________________SETUP______________________________________*/
 void				signals(void);

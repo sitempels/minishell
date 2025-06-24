@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/23 16:48:04 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:49:13 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,16 @@
 int	execute_redir_input(t_shell *shell, t_node *tree, t_env *env)
 {
 	int		fd;
-	int		fd_in;
 	char	*path;
 
-	fd_in = 0;
 	path = get_path(((tree->right)->use.arg)[0], env, F_OK + R_OK);
 	if (!path)
 		ft_error(shell, 2, (tree->right)->use.arg[0], strerror(errno));
 	fd = open(path, O_RDONLY, O_CLOEXEC);
 	if (tree->type == DLESS)
 		unlink(path);
-	dup2(fd, fd_in);
+	close(0);
+	dup2(fd, 0);
 	close(fd);
 	if (tree->left)
 		execute_node(shell, tree->left, env);
@@ -45,6 +44,7 @@ int	execute_redir_output(t_shell *shell, t_node *tree, t_env *env)
 	}
 	else
 		fd = open(path, O_WRONLY | O_TRUNC);
+	close(1);
 	dup2(fd, 1);
 	close(fd);
 	if (tree->left)
@@ -65,6 +65,7 @@ int	execute_redir_output_a(t_shell *shell, t_node *tree, t_env *env)
 	}
 	else
 		fd = open(path, O_WRONLY | O_APPEND, 00644);
+	close(1);
 	dup2(fd, 1);
 	close(fd);
 	if (tree->left)
