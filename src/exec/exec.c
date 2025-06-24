@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/24 13:37:06 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/24 18:22:51 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,25 @@ int	execute_and_or_if(t_shell *shell, t_node *tree, t_env *env)
 	pid_t	pid;
 
 	if (create_fork(shell, &pid))
-		execute_node(shell, tree->left, env);
+	{
+		if (execute_node(shell, tree->left, env))
+			ft_error(shell, 1, 2, "EXEC", strerror(errno));
+		clean_shell(shell);
+		exit(0);
+	}
 	waitpid(pid, &status, 0);
-	if (status == 0 && tree->type == AND_IF)
-		execute_node(shell, tree->right, env);
-	if (status == 256 && tree->type == OR_IF)
-		execute_node(shell, tree->right, env);
-	return (1);
+	if (status == EXIT_SUCCESS && tree->type == AND_IF)
+	{
+		if (execute_node(shell, tree->right, env))
+			ft_error(shell, 1, 2, "EXEC", strerror(errno));
+	}
+	printf("%d\n", status);
+	if (status == EXIT_FAILURE && tree->type == OR_IF)
+	{
+		if (execute_node(shell, tree->right, env))
+			ft_error(shell, 1, 2, "EXEC", strerror(errno));
+	}
+	return (0);
 }
 
 int	execute_pipe(t_shell *shell, t_node *tree, t_env *env)
@@ -38,11 +50,11 @@ int	execute_pipe(t_shell *shell, t_node *tree, t_env *env)
 
 	child_nbr = 0;
 	if (pipe(pipefd) == -1)
-		ft_error(shell, 2, "EXEC: PIPE", get_errnum(N_CREAT));
+		ft_error(shell, 0, 2, "EXEC: PIPE", get_errnum(N_CREAT));
 	if (create_pipe(&child_nbr, shell, pipefd, &pid))
 	{
 		if (execute_node(shell, tree->left, env))
-			ft_error(shell, 2, "EXEC:", "TRUC");
+			ft_error(shell, 1, 2, "EXEC:", "TRUC");
 		clean_shell(shell);
 		exit(0);
 	}	
@@ -51,7 +63,7 @@ int	execute_pipe(t_shell *shell, t_node *tree, t_env *env)
 		if (create_pipe(&child_nbr, shell, pipefd, &pid))
 		{
 			if (execute_node(shell, tree->right, env))
-				ft_error(shell, 2, "EXEC:", "TRUC");
+				ft_error(shell, 1, 2, "EXEC:", "TRUC");
 			clean_shell(shell);
 			exit(0);
 		}
@@ -86,7 +98,7 @@ int	execute_cmd(t_shell *shell, t_node *tree, t_env *env)
 	{
 		path = get_path(argv[0], env, F_OK + X_OK);
 		execve(path, argv, envp_from_env(env));
-		ft_error(shell, 1, "EXEC:", strerror(errno));
+		ft_error(shell, 1, 1, "EXEC:", strerror(errno));
 	}
 	waitpid(pid, &status, 0);
 	return (status);

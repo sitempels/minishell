@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/23 10:53:38 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:50:31 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_node	*parse_cmd(t_shell *shell, t_token **token)
 		new->use.fct = &execute_node;
 		new->right = parse_complete_cmd(shell, token);
 		if ((*token)->type != RIGHT_PAREN)
-			ft_error(shell, 1, "PARSER: Unexpected ')'");
+			ft_error(shell, 0, 1, "PARSER: Unexpected ')'");
 		if ((*token)->type == RIGHT_PAREN)
 			munch_token(token, 1);
 		while ((*token)->type == LESS || (*token)->type == GREAT

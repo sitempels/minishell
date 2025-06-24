@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:51:06 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/20 15:26:42 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:47:06 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_node	*create_node(t_shell *shell, t_token **token, int type)
 
 	new = (t_node *) ft_calloc(1, sizeof(t_node));
 	if (!new)
-		ft_error(shell, 3, "PARSER", "NODE", get_errnum(N_CREAT));
+		ft_error(shell, 0, 3, "PARSER", "NODE", get_errnum(N_CREAT));
 	new->type = type;
 	if (new->type == ARGUMENT || new->type == FILENAME)
 		new->use.content = munch_token(token, 0);
@@ -68,4 +68,15 @@ t_node	*node_addback(t_node *node, t_node *new, int mode)
 		tmp->right = new;
 	}
 	return (node);
+}
+
+void	verif_tree(t_shell *shell, t_node *tree)
+{
+	if (tree->type == ERROR)
+		ft_error(shell, 0, 1, get_errnum(NEAR));
+	if (tree->left)
+		verif_tree(shell, tree->left);
+	if (tree->right)
+		verif_tree(shell, tree->right);
+	return ;
 }

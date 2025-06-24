@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/23 17:17:40 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/24 18:20:43 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,12 @@ char	*get_errnum(int	error)
 		return ("Output file missing");
 	if (error == NOT_H)
 		return ("not handled");
+	if (error == NEAR)
+		return ("syntax error near ");
 	return (NULL);
 }
 
-void	ft_error(t_shell *shell, int nbr_context, ...)
+int	ft_error(t_shell *shell, int quit, int nbr_context, ...)
 {
 	char	*error;
 	va_list	error_msg;
@@ -93,7 +95,9 @@ void	ft_error(t_shell *shell, int nbr_context, ...)
 		va_end(error_msg);
 	}
 	clean_shell(shell);
-	exit (1);
+	if (quit == 1)
+		exit (EXIT_FAILURE);
+	return (1);
 }
 
 void	clean_shell(t_shell *shell)

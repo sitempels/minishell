@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/24 15:29:40 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:45:47 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_token	*handle_heredoc(t_shell *shell, t_token *end)
 	here_name = create_heredoc(shell, ".here_doc/heredoc");
 	fd = open(here_name, O_WRONLY | O_CREAT, 00644);
 	if (fd == -1)
-		ft_error(shell, 2, "HERE_DOC", get_errnum(OPEN_FILE));
+		ft_error(shell, 0, 2, "HERE_DOC", get_errnum(OPEN_FILE));
 	while (1)
 	{
 		line = readline(">");
@@ -38,7 +38,7 @@ t_token	*handle_heredoc(t_shell *shell, t_token *end)
 	end->start = here_name;
 	end->size = ft_strlen(here_name);
 	if (-close(fd))
-		ft_error(shell, 2, "HERE_DOC", get_errnum(CLOSE_FILE));
+		ft_error(shell, 0, 2, "HERE_DOC", get_errnum(CLOSE_FILE));
 	return (end);
 }
 
@@ -54,14 +54,14 @@ static char	*create_heredoc(t_shell *shell, char *here_doc)
 	{
 		here_name = ft_strjoin(here_doc, ft_itoa(nbr));
 		if (!here_name)
-			ft_error(shell, 2, "HERE_DOC", get_errnum(CREAT_FILE));
+			ft_error(shell, 0, 2, "HERE_DOC", get_errnum(CREAT_FILE));
 		found = access(here_name, F_OK);
 		if (found == -1)
 			return (here_name);
 		nbr++;
 		free(here_name);
 	}
-	ft_error(shell, 1, "HERE_DOC: Maximum here_doc reached");
+	ft_error(shell, 0, 1, "HERE_DOC: Maximum here_doc reached");
 	return (NULL);
 }
 

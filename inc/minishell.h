@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/24 11:02:22 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:43:53 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef enum e_errnum
 	NOT_H,
 	I_MISS,
 	O_MISS,
+	NEAR,
 }		t_errnum;
 
 typedef enum e_descend
@@ -178,6 +179,7 @@ t_node				*parse_io_redirect(t_shell *shell, t_token **token);
 t_node				*create_node(t_shell *shell, t_token **token, int type);
 t_token				*munch_token(t_token **token, int clean);
 t_node				*node_addback(t_node *node, t_node *new, int mode);
+void	verif_tree(t_shell *shell, t_node *tree);
 /**/
 /*_________________________________EXPAND_____________________________________*/
 void				*expander(t_token *token);
@@ -204,7 +206,7 @@ char	*process_arg(t_token *arg, t_env *env, int status);
 char				*get_path(char *cmd, t_env *env, int mode);
 /**/
 /*_________________________________CLEAN______________________________________*/
-void	ft_error(t_shell *shell, int nbr_error, ...);
+int	ft_error(t_shell *shell, int quit, int nbr_error, ...);
 char	*get_errnum(int	error);
 char	**free_array(char **array, int pos);
 void	clean_token_lst(t_token **token_lst);

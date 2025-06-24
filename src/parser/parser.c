@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/20 15:17:09 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:46:24 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,18 @@ t_node	*parser(t_shell *shell, t_token **token)
 
 	if (!token)
 		return (NULL);
-	tree = parse_complete_cmd(shell, token);
+	shell->tree = parse_complete_cmd(shell, token);
 	if ((*token)->type == EOL)
 	{
 		free(*token);
 		*token = NULL;
 	}
 	else
-		ft_error(shell, 1, "PARSER: SOMETHING WENT WRONG !!!\n");
-	if (!tree)
-		ft_error(shell, 1, "PARSER: Tree not planted !\n");
+		ft_error(shell, 0, 1, "PARSER: SOMETHING WENT WRONG !!!\n");
+	if (shell->tree)
+		verif_tree(shell, shell->tree);
+	else
+			ft_error(shell, 0, 1, "PARSER: Tree not planted !\n");
 	return (tree);
 }
 
@@ -50,6 +52,11 @@ t_node	*parse_complete_cmd(t_shell *shell, t_token **token)
 		new = create_node(shell, token, (*token)->type);
 		new->use.fct = &execute_and_or_if;
 		new->left = node;
+		if ((*token)->type == EOL)
+		{
+			new->type = ERROR;
+			return (new);
+		}
 		new->right = parse_complete_cmd(shell, token);
 	}
 	else
@@ -71,8 +78,12 @@ t_node	*parse_pipeline(t_shell *shell, t_token **token)
 		new = create_node(shell, token, OR);
 		new->use.fct = &execute_pipe;
 		new->left = node;
-		if ((*token)->type != EOL)
-			new->right = parse_pipeline(shell, token);
+		if ((*token)->type == EOL)
+		{
+			new->type = ERROR;
+			return (new);
+		}
+		new->right = parse_pipeline(shell, token);
 	}
 	else
 		new = node;
