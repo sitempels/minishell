@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 14:34:31 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:26:47 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ static int	isbuiltin(t_shell *shell, t_env *env, char **argv)
 {
 	int	status;
 
-	if (!argv)
+	if (!argv || !argv[0])
 		return (-1);
 	status = -1;
 	if (!ft_strcmp(argv[0], "cd"))
