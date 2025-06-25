@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 12:41:39 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 14:34:31 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	execute_pipe(t_shell *shell, t_node *tree, t_env *env)
 	if (create_pipe(&child_nbr, shell, pipefd, &pid))
 	{
 		if (execute_node(shell, tree->left, env))
-			builtin_exit(shell, 0, 1, EXIT_FAILURE);
+			builtin_exit(shell, 0, EXIT_FAILURE);
 		clean_shell(shell);
 		exit(0);
 	}
@@ -56,7 +56,7 @@ int	execute_pipe(t_shell *shell, t_node *tree, t_env *env)
 		if (create_pipe(&child_nbr, shell, pipefd, &pid))
 		{
 			if (execute_node(shell, tree->right, env))
-				builtin_exit(shell, 0, 1, EXIT_FAILURE);
+				builtin_exit(shell, 0, EXIT_FAILURE);
 			clean_shell(shell);
 			exit(0);
 		}
@@ -112,7 +112,7 @@ int	execute_cmd(t_shell *shell, t_node *tree, t_env *env)
 	if (create_fork(shell, &pid))
 	{
 		path = get_path(argv[0], env, F_OK + X_OK);
-		execve(path, argv, envp_from_env(env));
+		status = execve(path, argv, envp_from_env(env));
 		ft_error(shell, 1, 3, argv[0], ": ", get_errnum(C_MISS));
 	}
 	waitpid(pid, &status, 0);

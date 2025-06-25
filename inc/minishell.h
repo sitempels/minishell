@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/25 12:33:35 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 14:52:27 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 /* MAKE SURE OPERATOR MACRO ORDER MATCH ENUM ORDER */
 # define OPERATOR "|&<>()"
 # define SEPARATOR " "
-# define IFS " "
+# define IFS " \t\n"
 /* 0 or less prevent HERE_DOC creation */
 # define MAX_HEREDOC 50
 /**/
@@ -186,6 +186,7 @@ void	verif_tree(t_shell *shell, t_node *tree);
 /**/
 /*_________________________________EXPAND_____________________________________*/
 void				*expander(t_token *token);
+char	*quote_removal(char *str);
 /**/
 /*_________________________________EXEC_______________________________________*/
 int		execute_and_or_if(t_shell *shell, t_node *tree, t_env *env);

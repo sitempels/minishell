@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 08:38:50 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:57:03 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	execute_node(t_shell *shell, t_node *tree, t_env *env)
 	if (!tree)
 		return (0);
 	status = tree->use.fct(shell, tree, env);
+	shell->status = status;
 	return (status);
 }
 

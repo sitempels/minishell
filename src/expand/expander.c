@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:18:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/16 13:39:07 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:10:16 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,5 +145,51 @@ char	**get_arg(t_token *arg, int nbr, t_env *env, int status)
 	argv[nbr] = process_arg(arg, env, status);
 	if (!argv[nbr])
 		return (NULL);
+	argv[nbr] = quote_removal(argv[nbr]);
 	return (argv);
+}
+
+char	*quote_removal(char *str)
+{
+	int	i;
+	int	j;
+	char	quote;
+	size_t	size;
+	char	*res;
+
+	i = 0;
+	while (str[i])
+		if (str[i] == '\'' || str[i++] == '\"')
+			break ;
+	if (!str[i])
+		return (str);
+	size = ft_strlen(str);
+	if (size < 2)
+		return (NULL);
+	res = (char *) ft_calloc(size - 2, sizeof(char));
+	if (!res)
+	{
+		free(str);
+		return (NULL);
+	}
+	i = 0;
+	j = 0;
+	while (str[i + j])
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+		{
+			quote = str[i];
+			j++;
+			while (str[i + j] && str[i + j] != quote)
+			{
+				res[i] = str[i + j];
+				i++;
+			}
+			j++;
+		}
+		res[i] = str[i + j];
+		i++;
+	}
+	free(str);
+	return (res);
 }
