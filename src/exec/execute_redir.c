@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/24 17:50:54 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 11:29:29 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ int	execute_redir_input(t_shell *shell, t_node *tree, t_env *env)
 	int		fd;
 	char	*path;
 
-	path = get_path(((tree->right)->use.arg)[0], env, F_OK + R_OK);
+	path = NULL;
+	if (tree->right)
+		path = get_path(((tree->right)->use.arg)[0], env, F_OK + R_OK);
 	if (!path)
-		ft_error(shell, 0, 2, (tree->right)->use.arg[0], strerror(errno));
+		ft_error(shell, 0, 2, (tree->right)->use.arg[0], get_errnum(I_MISS));
 	fd = open(path, O_RDONLY, O_CLOEXEC);
 	if (tree->type == DLESS)
 		unlink(path);
@@ -36,7 +38,9 @@ int	execute_redir_output(t_shell *shell, t_node *tree, t_env *env)
 	int		fd;
 	char	*path;
 
-	path = get_path(((tree->right)->use.arg)[0], env, F_OK + W_OK);
+	path = NULL;
+	if (tree->right)
+		path = get_path(((tree->right)->use.arg)[0], env, F_OK + W_OK);
 	if (!path)
 	{
 		path = (tree->right)->use.arg[0];
@@ -57,7 +61,9 @@ int	execute_redir_output_a(t_shell *shell, t_node *tree, t_env *env)
 	int		fd;
 	char	*path;
 
-	path = get_path(((tree->right)->use.arg)[0], env, F_OK + W_OK);
+	path = NULL;
+	if (tree->right)
+		path = get_path(((tree->right)->use.arg)[0], env, F_OK + W_OK);
 	if (!path)
 	{
 		path = (tree->right)->use.arg[0];

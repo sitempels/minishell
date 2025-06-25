@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/24 18:20:43 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:40:25 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	clean_token_lst(t_token **token_lst)
 	return ;
 }
 
-char	*get_errnum(int	error)
+char	*get_errnum(int error)
 {
 	if (error == N_PRINT)
 		return ("");
@@ -64,6 +64,10 @@ char	*get_errnum(int	error)
 		return ("could not close file");
 	if (error == N_CREAT)
 		return ("Could not create");
+	if (error == C_MISS)
+		return ("Command not found");
+	if (error == A_MISS)
+		return ("Argument missing");
 	if (error == I_MISS)
 		return ("Input file missing");
 	if (error == O_MISS)
@@ -71,7 +75,7 @@ char	*get_errnum(int	error)
 	if (error == NOT_H)
 		return ("not handled");
 	if (error == NEAR)
-		return ("syntax error near ");
+		return ("syntax error near unexpected token ");
 	return (NULL);
 }
 
@@ -82,21 +86,24 @@ int	ft_error(t_shell *shell, int quit, int nbr_context, ...)
 
 	if (nbr_context > 0)
 	{
-		write(2, "minishell", 10);
+		write(2, "minishell: ", 11);
 		va_start(error_msg, nbr_context);
 		while (nbr_context > 0)
 		{
-			error =	va_arg(error_msg, char *);
-			write(2, ": ", 2); 
-			write(2, error, ft_strlen(error)); 
+			error = va_arg(error_msg, char *);
+			write(2, error, ft_strlen(error));
 			nbr_context--;
 		}
 		write(2, "\n", 1);
 		va_end(error_msg);
 	}
+	if (quit)
+	{
+		if (errno != 0)
+			builtin_exit(shell, 0, errno);
+		builtin_exit(shell, 0, quit);
+	}
 	clean_shell(shell);
-	if (quit == 1)
-		exit (EXIT_FAILURE);
 	return (1);
 }
 
@@ -109,9 +116,25 @@ void	clean_shell(t_shell *shell)
 		clean_tree(&shell->tree);
 	shell->tree = NULL;
 	if (shell->cli)
-	{
 		free(shell->cli);
-	//	shell->cli = NULL;
+	shell->cli = NULL;
+	return ;
+}
+
+void	destroy_shell(t_shell *shell)
+{
+	t_env	*tmp;
+
+	clean_shell(shell);
+	while (shell->env)
+	{
+		tmp = shell->env;
+		shell->env = (shell->env)->next;
+		free(tmp->value);
+		free(tmp);
 	}
+	shell->env = NULL;
+	free(shell);
+	rl_clear_history();
 	return ;
 }

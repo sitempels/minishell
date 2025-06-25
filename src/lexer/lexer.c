@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/24 17:45:15 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:42:04 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ t_token	*lexer(t_shell *shell, t_token **token_lst, char *cli)
 	{
 		if (token_found(shell, &new, cli, &i))
 			break ;
-		handle_case(shell, &new, cli, &i);
+		if (handle_case(shell, &new, cli, &i))
+			return (NULL);
 		token_addback(token_lst, new);
 	}
 	if (!cli[i])
@@ -45,9 +46,9 @@ static int	match(char c, char *match_lst)
 {
 	int	i;
 
-	i = 0;
 	if (c == '\0')
 		return (EOL);
+	i = 0;
 	while (match_lst[i])
 	{
 		if (match_lst[i] == c)
@@ -106,7 +107,8 @@ static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i)
 
 	next = NULL;
 	if (*new && (*new)->type == IF)
-		ft_error(shell, 0, 3, "LEXER", "&", get_errnum(NOT_H));
+		if (ft_error(shell, 0, 2, "& ", get_errnum(NOT_H)))
+			return (1);
 	if (*new && (*new)->type == DLESS)
 	{
 		token_found(shell, &next, cli, i);
@@ -115,11 +117,11 @@ static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i)
 			free(*new);
 			if (next)
 				free(next);
-			ft_error(shell, 0, 2, "<<", get_errnum(I_MISS));
+			return (ft_error(shell, 0, 2, get_errnum(NEAR), "'<<'"));
 		}
 		(*new)->next = handle_heredoc(shell, next);
 		if (!(*new)->next)
-			ft_error(shell, 0, 2, "<<", get_errnum(I_MISS));
+			return (ft_error(shell, 0, 2, get_errnum(NEAR), "'<<'"));
 	}
 	return (0);
 }

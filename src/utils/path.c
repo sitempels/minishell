@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 15:52:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/23 14:35:01 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:50:47 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ char	*get_path(char *cmd, t_env *env, int mode)
 	char	**paths;
 
 	paths = ft_strsplit((env_getone(env, "PATH", 4))->value, ':');
-//	paths = get_all_paths("PATH", env);
 	if (!paths)
 		return (NULL);
 	error = access(cmd, mode);

@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:51:06 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/24 17:47:06 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:40:41 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_node	*create_node(t_shell *shell, t_token **token, int type)
 	if (new->type == ARGUMENT || new->type == FILENAME)
 		new->use.content = munch_token(token, 0);
 	else
-		new->use.content = munch_token(token, 1);
+		new->use.content = munch_token(token, 0);
 	return (new);
 }
 
@@ -70,13 +70,22 @@ t_node	*node_addback(t_node *node, t_node *new, int mode)
 	return (node);
 }
 
-void	verif_tree(t_shell *shell, t_node *tree)
+void	verif_tree(t_shell *shell, t_node *tree, t_node *previous)
 {
+	size_t	len;
+	char	*error;
+
+	error = NULL;
 	if (tree->type == ERROR)
-		ft_error(shell, 0, 1, get_errnum(NEAR));
+	{
+		len = (previous->use.content)->size;
+		error = (char *) ft_calloc(len + 1, sizeof(char));
+		ft_strlcpy(error, (previous->use.content)->start, len + 1);
+		ft_error(shell, 0, 4, get_errnum(NEAR), "\'", error, "\'");
+	}
 	if (tree->left)
-		verif_tree(shell, tree->left);
+		verif_tree(shell, tree->left, tree);
 	if (tree->right)
-		verif_tree(shell, tree->right);
+		verif_tree(shell, tree->right, tree);
 	return ;
 }
