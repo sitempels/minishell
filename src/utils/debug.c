@@ -93,10 +93,6 @@ static char *get_enum(int i)
 /*3*/		return ("REDIRECT_I");
 	if (i == GREAT)
 /*4*/		return ("REDIRECT_O");
-//	if (i == 5)
-///*5*/		return ("QUOTE");
-//	if (i == 6)
-///*6*/		return ("DQUOTE");
 	if (i == LEFT_PAREN)
 /*7*/		return ("SUBSHELL");
 	if (i == OR_IF)

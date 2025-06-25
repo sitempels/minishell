@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 13:56:18 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:40:25 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*get_errnum(int error)
 	if (error == NOT_H)
 		return ("not handled");
 	if (error == NEAR)
-		return ("syntax error near unexpected ");
+		return ("syntax error near unexpected token ");
 	return (NULL);
 }
 

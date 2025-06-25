@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/25 14:52:27 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 16:09:41 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ t_node				*parse_io_redirect(t_shell *shell, t_token **token);
 t_node				*create_node(t_shell *shell, t_token **token, int type);
 t_token				*munch_token(t_token **token, int clean);
 t_node				*node_addback(t_node *node, t_node *new, int mode);
-void	verif_tree(t_shell *shell, t_node *tree);
+void	verif_tree(t_shell *shell, t_node *tree, t_node *previous);
 /**/
 /*_________________________________EXPAND_____________________________________*/
 void				*expander(t_token *token);
