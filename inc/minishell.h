@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/24 17:43:53 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 09:52:57 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct s_shell
 /*_________________________________SETUP______________________________________*/
 void				signals(void);
 t_shell				*init_shell(int mode, char **envp);
+int	update_envint(t_env *env, char *key, size_t len, int modif);
 
 /*__________________________________ENV_______________________________________*/
 t_env				*new_env(char *env);
@@ -144,9 +145,9 @@ int					env_sortkey(t_env **head);
 t_env				*env_dup(t_env *src);
 
 /*_________________________________BUILTINS___________________________________*/
-void				builtin_env(t_env *env);
+int	builtin_env(t_env *env);
 int	builtin_cd(t_env *env, char *path);
-int	builtin_exit(t_shell *shell);
+int	builtin_exit(t_shell *shell, char *argv);
 int	builtin_pwd(void);
 int	builtin_export(t_env *env, char **args);
 int	builtin_unset(t_env **env, char **args);
@@ -188,6 +189,7 @@ void				*expander(t_token *token);
 int		execute_and_or_if(t_shell *shell, t_node *tree, t_env *env);
 int		execute_subshell(t_shell *shell, t_node *tree, t_env *env);
 int		execute_pipe(t_shell *shell, t_node *tree, t_env *env);
+int		execute_subshell(t_shell *shell, t_node *tree, t_env *env);
 int		execute_cmd(t_shell *shell, t_node *tree, t_env *env);
 /**/
 /*____________REDIR_____________*/
@@ -212,6 +214,7 @@ char	**free_array(char **array, int pos);
 void	clean_token_lst(t_token **token_lst);
 void	clean_tree(t_node **tree);
 void	clean_shell(t_shell *shell);
+void	destroy_shell(t_shell *shell);
 /**/
 /*_________________________________DEBUG______________________________________*/
 /**/

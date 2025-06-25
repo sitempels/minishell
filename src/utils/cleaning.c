@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/24 18:20:43 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 10:26:16 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,9 @@ int	ft_error(t_shell *shell, int quit, int nbr_context, ...)
 		write(2, "\n", 1);
 		va_end(error_msg);
 	}
-	clean_shell(shell);
 	if (quit == 1)
-		exit (EXIT_FAILURE);
+		builtin_exit (shell, "1");
+	clean_shell(shell);
 	return (1);
 }
 
@@ -109,9 +109,25 @@ void	clean_shell(t_shell *shell)
 		clean_tree(&shell->tree);
 	shell->tree = NULL;
 	if (shell->cli)
-	{
 		free(shell->cli);
-	//	shell->cli = NULL;
+	shell->cli = NULL;
+	return ;
+}
+
+void	destroy_shell(t_shell *shell)
+{
+	t_env *tmp;
+
+	clean_shell(shell);
+	while (shell->env)
+	{
+		tmp = shell->env;
+		shell->env = (shell->env)->next;
+		free(tmp->value);
+		free(tmp);
 	}
+	shell->env = NULL;
+	free(shell);
+	rl_clear_history();
 	return ;
 }

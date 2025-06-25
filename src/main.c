@@ -6,22 +6,15 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/24 18:01:06 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 10:26:11 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // TODO: Implement the new t_shell structure
-int	minishell(int mode, char **env)
+int	minishell(t_shell *shell)
 {
-//	int	status;
-//	pid_t	subshell;
-	t_shell	*shell;
-
-	signals();
-	display_banner();
-	shell = init_shell(mode, env);
 	while (1)
 	{
 		display_prompt();
@@ -41,6 +34,8 @@ int	minishell(int mode, char **env)
 		{
 			add_history(shell->cli);
 			shell->tokens = lexer(shell, &shell->tokens, shell->cli);
+			if (!shell->tokens || (shell->tokens)->type == EOL)
+				continue ;
 			if (shell->mode == 1 || (shell->mode >= 2 && shell->mode != 4))
 				show_lexeme(shell->tokens);
 			parser(shell, &(shell->tokens));
@@ -57,17 +52,25 @@ int	minishell(int mode, char **env)
 			clean_shell(shell);
 		}
 	}
+	rl_clear_history();
 	return (0);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	int	mode;
+	t_shell	*shell;
 
 	mode = 1;
 	if (argc > 2)
 		return (write(1, "Error Arg!\n", 10));
 	if (argc == 2)
 		mode = argv[1][0] - 48;
-	return (minishell(mode, envp));
+	signals();
+	display_banner();
+	shell = init_shell(mode, envp);
+	if (minishell(shell))
+		return (1);
+	destroy_shell(shell);
+	return (0);
 }
