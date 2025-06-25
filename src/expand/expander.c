@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:18:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 15:20:23 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 17:06:58 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,21 +158,6 @@ char	*quote_removal(char *str)
 	char	*res;
 
 	i = 0;
-	while (str[i])
-		if (str[i] == '\'' || str[i++] == '\"')
-			break ;
-	if (!str[i])
-		return (str);
-	size = ft_strlen(str);
-	if (size == 2)
-		return (NULL);
-	res = (char *) ft_calloc(size - 2, sizeof(char));
-	if (!res)
-	{
-		free(str);
-		return (NULL);
-	}
-	i = 0;
 	j = 0;
 	while (str[i + j])
 	{
@@ -181,15 +166,39 @@ char	*quote_removal(char *str)
 			quote = str[i + j];
 			j++;
 			while (str[i + j] && str[i + j] != quote)
-			{
-				res[i] = str[i + j];
 				i++;
-			}
 			j++;
 			continue;
 		}
-		res[i] = str[i + j];
 		i++;
+	}
+	if (j == 0)
+		return (str);
+	size = ft_strlen(str);
+	if (size == 2)
+		return (NULL);
+	res = (char *) ft_calloc(size - j, sizeof(char));
+	if (!res)
+	{
+		free(str);
+		return (NULL);
+	}
+	while (i >= 0)
+	{
+		if (str[i + j] == '\'' || str[i + j] == '\"')
+		{
+			quote = str[i + j];
+			j--;
+			while (str[i + j] && str[i + j] != quote)
+			{
+				res[i] = str[i + j];
+				i--;
+			}
+			j--;
+			continue;
+		}
+		res[i] = str[i + j];
+		i--;
 	}
 	free(str);
 	return (res);
