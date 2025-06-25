@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/25 11:27:42 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:33:35 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef enum e_errnum
 	CLOSE_FILE,
 	N_CREAT,
 	NOT_H,
+	C_MISS,
 	A_MISS,
 	I_MISS,
 	O_MISS,
@@ -148,7 +149,7 @@ t_env				*env_dup(t_env *src);
 /*_________________________________BUILTINS___________________________________*/
 int	builtin_env(t_env *env);
 int	builtin_cd(t_env *env, char *path);
-int	builtin_exit(t_shell *shell, char *argv);
+int	builtin_exit(t_shell *shell, int print, int status);
 int	builtin_pwd(void);
 int	builtin_export(t_env *env, char **args);
 int	builtin_unset(t_env **env, char **args);

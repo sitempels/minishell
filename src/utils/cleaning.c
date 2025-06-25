@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 11:54:14 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:34:36 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ char	*get_errnum(int	error)
 		return ("could not close file");
 	if (error == N_CREAT)
 		return ("Could not create");
+	if (error == C_MISS)
+		return ("Command not found");
 	if (error == A_MISS)
 		return ("Argument missing");
 	if (error == I_MISS)
@@ -97,7 +99,11 @@ int	ft_error(t_shell *shell, int quit, int nbr_context, ...)
 		va_end(error_msg);
 	}
 	if (quit)
-		builtin_exit(shell, ft_itoa(quit));
+	{
+		if (errno != 0)
+			builtin_exit(shell, 0, errno);
+		builtin_exit(shell, 0, quit);
+	}
 	clean_shell(shell);
 	return (1);
 }
