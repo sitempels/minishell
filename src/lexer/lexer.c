@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 10:23:12 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 11:39:02 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ static int	match(char c, char *match_lst)
 {
 	int	i;
 
-	i = 0;
 	if (c == '\0')
 		return (EOL);
+	i = 0;
 	while (match_lst[i])
 	{
 		if (match_lst[i] == c)
@@ -117,11 +117,11 @@ static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i)
 			free(*new);
 			if (next)
 				free(next);
-			ft_error(shell, 0, 2, "<<", get_errnum(I_MISS));
+			return (ft_error(shell, 0, 2, get_errnum(NEAR), "'<<'"));
 		}
 		(*new)->next = handle_heredoc(shell, next);
 		if (!(*new)->next)
-			ft_error(shell, 0, 2, "<<", get_errnum(I_MISS));
+			return (ft_error(shell, 0, 2, get_errnum(NEAR), "'<<'"));
 	}
 	return (0);
 }

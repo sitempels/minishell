@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 09:54:05 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 11:56:52 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int	execute_pipe(t_shell *shell, t_node *tree, t_env *env)
 	if (create_pipe(&child_nbr, shell, pipefd, &pid))
 	{
 		if (execute_node(shell, tree->left, env))
-			ft_error(shell, 1, 2, "EXEC", "PIPE");
+			exit(EXIT_FAILURE);
+//			ft_error(shell, 1, 2, "EXEC ", "PIPE1");
 		clean_shell(shell);
 		exit(0);
 	}	
@@ -56,7 +57,8 @@ int	execute_pipe(t_shell *shell, t_node *tree, t_env *env)
 		if (create_pipe(&child_nbr, shell, pipefd, &pid))
 		{
 			if (execute_node(shell, tree->right, env))
-				ft_error(shell, 1, 2, "EXEC", "PIPE");
+				exit(EXIT_FAILURE);
+//				ft_error(shell, 1, 2, "EXEC ", "PIPE1");
 			clean_shell(shell);
 			exit(0);
 		}
@@ -79,7 +81,7 @@ int	execute_subshell(t_shell *shell, t_node *tree, t_env *env)
 	if (update_envint(env, "SHLVL", 0, 1))
 		return (1);
 	if (execute_node(shell, tree->left, env))
-		ft_error(shell, 0, 2, "EXEC", "REDIRECTION FAILED");
+		return (ft_error(shell, 0, 2, "EXEC", "REDIRECTION FAILED"));
 	if (create_fork(shell, &pid))
 	{
 		if (execute_node(shell, tree->right, env))
@@ -101,12 +103,14 @@ int	execute_cmd(t_shell *shell, t_node *tree, t_env *env)
 	pid_t	pid;
 
 	pid = 0;
+	argv = NULL;
 	if (execute_node(shell, tree->left, env))
-		ft_error(shell, 0, 2, "EXEC", "REDIRECTION FAILED");
-	argv = get_arg((tree->right)->use.content, 0, shell->env, 0);
-	if (!argv)
-		return (1);
-	(tree->right)->use.arg = argv;
+		return (ft_error(shell, 0, 2, "EXEC", "REDIRECTION FAILED"));
+	if (tree->right)
+		argv = get_arg((tree->right)->use.content, 0, shell->env, 0);
+//	if (!argv)
+//		return (0);
+//	(tree->right)->use.arg = argv;
 	status = isbuiltin(shell, env, argv);
 	if (status >= 0)
 		return (status);
@@ -124,6 +128,8 @@ static int	isbuiltin(t_shell *shell, t_env *env, char **argv)
 {
 	int	status;
 
+	if (!argv)
+		return (-1);
 	status = -1;
 	if (!ft_strcmp(argv[0], "cd"))
 		status = builtin_cd(env, argv[1]);

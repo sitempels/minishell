@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 10:26:16 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 11:54:14 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ char	*get_errnum(int	error)
 		return ("could not close file");
 	if (error == N_CREAT)
 		return ("Could not create");
+	if (error == A_MISS)
+		return ("Argument missing");
 	if (error == I_MISS)
 		return ("Input file missing");
 	if (error == O_MISS)
@@ -71,7 +73,7 @@ char	*get_errnum(int	error)
 	if (error == NOT_H)
 		return ("not handled");
 	if (error == NEAR)
-		return ("syntax error near ");
+		return ("syntax error near unexpected ");
 	return (NULL);
 }
 
@@ -82,20 +84,20 @@ int	ft_error(t_shell *shell, int quit, int nbr_context, ...)
 
 	if (nbr_context > 0)
 	{
-		write(2, "minishell", 10);
+		write(2, "minishell: ", 11);
 		va_start(error_msg, nbr_context);
 		while (nbr_context > 0)
 		{
 			error =	va_arg(error_msg, char *);
-			write(2, ": ", 2); 
+			//write(2, ": ", 2); 
 			write(2, error, ft_strlen(error)); 
 			nbr_context--;
 		}
 		write(2, "\n", 1);
 		va_end(error_msg);
 	}
-	if (quit == 1)
-		builtin_exit (shell, "1");
+	if (quit)
+		builtin_exit(shell, ft_itoa(quit));
 	clean_shell(shell);
 	return (1);
 }

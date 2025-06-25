@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/25 09:52:57 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 11:27:42 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef enum e_errnum
 	CLOSE_FILE,
 	N_CREAT,
 	NOT_H,
+	A_MISS,
 	I_MISS,
 	O_MISS,
 	NEAR,
