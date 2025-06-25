@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 11:18:37 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:37:54 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,13 @@ static	int	heredoc_cmp(char *line, char *end, size_t len, int *quoted)
 	*quoted = 0;
 	while (i + *quoted < len)
 	{
-		if (end[i + *quoted] && (end[i + *quoted] == '\'' ||
-			end[i + *quoted] == '\"'))
+		if (end[i + *quoted] && (end[i + *quoted] == '\''
+				|| end[i + *quoted] == '\"'))
 		{
 			*quoted = *quoted + 1;
 			continue ;
 		}
-		if (!line[i] || line[i] != end[i + *quoted]) 
+		if (!line[i] || line[i] != end[i + *quoted])
 			return (1);
 		i++;
 	}

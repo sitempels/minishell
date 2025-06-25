@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 12:34:36 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:50:04 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	clean_token_lst(t_token **token_lst)
 	return ;
 }
 
-char	*get_errnum(int	error)
+char	*get_errnum(int error)
 {
 	if (error == N_PRINT)
 		return ("");
@@ -90,9 +90,8 @@ int	ft_error(t_shell *shell, int quit, int nbr_context, ...)
 		va_start(error_msg, nbr_context);
 		while (nbr_context > 0)
 		{
-			error =	va_arg(error_msg, char *);
-			//write(2, ": ", 2); 
-			write(2, error, ft_strlen(error)); 
+			error = va_arg(error_msg, char *);
+			write(2, error, ft_strlen(error));
 			nbr_context--;
 		}
 		write(2, "\n", 1);
@@ -124,7 +123,7 @@ void	clean_shell(t_shell *shell)
 
 void	destroy_shell(t_shell *shell)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	clean_shell(shell);
 	while (shell->env)

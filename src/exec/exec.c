@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 12:35:26 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:41:39 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,20 @@ int	execute_pipe(t_shell *shell, t_node *tree, t_env *env)
 	if (create_pipe(&child_nbr, shell, pipefd, &pid))
 	{
 		if (execute_node(shell, tree->left, env))
-			exit(EXIT_FAILURE);
-//			ft_error(shell, 1, 2, "EXEC ", "PIPE1");
+			builtin_exit(shell, 0, 1, EXIT_FAILURE);
 		clean_shell(shell);
 		exit(0);
-	}	
+	}
 	else
 	{
 		if (create_pipe(&child_nbr, shell, pipefd, &pid))
 		{
 			if (execute_node(shell, tree->right, env))
-				exit(EXIT_FAILURE);
-//				ft_error(shell, 1, 2, "EXEC ", "PIPE1");
+				builtin_exit(shell, 0, 1, EXIT_FAILURE);
 			clean_shell(shell);
 			exit(0);
 		}
-	}	
+	}
 	close(pipefd[0]);
 	close(pipefd[1]);
 	while (child_nbr > 0)
@@ -75,7 +73,7 @@ int	execute_pipe(t_shell *shell, t_node *tree, t_env *env)
 
 int	execute_subshell(t_shell *shell, t_node *tree, t_env *env)
 {
-	int	status;
+	int		status;
 	pid_t	pid;
 
 	if (update_envint(env, "SHLVL", 0, 1))
@@ -108,9 +106,6 @@ int	execute_cmd(t_shell *shell, t_node *tree, t_env *env)
 		return (ft_error(shell, 0, 2, "EXEC", "REDIRECTION FAILED"));
 	if (tree->right)
 		argv = get_arg((tree->right)->use.content, 0, shell->env, 0);
-//	if (!argv)
-//		return (0);
-//	(tree->right)->use.arg = argv;
 	status = isbuiltin(shell, env, argv);
 	if (status >= 0)
 		return (status);

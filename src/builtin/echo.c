@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:43:40 by user              #+#    #+#             */
-/*   Updated: 2025/06/13 03:02:46 by user             ###   ########.fr       */
+/*   Updated: 2025/06/25 12:47:24 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ static int	is_n_option(const char *arg)
  */
 int	builtin_echo(char **argv)
 {
-	int i;
-	int newline;
+	int	i;
+	int	newline;
 
 	i = 1;
 	newline = 1;
