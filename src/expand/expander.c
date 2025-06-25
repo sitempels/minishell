@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:18:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 17:06:58 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/25 17:31:46 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +154,6 @@ char	*quote_removal(char *str)
 	int	i;
 	int	j;
 	char	quote;
-	size_t	size;
-	char	*res;
 
 	i = 0;
 	j = 0;
@@ -163,43 +161,19 @@ char	*quote_removal(char *str)
 	{
 		if (str[i + j] == '\'' || str[i + j] == '\"')
 		{
-			quote = str[i + j];
-			j++;
-			while (str[i + j] && str[i + j] != quote)
-				i++;
-			j++;
-			continue;
-		}
-		i++;
-	}
-	if (j == 0)
-		return (str);
-	size = ft_strlen(str);
-	if (size == 2)
-		return (NULL);
-	res = (char *) ft_calloc(size - j, sizeof(char));
-	if (!res)
-	{
-		free(str);
-		return (NULL);
-	}
-	while (i >= 0)
-	{
-		if (str[i + j] == '\'' || str[i + j] == '\"')
-		{
-			quote = str[i + j];
-			j--;
+			quote = str[i + j++];
 			while (str[i + j] && str[i + j] != quote)
 			{
-				res[i] = str[i + j];
-				i--;
+				str[i] = str[i + j];
+				i++;
 			}
-			j--;
+			j++;
 			continue;
 		}
-		res[i] = str[i + j];
-		i--;
+		str[i] = str[i + j];
+		i++;
 	}
-	free(str);
-	return (res);
+	str = (char *) realloc(str, i);
+	str[i] = '\0';
+	return (str);
 }
