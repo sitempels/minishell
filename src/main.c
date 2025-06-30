@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 12:01:19 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/30 07:55:21 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	minishell(t_shell *shell)
 			clean_shell(shell);
 		}
 	}
-	rl_clear_history();
+//	rl_clear_history();
 	return (0);
 }
 

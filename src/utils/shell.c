@@ -6,11 +6,14 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 21:00:47 by user              #+#    #+#             */
-/*   Updated: 2025/06/25 09:28:10 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/30 08:51:08 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static t_env	*create_env_node(char *key, char *value);
+static t_env	*init_without_env(void);
 
 t_shell	*init_shell(int mode, char **envp)
 {
@@ -20,7 +23,10 @@ t_shell	*init_shell(int mode, char **envp)
 	if (!shell)
 		return (NULL);
 	shell->cli = NULL;
-	shell->env = env_from_envp(envp);
+	if (!envp || !*envp)
+		shell->env = init_without_env();
+	else
+		shell->env = env_from_envp(envp);
 	if (!shell->env)
 	{
 		free(shell);
@@ -48,4 +54,29 @@ int	update_envint(t_env *env, char *key, size_t len, int modif)
 		return (1);
 	target->value = ft_itoa(ft_atoi(target->value) + modif);
 	return (0);
+}
+
+static t_env	*create_env_node(char *key, char *value)
+{
+	t_env	*new;
+
+	new = (t_env *) ft_calloc(1, sizeof(t_env));
+	if (!new)
+		return (NULL);
+	new->key = key;
+	new->value = value;
+	return (new);
+}
+
+static t_env	*init_without_env()
+{
+	char	*value;
+	t_env	*new;
+	t_env	*env;
+
+	value = (char *) malloc(sizeof(char) * (42 + 1));
+	new = create_env_node("PWD", getcwd(value, 43));
+	env_addback(&env, new);
+	env_addback(&env, create_env_node("SHLVL", "0"));
+	return (env);
 }

@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:50 by user              #+#    #+#             */
-/*   Updated: 2025/06/10 02:55:33 by user             ###   ########.fr       */
+/*   Updated: 2025/06/26 14:20:05 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,17 @@ static void	sigint(int sig)
 		rl_redisplay();
 	}
 }
+/*
+static void	sigquit(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		if (g_signal != SIGQUIT)
+			g_signal = SIGQUIT;
+		return ;
+	}
+}
+*/
 
 void	signals(void)
 {

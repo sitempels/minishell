@@ -6,40 +6,57 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 10:59:43 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/20 12:29:39 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/26 14:08:00 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**get_arg(t_shell *shell, t_token *arg)
+size_t	get_new_size(t_shell *shell, t_token *arg, size_t i, int *quoted)
 {
-	char	**argv;
-
-	if (!arg)
+	t_env	*tmp;
+	size_t	len;
+	
+	if (i == arg->size)
+		return (0);
+	len = i;
+	if (arg->start[i] == '?')
+		len = ft_intlen_base(shell->status, BASE_10);
+	else if (ft_isalpha(arg->start[i]) || arg->start[i] == '_')
 	{
-		
+		while (!match(arg->size[i], DELIMITERS))
+			i++;
+		tmp = env_getone(shell->env, arg->start[len], i - len);
+		if (!tmp)
+			return (0);
+		len = ft_strlen(tmp->value)	
 	}
+	len += get_new_size(shell, arg, i, *quoted);
+	return (len);
 }
 
-int	expand_param(t_shell *shell, t_token *token)
+char	*expand_arg(t_shell *shell, t_token *arg, t_env *env, int status, int *quoted)
 {
-	int	size;
-	t_env	*var;
+	size_t	len;
+	size_t	i;
+	char	*var;
 
-	size = 0;
-	while (size < token->size)
+	len = 0;
+	i = 0;
+	while (i < arg->size)
 	{
-		if (token->start[size] == $)
-			var = get_env_var(token->start, &size);
-		size++;
+		if (arg->start[i] == '\'' || arg->size[i] == '\"')
+		{
+			*quoted = 1;
+			i++;
+		}
+		if (arg->start[i] == '$')
+		{
+			i++;
+			len += get_new_size(shell, arg, i, *quoted)
+		}
+
 	}
-
+var = env_getone(env, arg->start[i], )
 }
 
-void	word_splitting(t_shell *shell, t_token *token, char **arg)
-{
-	int	i;
-
-	while (i < token->size)
-}
