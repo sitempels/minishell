@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/30 07:55:21 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/30 14:03:05 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 // TODO: Implement the new t_shell structure
 int	minishell(t_shell *shell)
 {
+	int	status;
+
 	while (1)
 	{
 		display_prompt();
@@ -44,7 +46,12 @@ int	minishell(t_shell *shell)
 			if (shell->mode == 1 || shell->mode >= 3)
 			show_tree(shell->tree, 1);
 			if (shell->mode <= 1)
-				execute_node(shell, shell->tree, shell->env);
+				execute_node(shell, shell->tree);
+			while (shell->child_nbr > 0)
+			{
+				wait(&status);
+				shell->child_nbr--;
+			}
 			close(STDOUT_FILENO);
 			open(shell->std_io[0], O_RDWR);
 			close(STDIN_FILENO);

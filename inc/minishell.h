@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/25 16:09:41 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/30 13:57:40 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ typedef struct s_shell
 	t_token			*tokens;
 	t_node			*tree;
 	int				mode;
+	int				child_nbr;
 	int				status;
 	char			*std_io[2];
 }					t_shell;
@@ -189,21 +190,21 @@ void				*expander(t_token *token);
 char	*quote_removal(char *str);
 /**/
 /*_________________________________EXEC_______________________________________*/
-int		execute_and_or_if(t_shell *shell, t_node *tree, t_env *env);
-int		execute_subshell(t_shell *shell, t_node *tree, t_env *env);
-int		execute_pipe(t_shell *shell, t_node *tree, t_env *env);
-int		execute_subshell(t_shell *shell, t_node *tree, t_env *env);
-int		execute_cmd(t_shell *shell, t_node *tree, t_env *env);
+int		execute_and_or_if(t_shell *shell, t_node *tree);
+int		execute_subshell(t_shell *shell, t_node *tree);
+int		execute_pipe(t_shell *shell, t_node *tree);
+int		execute_subshell(t_shell *shell, t_node *tree);
+int		execute_cmd(t_shell *shell, t_node *tree);
 /**/
 /*____________REDIR_____________*/
-int		execute_redir_input(t_shell *shell, t_node *tree, t_env *env);
-int		execute_redir_output(t_shell *shell, t_node *tree, t_env *env);
-int		execute_redir_output_a(t_shell *shell, t_node *tree, t_env *env);
+int		execute_redir_input(t_shell *shell, t_node *tree);
+int		execute_redir_output(t_shell *shell, t_node *tree);
+int		execute_redir_output_a(t_shell *shell, t_node *tree);
 /**/
 /*____________UTILS_____________*/
-int		execute_node(t_shell *shell, t_node *tree, t_env *env);
-int		create_fork(t_shell *shell, pid_t *pid);
-int		create_pipe(int *nbr, t_shell *shell, int *pipefd, pid_t *pid);
+int		execute_node(t_shell *shell, t_node *tree);
+int		create_fork(t_shell *shell);
+int		create_pipe(t_shell *shell, t_node *tree, int a, int *pipefd);
 char	**get_arg(t_token *arg, int nbr, t_env *env, int status);
 char	*process_arg(t_token *arg, t_env *env, int status);
 /**/

@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 21:00:47 by user              #+#    #+#             */
-/*   Updated: 2025/06/30 08:51:08 by stempels         ###   ########.fr       */
+/*   Updated: 2025/06/30 11:04:40 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_shell	*init_shell(int mode, char **envp)
 	shell->tree = NULL;
 	shell->mode = mode;
 	shell->status = 0;
+	shell->child_nbr = 0;
 	shell->std_io[0] = ttyname(STDOUT_FILENO);
 	shell->std_io[1] = ttyname(STDIN_FILENO);
 	if (update_envint(shell->env, "SHLVL", 0, 1))
