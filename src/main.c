@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/01 13:16:51 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/01 13:21:39 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 // TODO: Implement the new t_shell structure
 int	minishell(t_shell *shell)
 {
-	int	status;
-
 	while (1)
 	{
 		display_prompt();
