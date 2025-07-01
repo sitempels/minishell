@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:18:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/26 13:56:39 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/01 09:57:23 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ char	*expand_string(const char *input, t_env *env, int exit_status)
 	return (res);
 }
 
-char	*process_arg(t_token *arg, t_env *env, int status)
+char	*process_arg(t_shell *shell, t_token *arg)
 {
 	char	*raw;
 	char	*expanded;
@@ -123,12 +123,12 @@ char	*process_arg(t_token *arg, t_env *env, int status)
 		return (NULL);
 	ft_memcpy(raw, arg->start, arg->size);
 	free(arg);
-	expanded = expand_string(raw, env, status);
+	expanded = expand_string(raw, shell->env, shell->status);
 	free(raw);
 	return (expanded);
 }
 
-char	**get_arg(t_token *arg, int nbr, t_env *env, int status)
+char	**get_arg(t_shell *shell, t_token *arg, int nbr)
 {
 	char	**argv;
 
@@ -139,10 +139,10 @@ char	**get_arg(t_token *arg, int nbr, t_env *env, int status)
 			return (NULL);
 		return (argv);
 	}
-	argv = get_arg(arg->next, nbr + 1, env, status);
+	argv = get_arg(shell, arg->next, nbr + 1);
 	if (!argv)
 		return (NULL);
-	argv[nbr] = process_arg(arg, env, status);
+	argv[nbr] = process_arg(shell, arg);
 	if (!argv[nbr])
 		return (NULL);
 	argv[nbr] = quote_removal(argv[nbr]);

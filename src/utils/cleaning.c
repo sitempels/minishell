@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 16:40:25 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/01 13:00:12 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,10 @@ int	ft_error(t_shell *shell, int quit, int nbr_context, ...)
 	{
 		if (errno != 0)
 			builtin_exit(shell, 0, errno);
-		builtin_exit(shell, 0, quit);
+		builtin_exit(shell, 0, shell->status);
 	}
 	clean_shell(shell);
-	return (1);
+	return (shell->status);
 }
 
 void	clean_shell(t_shell *shell)

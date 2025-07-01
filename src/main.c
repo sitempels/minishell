@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/30 14:03:05 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/01 13:16:51 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	minishell(t_shell *shell)
 				execute_node(shell, shell->tree);
 			while (shell->child_nbr > 0)
 			{
-				wait(&status);
+				wait_and_decrypt_child(shell);
 				shell->child_nbr--;
 			}
 			close(STDOUT_FILENO);

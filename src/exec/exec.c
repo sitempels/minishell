@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/30 14:11:21 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/01 13:03:10 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,25 @@ static int	isbuiltin(t_shell *shell, char **argv);
 
 int	execute_and_or_if(t_shell *shell, t_node *tree)
 {
-	int		status;
-
-	status = execute_node(shell, tree->left);
-	wait(&status);
-	(shell->child_nbr)--;
-	if (WIFEXITED(status))
-		status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		status = (WTERMSIG(status));
-	if (status > 0 && tree->type == OR_IF)
+	shell->status = execute_node(shell, tree->left);
+	wait(&shell->status);
+	if (WIFEXITED(shell->status))
+		shell->status = WEXITSTATUS(shell->status);
+	else if (WIFSIGNALED(shell->status))
+		shell->status = (WTERMSIG(shell->status));
+	if (shell->status > 0 && tree->type == OR_IF)
 	{
-		status = execute_node(shell, tree->right);
-		if (status > 0)
+		shell->status = execute_node(shell, tree->right);
+		if (shell->status > 0)
 			ft_error(shell, 1, 2, "EXEC", " 1");
 	}
-	else if (status == 0 && tree->type == AND_IF)
+	else if (shell->status == 0 && tree->type == AND_IF)
 	{
-		status = execute_node(shell, tree->right);
-		if (status > 0)
+		shell->status = execute_node(shell, tree->right);
+		if (shell->status > 0)
 			ft_error(shell, 1, 2, "EXEC", " 2");
 	}
-	return (status);
+	return (shell->status);
 }
 
 int	execute_pipe(t_shell *shell, t_node *tree)
@@ -47,6 +44,7 @@ int	execute_pipe(t_shell *shell, t_node *tree)
 	if (pipe(pipefd) == -1)
 		ft_error(shell, 0, 2, "EXEC: PIPE", get_errnum(N_CREAT));
 	create_pipe(shell, tree->left, 0, pipefd);
+	create_pipe(shell, tree->right, 1, pipefd);
 	close(pipefd[0]);
 	close(pipefd[1]);
 	return (0);
@@ -65,14 +63,15 @@ int	execute_subshell(t_shell *shell, t_node *tree)
 		clean_shell(shell);
 		if (update_envint(shell->env, "SHLVL", 0, -1))
 			return (1);
+
 		exit(0);
 	}
-	(shell->child_nbr)++;
 	return (0);
 }
 
 int	execute_cmd(t_shell *shell, t_node *tree)
 {
+	int	status;
 	char	*path;
 	char	**argv;
 
@@ -80,13 +79,14 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 	if (execute_node(shell, tree->left))
 		return (ft_error(shell, 0, 2, "EXEC", "REDIRECTION FAILED"));
 	if (tree->right)
-		argv = get_arg((tree->right)->use.content, 0, shell->env, 0);
-	if (isbuiltin(shell, argv) > 0)
-		return (1);
+		argv = get_arg(shell, (tree->right)->use.content, 0);
+	status = isbuiltin(shell, argv);
+	if (status >= 0)
+		return (status);
 	if (create_fork(shell))
 	{
 		path = get_path(argv[0], shell->env, F_OK + X_OK);
-		execve(path, argv, envp_from_env(shell->env));
+		shell->status = execve(path, argv, envp_from_env(shell->env));
 		ft_error(shell, 1, 3, argv[0], ": ", get_errnum(C_MISS));
 	}
 	return (0);

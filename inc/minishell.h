@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/06/30 13:57:40 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/01 13:11:30 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,8 +205,9 @@ int		execute_redir_output_a(t_shell *shell, t_node *tree);
 int		execute_node(t_shell *shell, t_node *tree);
 int		create_fork(t_shell *shell);
 int		create_pipe(t_shell *shell, t_node *tree, int a, int *pipefd);
-char	**get_arg(t_token *arg, int nbr, t_env *env, int status);
-char	*process_arg(t_token *arg, t_env *env, int status);
+char	**get_arg(t_shell *shell, t_token *arg, int nbr);
+char	*process_arg(t_shell *shell, t_token *arg);
+int	wait_and_decrypt_child(t_shell *shell);
 /**/
 /*_________________________________UTILS______________________________________*/
 char				*get_path(char *cmd, t_env *env, int mode);
