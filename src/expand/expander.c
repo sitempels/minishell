@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:18:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/01 09:57:23 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/01 14:06:28 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static char	*expand_variable(const char *input, size_t *i, t_env *env,
 	return (res);
 }
 
-char	*expand_string(const char *input, t_env *env, int exit_status)
+char	*expand_string(t_shell *shell, const char *input)
 {
 	size_t	i;
 	char	*res;
@@ -96,11 +96,11 @@ char	*expand_string(const char *input, t_env *env, int exit_status)
 			i++;
 			if (input[i] == '?')
 			{
-				res = expand_exit_code(res, exit_status);
+				res = expand_exit_code(res, shell->status);
 				i++;
 			}
 			else if (ft_isalpha(input[i]) || input[i] == '_')
-				res = expand_variable(input, &i, env, res);
+				res = expand_variable(input, &i, shell->env, res);
 			else
 				res = append_char(res, '$');
 		}
@@ -123,7 +123,7 @@ char	*process_arg(t_shell *shell, t_token *arg)
 		return (NULL);
 	ft_memcpy(raw, arg->start, arg->size);
 	free(arg);
-	expanded = expand_string(raw, shell->env, shell->status);
+	expanded = expand_string(shell, raw);
 	free(raw);
 	return (expanded);
 }
