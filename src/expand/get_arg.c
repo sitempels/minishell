@@ -6,11 +6,13 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:30:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/03 05:21:54 by user             ###   ########.fr       */
+/*   Updated: 2025/07/03 13:05:30 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*copy_without(char *dst, char *src, int nbr);
 
 char	**get_arg(t_shell *shell, t_token *arg, int nbr)
 {
@@ -38,6 +40,7 @@ char	*quote_removal(char *str)
 {
 	int		i;
 	int		j;
+	char	*res;
 	char	quote;
 
 	i = 0;
@@ -48,17 +51,34 @@ char	*quote_removal(char *str)
 		{
 			quote = str[i + j++];
 			while (str[i + j] && str[i + j] != quote)
-			{
-				str[i] = str[i + j];
 				i++;
-			}
 			j++;
-			continue ;
 		}
-		str[i] = str[i + j];
 		i++;
 	}
-	str = (char *)realloc(str, i);
-	str[i] = '\0';
-	return (str);
+	res = (char *) malloc(sizeof(char) * (i + 1));
+	res[i] = '\0';
+	res = copy_without(res, str, i);
+	free(str);
+	return (res);
+}
+
+static char	*copy_without(char *dst, char *src, int nbr)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (i < nbr)
+	{
+		if (src[i + j] != '\'' && src[i + j] != '\"')
+		{
+			dst[i] = src[i + j];
+			i++;
+		}
+		else
+			j++;
+	}
+	return (dst);
 }
