@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:34 by user              #+#    #+#             */
-/*   Updated: 2025/06/13 03:58:34 by user             ###   ########.fr       */
+/*   Updated: 2025/07/03 04:56:29 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	env_print_sorted(t_env *env)
 }
 
 // main builtin_export function
+// extract_value returns NULL if no '=' in string
 int	builtin_export(t_env *env, char **args)
 {
 	int		i;
@@ -67,7 +68,7 @@ int	builtin_export(t_env *env, char **args)
 		else
 		{
 			key = extract_key(args[i]);
-			value = extract_value(args[i]); // NULL if no '=' in string
+			value = extract_value(args[i]);
 			if (!env_getone(env, key, ft_strlen(key)))
 				env_addback(&env, new_env(args[i]));
 			else if (value)

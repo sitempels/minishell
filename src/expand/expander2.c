@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 10:59:43 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/26 14:08:00 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/03 05:18:52 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ size_t	get_new_size(t_shell *shell, t_token *arg, size_t i, int *quoted)
 {
 	t_env	*tmp;
 	size_t	len;
-	
+
 	if (i == arg->size)
 		return (0);
 	len = i;
@@ -29,13 +29,14 @@ size_t	get_new_size(t_shell *shell, t_token *arg, size_t i, int *quoted)
 		tmp = env_getone(shell->env, arg->start[len], i - len);
 		if (!tmp)
 			return (0);
-		len = ft_strlen(tmp->value)	
+		len = ft_strlen(tmp->value)
 	}
 	len += get_new_size(shell, arg, i, *quoted);
 	return (len);
 }
 
-char	*expand_arg(t_shell *shell, t_token *arg, t_env *env, int status, int *quoted)
+char	*expand_arg(t_shell *shell, t_token *arg, t_env *env, int status,
+		int *quoted)
 {
 	size_t	len;
 	size_t	i;
@@ -53,10 +54,7 @@ char	*expand_arg(t_shell *shell, t_token *arg, t_env *env, int status, int *quot
 		if (arg->start[i] == '$')
 		{
 			i++;
-			len += get_new_size(shell, arg, i, *quoted)
+			len += get_new_size(shell, arg, i, *quoted);
 		}
-
 	}
-var = env_getone(env, arg->start[i], )
 }
-

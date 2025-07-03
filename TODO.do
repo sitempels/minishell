@@ -14,3 +14,15 @@ GEN.:
 
 
 NORME, LEAK and TRIM UNEEDED file !!!
+
+-------------------------------------------------------------------------------
+
+Selim's Note:
+
+. When to clear the history
+. Need to remove some debug functions
+. Can't use realloc in expand/get_arg
+. Only norms errors in expanders and debug
+. Remove ft_itoa_base from libft, just to passed the project. Will refactor later.
+. Need to make small changes in expand_string.c (two lines too long)
+. expander2 ?

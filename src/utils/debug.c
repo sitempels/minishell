@@ -1,12 +1,12 @@
 #include "minishell.h"
 
-static char *get_enum(int i);
+static char	*get_enum(int i);
 
 void	show_lexeme(t_token *token_lst)
 {
 	t_token	*temp;
 
-	temp = token_lst;	
+	temp = token_lst;
 	if (!token_lst)
 	{
 		printf("TOKEN_LST: NULL");
@@ -16,9 +16,10 @@ void	show_lexeme(t_token *token_lst)
 	while (temp)
 	{
 		if (temp->type == EOL)
-			printf("TOKEN_TYPE: %d	%s\n",temp->type, "EOL");
+			printf("TOKEN_TYPE: %d	%s\n", temp->type, "EOL");
 		else
-			printf("TOKEN_TYPE: %d	%.*s\n",temp->type, (int)temp->size, temp->start);
+			printf("TOKEN_TYPE: %d	%.*s\n", temp->type, (int)temp->size,
+					temp->start);
 		temp = temp->next;
 	}
 	printf("\n");
@@ -27,7 +28,7 @@ void	show_lexeme(t_token *token_lst)
 
 void	show_tree(t_node *tree, int indent)
 {
-	int	i;
+	int		i;
 	t_token	*tmp;
 
 	if (!tree)
@@ -43,7 +44,7 @@ void	show_tree(t_node *tree, int indent)
 	}
 	printf("\t%d\t\t%s\t", indent, get_enum(tree->type));
 	i = 0;
-	while (i < indent)	
+	while (i < indent)
 	{
 		printf("\t");
 		i++;
@@ -52,7 +53,7 @@ void	show_tree(t_node *tree, int indent)
 		printf("  %s\n", get_enum(tree->type));
 	else if (tree->type == FILENAME || tree->type == ARGUMENT)
 	{
-		if (tree->type == ARGUMENT)	
+		if (tree->type == ARGUMENT)
 		{
 			tmp = tree->use.content;
 			while (tmp)
@@ -60,8 +61,8 @@ void	show_tree(t_node *tree, int indent)
 				printf("\t%.*s ", (int)tmp->size, tmp->start);
 				tmp = tmp->next;
 			}
-		if (tree->type == FILENAME)
-			printf("\t%s ", (tree->use.arg)[0]);
+			if (tree->type == FILENAME)
+				printf("\t%s ", (tree->use.arg)[0]);
 		}
 		printf("\n");
 	}
@@ -83,37 +84,37 @@ void	show_tree(t_node *tree, int indent)
 	return ;
 }
 
-static char *get_enum(int i)
+static char	*get_enum(int i)
 {
 	if (i == WORD)
-/*0*/		return ("WORD");
+		/*0*/ return ("WORD");
 	if (i == OR)
-/*1*/		return ("PIPE");
+		/*1*/ return ("PIPE");
 	if (i == LESS)
-/*3*/		return ("REDIRECT_I");
+		/*3*/ return ("REDIRECT_I");
 	if (i == GREAT)
-/*4*/		return ("REDIRECT_O");
+		/*4*/ return ("REDIRECT_O");
 	if (i == LEFT_PAREN)
-/*7*/		return ("SUBSHELL");
+		/*7*/ return ("SUBSHELL");
 	if (i == OR_IF)
-/*10*/		return ("OR_IF");
+		/*10*/ return ("OR_IF");
 	if (i == AND_IF)
-/*11*/		return ("AND_IF");
+		/*11*/ return ("AND_IF");
 	if (i == DLESS)
-/*12*/		return ("HERE_DOC");
+		/*12*/ return ("HERE_DOC");
 	if (i == DGREAT)
-/*13*/		return ("REDIRECT_O_A");
+		/*13*/ return ("REDIRECT_O_A");
 	if (i == CMD)
-/*14*/		return ("CMD");
+		/*14*/ return ("CMD");
 	if (i == FILENAME)
-/*15*/		return ("FILENAME");
+		/*15*/ return ("FILENAME");
 	if (i == EOL)
-/*16*/		return ("EOL");
+		/*16*/ return ("EOL");
 	if (i == ERROR)
-/*17*/		return ("ERROR");
+		/*17*/ return ("ERROR");
 	if (i == SUBSHELL)
-/*18*/		return ("SUBSHELL");
+		/*18*/ return ("SUBSHELL");
 	if (i == ARGUMENT)
-/*19*/		return ("ARGUMENT");
+		/*19*/ return ("ARGUMENT");
 	return (NULL);
 }

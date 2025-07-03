@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/06/23 11:45:39 by stempels         ###   ########.fr        #
+#    Updated: 2025/07/03 05:32:17 by user             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,9 @@ INC_FLAG = -I$(INC_DIR)
 MAIN = main
 SRC_DIR = src
 #
+ENV_DIR = env
+SRC_ENV = $(addprefix $(ENV_DIR)/, env_list env_node env_utils env_from_envp env_del env_sort)
+#
 LEXER_DIR = lexer
 SRC_LEXER = $(addprefix $(LEXER_DIR)/, lexer lexer_utils here_doc)
 #
@@ -43,15 +46,15 @@ EXEC_DIR = exec
 SRC_EXEC = $(addprefix $(EXEC_DIR)/, exec execute_redir exec_utils)
 #
 EXPAND_DIR = expand
-SRC_EXPAND = $(addprefix $(EXPAND_DIR)/, expander)
+SRC_EXPAND = $(addprefix $(EXPAND_DIR)/, expand_utils expand_string expand_exit_var get_arg process_arg)
 #
 BUILTIN_DIR = builtin
 SRC_BUILTIN = $(addprefix $(BUILTIN_DIR)/, cd echo env exit export pwd unset)
 #
 UTILS_DIR = utils
-SRC_UTILS = $(addprefix $(UTILS_DIR)/, debug path env signal display shell cleaning)
+SRC_UTILS = $(addprefix $(UTILS_DIR)/, debug error path signal display shell cleaning)
 #
-SRCS ::= $(MAIN) $(SRC_LEXER) $(SRC_PARSER) $(SRC_EXEC) $(SRC_EXPAND) $(SRC_BUILTIN) $(SRC_UTILS)
+SRCS ::= $(MAIN) $(SRC_LEXER) $(SRC_ENV) $(SRC_PARSER) $(SRC_EXEC) $(SRC_EXPAND) $(SRC_BUILTIN) $(SRC_UTILS)
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 
 #
 #----------------------------OBJ-----------------------------------------------#
