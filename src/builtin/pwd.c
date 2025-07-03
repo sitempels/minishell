@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:37:26 by user              #+#    #+#             */
-/*   Updated: 2025/06/25 12:46:38 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/03 04:55:27 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	builtin_pwd(void)
 		if (errno == ENOMEM)
 			return (printf("pwd: not enough memory (ENOMEM)\n"), 12);
 		else if (errno == ENOENT)
-			return (printf("pwd: current directory no longer exists (ENOENT)\n"),
+			return (printf("pwd: this directory no longer exists (ENOENT)\n"),
 				2);
 		else if (errno == EACCES)
 			return (printf("pwd: permission denied (EACCES)\n"), 13);

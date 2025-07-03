@@ -3,67 +3,93 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/01 13:21:39 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/03 05:03:17 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// TODO: Implement the new t_shell structure
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
+/*   Updated: 2025/07/03 05:08:00 by user             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+static int	read_and_prepare(t_shell *shell)
+{
+	display_prompt();
+	shell->cli = readline("\033[1;32m$\033[0m ");
+	if (!shell->cli)
+		return (printf("%sLEAVING the minishell...\n", BOLD_RED), 0);
+	if (!is_valid_cli(shell->cli))
+	{
+		printf("%sUnclosed quotes%s\n", BOLD_RED, RESET);
+		free(shell->cli);
+		shell->cli = NULL;
+		return (0);
+	}
+	add_history(shell->cli);
+	return (1);
+}
+
+static int	parse_and_execute(t_shell *shell)
+{
+	shell->tokens = lexer(shell, &shell->tokens, shell->cli);
+	if (!shell->tokens || shell->tokens->type == EOL)
+		return (0);
+	if (shell->mode == 1 || (shell->mode >= 2 && shell->mode != 4))
+		show_lexeme(shell->tokens);
+	parser(shell, &shell->tokens);
+	if (!shell->tree)
+		return (0);
+	if (shell->mode == 1 || shell->mode >= 3)
+		show_tree(shell->tree, 1);
+	if (shell->mode <= 1)
+		execute_node(shell, shell->tree);
+	return (1);
+}
+
+static void	wait_and_restore(t_shell *shell)
+{
+	while (shell->child_nbr > 0)
+	{
+		wait_and_decrypt_child(shell);
+		shell->child_nbr--;
+	}
+	close(STDOUT_FILENO);
+	open(shell->std_io[0], O_RDWR);
+	close(STDIN_FILENO);
+	open(shell->std_io[1], O_RDWR);
+	clean_shell(shell);
+}
+
 int	minishell(t_shell *shell)
 {
 	while (1)
 	{
-		display_prompt();
-		shell->cli = readline("\033[1;32m$\033[0m ");
-		if (!shell->cli)
-		{
-			printf("%sLEAVING the minishell...\n", BOLD_RED);
+		if (!read_and_prepare(shell))
 			break ;
-		}
-		if (!is_valid_cli(shell->cli))
-		{
-			printf("%sUnclosed quotes%s\n", BOLD_RED, RESET);
-			free(shell->cli);
-			shell->cli = NULL;
-		}
-		else
-		{
-			add_history(shell->cli);
-			shell->tokens = lexer(shell, &shell->tokens, shell->cli);
-			if (!shell->tokens || (shell->tokens)->type == EOL)
-				continue ;
-			if (shell->mode == 1 || (shell->mode >= 2 && shell->mode != 4))
-				show_lexeme(shell->tokens);
-			parser(shell, &(shell->tokens));
-			if (!shell->tree)
-				continue ;
-			if (shell->mode == 1 || shell->mode >= 3)
-			show_tree(shell->tree, 1);
-			if (shell->mode <= 1)
-				execute_node(shell, shell->tree);
-			while (shell->child_nbr > 0)
-			{
-				wait_and_decrypt_child(shell);
-				shell->child_nbr--;
-			}
-			close(STDOUT_FILENO);
-			open(shell->std_io[0], O_RDWR);
-			close(STDIN_FILENO);
-			open(shell->std_io[1], O_RDWR);
-			clean_shell(shell);
-		}
+		if (!parse_and_execute(shell))
+			continue ;
+		wait_and_restore(shell);
 	}
-//	rl_clear_history();
 	return (0);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	int	mode;
+	int		mode;
 	t_shell	*shell;
 
 	mode = 1;

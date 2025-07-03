@@ -1,0 +1,71 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_list.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/03 05:08:28 by user              #+#    #+#             */
+/*   Updated: 2025/07/03 05:08:32 by user             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+t_env	*env_getlast(t_env *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
+}
+
+int	env_addfront(t_env **head, t_env *new)
+{
+	if (!head || !new)
+		return (1);
+	new->next = *head;
+	*head = new;
+	return (0);
+}
+
+int	env_addback(t_env **head, t_env *new)
+{
+	t_env	*last;
+
+	if (!new)
+		return (1);
+	if (!*head)
+		return (*head = new, 0);
+	last = env_getlast(*head);
+	last->next = new;
+	return (0);
+}
+
+t_env	*env_getone(t_env *head, char *key, size_t len)
+{
+	t_env	*tmp;
+
+	tmp = head;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->key, key, len) == 0)
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+size_t	env_size(t_env *env)
+{
+	size_t	i;
+
+	i = 0;
+	while (env)
+	{
+		env = env->next;
+		i++;
+	}
+	return (i);
+}

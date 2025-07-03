@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/01 13:11:30 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/03 05:34:25 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef enum e_errnum
 	I_MISS,
 	O_MISS,
 	NEAR,
-}		t_errnum;
+}					t_errnum;
 
 typedef enum e_descend
 {
@@ -53,26 +53,24 @@ typedef enum e_descend
 /* MAKE SURE THE ORDER MATCH OPERATOR MACRO */
 typedef enum e_type
 {
-	WORD,  /*0*/
-	OR,    /*1*/
-	IF,    /*2*/
-	LESS,  /*3*/
-	GREAT, /*4*/
-	//	QUOTE,			/*5*/
-	//	DQUOTE,			/*6*/
-	LEFT_PAREN,  /*7*/
-	RIGHT_PAREN, /*8*/
-	NEW_LINE,    /*9*/
-	EOL,         /*16*/
-	OR_IF,       /*10*/
-	AND_IF,      /*11*/
-	DLESS,       /*12*/
-	DGREAT,      /*13*/
-	CMD,         /*14*/
-	FILENAME,    /*15*/
-	ERROR,       /*17*/
-	SUBSHELL,    /*18*/
-	ARGUMENT,    /*19*/
+	WORD,
+	OR,
+	IF,
+	LESS,
+	GREAT,
+	LEFT_PAREN,
+	RIGHT_PAREN,
+	NEW_LINE,
+	EOL,
+	OR_IF,
+	AND_IF,
+	DLESS,
+	DGREAT,
+	CMD,
+	FILENAME,
+	ERROR,
+	SUBSHELL,
+	ARGUMENT,
 }					t_type;
 
 /**/
@@ -95,7 +93,7 @@ typedef struct s_env
 
 typedef struct s_token
 {
-	enum e_type			type;
+	enum e_type		type;
 	char			*start;
 	size_t			size;
 	struct s_token	*next;
@@ -123,7 +121,7 @@ typedef struct s_shell
 /*_________________________________SETUP______________________________________*/
 void				signals(void);
 t_shell				*init_shell(int mode, char **envp);
-int	update_envint(t_env *env, char *key, size_t len, int modif);
+int					update_envint(t_env *env, char *key, size_t len, int modif);
 
 /*__________________________________ENV_______________________________________*/
 t_env				*new_env(char *env);
@@ -148,21 +146,21 @@ int					env_sortkey(t_env **head);
 t_env				*env_dup(t_env *src);
 
 /*_________________________________BUILTINS___________________________________*/
-int	builtin_env(t_env *env);
-int	builtin_cd(t_env *env, char *path);
-int	builtin_exit(t_shell *shell, int print, int status);
-int	builtin_pwd(void);
-int	builtin_export(t_env *env, char **args);
-int	builtin_unset(t_env **env, char **args);
-int	builtin_echo(char **argv);
+int					builtin_env(t_env *env);
+int					builtin_cd(t_env *env, char *path);
+int					builtin_exit(t_shell *shell, int print, int status);
+int					builtin_pwd(void);
+int					builtin_export(t_env *env, char **args);
+int					builtin_unset(t_env **env, char **args);
+int					builtin_echo(char **argv);
 
 /*_________________________________DISPLAY____________________________________*/
 void				display_banner(void);
 void				display_prompt(void);
 /*__________________________________LEXER_____________________________________*/
-int			is_valid_cli(const char *cli);
-t_token		*lexer(t_shell *shell, t_token **token_lst, char *cli);
-t_token		*handle_heredoc(t_shell *shell, t_token *end);
+int					is_valid_cli(const char *cli);
+t_token				*lexer(t_shell *shell, t_token **token_lst, char *cli);
+t_token				*handle_heredoc(t_shell *shell, t_token *end);
 
 /*____________UTILS_____________*/
 t_token				*token_addback(t_token **tokens, t_token *new);
@@ -183,43 +181,56 @@ t_node				*parse_io_redirect(t_shell *shell, t_token **token);
 t_node				*create_node(t_shell *shell, t_token **token, int type);
 t_token				*munch_token(t_token **token, int clean);
 t_node				*node_addback(t_node *node, t_node *new, int mode);
-void	verif_tree(t_shell *shell, t_node *tree, t_node *previous);
+void				verif_tree(t_shell *shell, t_node *tree, t_node *previous);
 /**/
 /*_________________________________EXPAND_____________________________________*/
 void				*expander(t_token *token);
-char	*quote_removal(char *str);
+char				*quote_removal(char *str);
+
+char				*get_env_value(t_env *env, const char *key);
+char				*append_char(char *s, char c);
+char				*append_str(char *s1, char *s2);
+char				*expand_exit_code(char *res, int exit_status);
+char				*expand_variable(const char *input, size_t *i, t_env *env,
+						char *res);
+char				*expand_string(const char *input, t_env *env,
+						int exit_status);
+char				*process_arg(t_shell *shell, t_token *arg);
+char				**get_arg(t_shell *shell, t_token *arg, int nbr);
+char				*quote_removal(char *str);
 /**/
 /*_________________________________EXEC_______________________________________*/
-int		execute_and_or_if(t_shell *shell, t_node *tree);
-int		execute_subshell(t_shell *shell, t_node *tree);
-int		execute_pipe(t_shell *shell, t_node *tree);
-int		execute_subshell(t_shell *shell, t_node *tree);
-int		execute_cmd(t_shell *shell, t_node *tree);
+int					execute_and_or_if(t_shell *shell, t_node *tree);
+int					execute_subshell(t_shell *shell, t_node *tree);
+int					execute_pipe(t_shell *shell, t_node *tree);
+int					execute_subshell(t_shell *shell, t_node *tree);
+int					execute_cmd(t_shell *shell, t_node *tree);
 /**/
 /*____________REDIR_____________*/
-int		execute_redir_input(t_shell *shell, t_node *tree);
-int		execute_redir_output(t_shell *shell, t_node *tree);
-int		execute_redir_output_a(t_shell *shell, t_node *tree);
+int					execute_redir_input(t_shell *shell, t_node *tree);
+int					execute_redir_output(t_shell *shell, t_node *tree);
+int					execute_redir_output_a(t_shell *shell, t_node *tree);
 /**/
 /*____________UTILS_____________*/
-int		execute_node(t_shell *shell, t_node *tree);
-int		create_fork(t_shell *shell);
-int		create_pipe(t_shell *shell, t_node *tree, int a, int *pipefd);
-char	**get_arg(t_shell *shell, t_token *arg, int nbr);
-char	*process_arg(t_shell *shell, t_token *arg);
-int	wait_and_decrypt_child(t_shell *shell);
+int					execute_node(t_shell *shell, t_node *tree);
+int					create_fork(t_shell *shell);
+int					create_pipe(t_shell *shell, t_node *tree, int a,
+						int *pipefd);
+char				**get_arg(t_shell *shell, t_token *arg, int nbr);
+char				*process_arg(t_shell *shell, t_token *arg);
+int					wait_and_decrypt_child(t_shell *shell);
 /**/
 /*_________________________________UTILS______________________________________*/
 char				*get_path(char *cmd, t_env *env, int mode);
 /**/
 /*_________________________________CLEAN______________________________________*/
-int	ft_error(t_shell *shell, int quit, int nbr_error, ...);
-char	*get_errnum(int	error);
-char	**free_array(char **array, int pos);
-void	clean_token_lst(t_token **token_lst);
-void	clean_tree(t_node **tree);
-void	clean_shell(t_shell *shell);
-void	destroy_shell(t_shell *shell);
+int					ft_error(t_shell *shell, int quit, int nbr_error, ...);
+char				*get_errnum(int error);
+char				**free_array(char **array, int pos);
+void				clean_token_lst(t_token **token_lst);
+void				clean_tree(t_node **tree);
+void				clean_shell(t_shell *shell);
+void				destroy_shell(t_shell *shell);
 /**/
 /*_________________________________DEBUG______________________________________*/
 /**/

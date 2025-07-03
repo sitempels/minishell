@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 21:00:47 by user              #+#    #+#             */
-/*   Updated: 2025/06/30 11:04:40 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/03 05:13:45 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static t_env	*create_env_node(char *key, char *value)
 {
 	t_env	*new;
 
-	new = (t_env *) ft_calloc(1, sizeof(t_env));
+	new = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (!new)
 		return (NULL);
 	new->key = key;
@@ -69,13 +69,13 @@ static t_env	*create_env_node(char *key, char *value)
 	return (new);
 }
 
-static t_env	*init_without_env()
+static t_env	*init_without_env(void)
 {
 	char	*value;
 	t_env	*new;
 	t_env	*env;
 
-	value = (char *) malloc(sizeof(char) * (42 + 1));
+	value = (char *)malloc(sizeof(char) * (42 + 1));
 	new = create_env_node("PWD", getcwd(value, 43));
 	env_addback(&env, new);
 	env_addback(&env, create_env_node("SHLVL", "0"));
