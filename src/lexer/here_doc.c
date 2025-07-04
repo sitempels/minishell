@@ -6,14 +6,15 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 17:18:39 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 17:47:59 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static char	*create_heredoc(t_shell *shell, char *here_doc);
-static int	heredoc_cmp(char *line, char *end, size_t len, int *quoted);
+static void	is_quoted(t_token *end, int *quoted);
+static int	heredoc_cmp(char *line, char *end, size_t len);
 
 t_token	*handle_heredoc(t_shell *shell, t_token *end)
 {
@@ -28,11 +29,12 @@ t_token	*handle_heredoc(t_shell *shell, t_token *end)
 	fd = open(here_name, O_WRONLY | O_CREAT, 00644);
 	if (fd == -1)
 		ft_error(shell, 0, 2, "HERE_DOC", get_errnum(OPEN_FILE));
+	is_quoted(end, &quoted);
 	while (1)
 	{
 		signal(SIGINT, handle_here_doc);
 		line = readline("heredoc>> ");
-		if (!line || !heredoc_cmp(line, end->start, end->size, &quoted))
+		if (!line || !heredoc_cmp(line, end->start, end->size))
 			break ;
 		if (g_signal == SIGINT)
 		{
@@ -85,25 +87,40 @@ static char	*create_heredoc(t_shell *shell, char *here_doc)
 	return (NULL);
 }
 
-static int	heredoc_cmp(char *line, char *end, size_t len, int *quoted)
+static int	heredoc_cmp(char *line, char *end, size_t len)
+{
+	size_t	i;
+	size_t	j;	
+
+	i = 0;
+	j = 0;
+	while (i + j < len)
+	{
+		if (end[i + j] && (end[i + j] == '\'' || end[i
+				+ j] == '\"'))
+		{
+			j = j + 1;
+			continue ;
+		}
+		if (!line[i] || line[i] != end[i + j])
+			return (1);
+		i++;
+	}
+	if (!line[i] && i + j == len)
+		return (0);
+	return (1);
+}
+
+static void	is_quoted(t_token *end, int *quoted)
 {
 	size_t	i;
 
 	i = 0;
 	*quoted = 0;
-	while (i + *quoted < len)
+	while (i < end->size)
 	{
-		if (end[i + *quoted] && (end[i + *quoted] == '\'' || end[i
-				+ *quoted] == '\"'))
-		{
-			*quoted = *quoted + 1;
-			continue ;
-		}
-		if (!line[i] || line[i] != end[i + *quoted])
-			return (1);
+		if (end->start[i] == '\'' || end->start[i] == '\"')
+			(*quoted)++;
 		i++;
 	}
-	if (!line[i] && i + *quoted == len)
-		return (0);
-	return (1);
 }
