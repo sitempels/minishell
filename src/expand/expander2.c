@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:10:49 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 13:32:23 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 13:35:22 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,49 @@
 static void	arg_count(char *str, int *nbr, char *match_lst);
 static void	arg_fill(char **argv, char *str, int start, int end);
 
+// char	**word_splitting(char *str, int len)
+// {
+// 	char	**argv;
+// 	int		arg_nbr;
+
+// 	if (!str || !*str)
+// 	{
+// 		argv = (char **)malloc(sizeof(char *) * (len + 1));
+// 		if (!argv)
+// 			return (NULL);
+// 		argv[len] = NULL;
+// 		return (argv);
+// 	}
+// 	arg_nbr = 0;
+// 	arg_count(str, &arg_nbr, IFS);
+// 	argv = word_splitting(str + sizeof(char *), len + arg_nbr);
+// 	if (!argv)
+// 		return (NULL);
+// 	arg_fill(argv, str, len, arg_nbr);
+// 	return (argv);
+// }
+
 char	**word_splitting(char *str, int len)
 {
 	char	**argv;
 	int		arg_nbr;
 
+	arg_nbr = 0;
 	if (!str || !*str)
 	{
-		argv = (char **)malloc(sizeof(char *) * (len + 1));
+		argv = malloc(sizeof(char *) * (len + 1));
 		if (!argv)
 			return (NULL);
 		argv[len] = NULL;
 		return (argv);
 	}
-	arg_nbr = 0;
 	arg_count(str, &arg_nbr, IFS);
-	argv = word_splitting(str + sizeof(char *), len + arg_nbr);
+	argv = malloc(sizeof(char *) * (len + arg_nbr + 1));
 	if (!argv)
 		return (NULL);
 	arg_fill(argv, str, len, arg_nbr);
+	argv[len + arg_nbr] = NULL;
+	// Ne pas faire free(str) ici sauf si tu l’as malloc toi-même
 	return (argv);
 }
 

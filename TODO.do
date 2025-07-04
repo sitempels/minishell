@@ -19,6 +19,11 @@ NORME, LEAK and TRIM UNEEDED file !!!
 
 Selim's Note:
 
+!!! Handle cd when current dir is deleted
+!!! Handle directory prompt when at root level directory (null)
+
+Fixing the here_doc
+
 . When to clear the history
 . Need to make small changes in expand_string.c (one line too long)
 . Need to remove some debug functions

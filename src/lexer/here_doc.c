@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 12:37:54 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:14:12 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static char	*create_heredoc(t_shell *shell, char *here_doc);
-static	int	heredoc_cmp(char *line, char *end, size_t len, int *quoted);
+static int	heredoc_cmp(char *line, char *end, size_t len, int *quoted);
 
 t_token	*handle_heredoc(t_shell *shell, t_token *end)
 {
@@ -28,9 +28,15 @@ t_token	*handle_heredoc(t_shell *shell, t_token *end)
 		ft_error(shell, 0, 2, "HERE_DOC", get_errnum(OPEN_FILE));
 	while (1)
 	{
-		line = readline(">");
+		signal(SIGINT, handle_here_doc);
+		line = readline("heredoc>> ");
 		if (!line || !heredoc_cmp(line, end->start, end->size, &quoted))
 			break ;
+		if (g_signal == SIGINT)
+		{
+			free(line);
+			return (NULL);
+		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
@@ -65,7 +71,7 @@ static char	*create_heredoc(t_shell *shell, char *here_doc)
 	return (NULL);
 }
 
-static	int	heredoc_cmp(char *line, char *end, size_t len, int *quoted)
+static int	heredoc_cmp(char *line, char *end, size_t len, int *quoted)
 {
 	size_t	i;
 
@@ -73,8 +79,8 @@ static	int	heredoc_cmp(char *line, char *end, size_t len, int *quoted)
 	*quoted = 0;
 	while (i + *quoted < len)
 	{
-		if (end[i + *quoted] && (end[i + *quoted] == '\''
-				|| end[i + *quoted] == '\"'))
+		if (end[i + *quoted] && (end[i + *quoted] == '\'' || end[i
+				+ *quoted] == '\"'))
 		{
 			*quoted = *quoted + 1;
 			continue ;
