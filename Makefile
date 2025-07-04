@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/07/04 09:38:41 by user             ###   ########.fr        #
+#    Updated: 2025/07/04 09:50:40 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ EXEC_DIR = exec
 SRC_EXEC = $(addprefix $(EXEC_DIR)/, exec execute_redir exec_utils)
 #
 EXPAND_DIR = expand
-SRC_EXPAND = $(addprefix $(EXPAND_DIR)/, expand_utils expand_string expand_exit expand_var get_arg process_arg)
+SRC_EXPAND = $(addprefix $(EXPAND_DIR)/, expander2 expand_utils expand_string expand_exit expand_var get_arg process_arg)
 #
 BUILTIN_DIR = builtin
 SRC_BUILTIN = $(addprefix $(BUILTIN_DIR)/, cd echo env exit export pwd unset)
