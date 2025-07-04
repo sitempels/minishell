@@ -1,7 +1,5 @@
 BUILTIN:
 
-. export: need to export empty value/without = variable (only when export)
-
 GEN.:
 
 OPT-SIMON. move the here_doc gestion from lexer to parser (if time)
