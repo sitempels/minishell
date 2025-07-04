@@ -6,13 +6,12 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 16:42:04 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 09:54:42 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	match(char c, char *match_lst);
 static int	token_found(t_shell *shell, t_token **new, char *cli, int *i);
 static int	handle_word(char *cli);
 static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i);
@@ -42,7 +41,7 @@ t_token	*lexer(t_shell *shell, t_token **token_lst, char *cli)
 	return (*token_lst);
 }
 
-static int	match(char c, char *match_lst)
+int	match(char c, char *match_lst)
 {
 	int	i;
 

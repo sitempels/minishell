@@ -6,28 +6,26 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:10:49 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 09:44:59 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 10:06:26 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static void	arg_count(char *str, int *nbr, char *match_lst);
-static char	**arg_fill(char **argv, char *str, int start, int end);
+static void	arg_fill(char **argv, char *str, int start, int end);
 
 char	**word_splitting(char *str, int len)
 {
 	char	**argv;
-	int	i;
 	int	arg_nbr;
 	
-	if (!str)
+	if (!str || !*str)
 	{
 		argv = (char **) malloc(sizeof(char *) * (len + 1));
-		if (argv)
+		if (!argv)
 			return (NULL);
 		argv[len] = NULL;
-		free(str);
 		return (argv);
 	}
 	arg_nbr = 0;
@@ -58,7 +56,7 @@ static void	arg_count(char *str, int *nbr, char *match_lst)
 		}
 		if (str[i])	
 			(*nbr)++;
-		while (str[i] && !match(str[i]), match_lst)
+		while (str[i] && !match(str[i], match_lst))
 			i++;
 	}
 }

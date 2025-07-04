@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/03 05:34:25 by user             ###   ########.fr       */
+/*   Updated: 2025/07/04 09:54:11 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ void				display_banner(void);
 void				display_prompt(void);
 /*__________________________________LEXER_____________________________________*/
 int					is_valid_cli(const char *cli);
+int					match(char c, char *match_lst);
 t_token				*lexer(t_shell *shell, t_token **token_lst, char *cli);
 t_token				*handle_heredoc(t_shell *shell, t_token *end);
 
@@ -185,6 +186,7 @@ void				verif_tree(t_shell *shell, t_node *tree, t_node *previous);
 /**/
 /*_________________________________EXPAND_____________________________________*/
 void				*expander(t_token *token);
+char				**word_splitting(char *str, int len);
 char				*quote_removal(char *str);
 
 char				*get_env_value(t_env *env, const char *key);
