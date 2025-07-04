@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 14:14:12 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:43:25 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ static int	heredoc_cmp(char *line, char *end, size_t len, int *quoted);
 
 t_token	*handle_heredoc(t_shell *shell, t_token *end)
 {
+	int		i;
 	int		fd;
 	int		quoted;
 	char	*line;
+	char	**line_arr;
 	char	*here_name;
 
 	here_name = create_heredoc(shell, ".here_doc/heredoc");
@@ -37,7 +39,18 @@ t_token	*handle_heredoc(t_shell *shell, t_token *end)
 			free(line);
 			return (NULL);
 		}
-		write(fd, line, ft_strlen(line));
+		i = 0;
+		if (!quoted)
+		{
+			while (line_arr[i])
+			{
+				line_arr = expand(shell, NULL, line);
+				write(fd, line_arr[i], ft_strlen(line_arr[i]));
+				i++;
+			}
+		}
+		else
+			write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
 	}

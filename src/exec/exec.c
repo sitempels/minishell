@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 13:43:06 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:30:57 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 	if (execute_node(shell, tree->left))
 		return (ft_error(shell, 0, 2, "EXEC", "REDIRECTION FAILED"));
 	if (tree->right)
-		argv = expand(shell, (tree->right)->use.content);
+		argv = expand(shell, (tree->right)->use.content, NULL);
 	shell->status = isbuiltin(shell, argv);
 	if (shell->status >= 0)
 		return (shell->status);
