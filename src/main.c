@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 10:36:19 by user             ###   ########.fr       */
+/*   Updated: 2025/07/04 13:04:21 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	read_and_prepare(t_shell *shell)
 	display_prompt();
 	shell->cli = readline("\033[1;32m$\033[0m ");
 	if (!shell->cli)
-		return (printf("%sLEAVING the minishell...\n", BOLD_RED), 0);
+		return (printf("%sExiting the shell...\n", BOLD_RED), 0);
 	if (!is_valid_cli(shell->cli))
 	{
 		printf("%sUnclosed quotes%s\n", BOLD_RED, RESET);
