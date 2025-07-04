@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 14:20:43 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 17:08:07 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,10 @@ static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i)
 		if (!(*new)->next && g_signal != SIGINT)
 			return (ft_error(shell, 0, 2, get_errnum(NEAR), "'<<'"));
 		if (g_signal == SIGINT)
+		{
+			g_signal = 0;
 			return (clean_shell(shell), 130);
+		}
 	}
 	return (0);
 }

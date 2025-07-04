@@ -20,7 +20,8 @@ NORME, LEAK and TRIM UNEEDED file !!!
 Selim's Note:
 
 !!! Handle cd when current dir is deleted
-!!! Handle directory prompt when at root level directory (null)
+
+if launch without env, when first cd, create oldpwd in env
 
 Fixing the here_doc
 

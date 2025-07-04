@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_node.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:20:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/03 05:09:07 by user             ###   ########.fr       */
+/*   Updated: 2025/07/04 16:48:24 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,12 @@ t_env	*new_env(char *env)
 	char	*key;
 	char	*value;
 
-	if (!ft_strchr(env, '='))
-		return (NULL);
 	new = ft_calloc(1, sizeof(t_env));
 	if (!new)
 		return (NULL);
 	key = extract_key(env);
 	value = extract_value(env);
-	if (!key || !value)
+	if (!key)
 		return (free(key), free(value), free(new), NULL);
 	new->key = key;
 	new->value = value;

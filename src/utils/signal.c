@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:50 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 14:23:35 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 17:07:48 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ void	handle_here_doc(int sig)
 	if (sig == SIGINT)
 	{
 		g_signal = SIGINT;
-		write(STDOUT_FILENO, "\0", 2);
-		write(STDOUT_FILENO, "\0", 2);
+		write(STDOUT_FILENO, "\n", 2);
 	}
 }
 

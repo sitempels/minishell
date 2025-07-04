@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:34 by user              #+#    #+#             */
-/*   Updated: 2025/07/03 04:56:29 by user             ###   ########.fr       */
+/*   Updated: 2025/07/04 16:59:45 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ void	env_print_sorted(t_env *env)
 }
 
 // main builtin_export function
-// extract_value returns NULL if no '=' in string
+// extract_value returns NULL if no '=' in string and if extract_value return NULL,
+// it does not create a new env variable. But I want to be able to create a new env variable with an empty value (without equal sign and export it)
+// and env should print only the variable key with a value (so it contans an equal sign)
 int	builtin_export(t_env *env, char **args)
 {
 	int		i;

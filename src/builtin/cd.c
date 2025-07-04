@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:43:28 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 14:45:30 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:51:14 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,29 +26,42 @@ static char	*get_target_path(t_env *env, char *path)
 	}
 	return (home->value);
 }
-
 int	builtin_cd(t_env *env, char *path)
 {
 	char	*oldpwd;
 	char	*newpwd;
 
 	oldpwd = getcwd(NULL, 0);
+	if (!oldpwd)
+	{
+		perror("cd");
+		oldpwd = ft_strdup(""); // fallback safe pour éviter NULL
+		if (!oldpwd)
+			return (1);
+	}
 	path = get_target_path(env, path);
-	if (!oldpwd || !path)
+	if (!path)
+	{
+		free(oldpwd);
+		return (1);
+	}
+	if (chdir(path) != 0)
 	{
 		perror("cd");
 		free(oldpwd);
 		return (1);
 	}
-	if (chdir(path) != 0)
-		return (perror("cd"), free(oldpwd), 1);
 	newpwd = getcwd(NULL, 0);
 	if (!newpwd)
-		newpwd = path;
+		newpwd = ft_strdup(path); // on fallback sur le path donné
+	if (!newpwd)
+	{
+		free(oldpwd);
+		return (1);
+	}
 	env_updateone(&env, "OLDPWD", oldpwd);
 	env_updateone(&env, "PWD", newpwd);
 	free(oldpwd);
-	if (newpwd != path)
-		free(newpwd);
+	free(newpwd);
 	return (0);
 }
