@@ -6,8 +6,6 @@ GEN.:
 
 OPT-SIMON. move the here_doc gestion from lexer to parser (if time)
 
-FIXED - correct readline graphic glitcha->manifestement du au couleurs
-
 NORME, LEAK and TRIM UNEEDED file !!!
 
 -------------------------------------------------------------------------------
