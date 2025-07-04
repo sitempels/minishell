@@ -2,8 +2,6 @@ BUILTIN:
 
 . export: need to export empty value/without = variable (only when export)
 
-. cd doesn't create OLDPWD when program was started without environnement.
-
 GEN.:
 
 OPT-SIMON. move the here_doc gestion from lexer to parser (if time)

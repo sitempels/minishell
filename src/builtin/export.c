@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:34 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 21:49:46 by user             ###   ########.fr       */
+/*   Updated: 2025/07/04 22:39:35 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	env_print_sorted(t_env *env)
 		return ;
 	while (sorted)
 	{
-		if (!sorted->value[0])
-			printf("%s=\"%s\"\n", sorted->key, sorted->value);
+		if (sorted->value[0])
+			printf("%s=%s\n", sorted->key, sorted->value);
 		else
 			printf("%s\n", sorted->key);
 		sorted = sorted->next;
