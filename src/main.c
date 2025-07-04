@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/03 11:24:08 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 10:36:19 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	minishell(t_shell *shell)
 {
 	while (1)
 	{
+		signals();
 		if (!read_and_prepare(shell))
 			break ;
 		if (!parse_and_execute(shell))
@@ -83,7 +84,6 @@ int	main(int argc, char **argv, char **envp)
 		return (write(1, "Error Arg!\n", 10));
 	if (argc == 2)
 		mode = argv[1][0] - 48;
-	signals();
 	display_banner();
 	shell = init_shell(mode, envp);
 	if (minishell(shell))
