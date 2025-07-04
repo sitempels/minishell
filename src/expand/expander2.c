@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:10:49 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 15:33:49 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 15:46:57 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	**word_splitting(char **arr, int index, int len)
 
 	if (!arr[index] || !*arr[index])
 	{
-		argv = (char **)malloc(sizeof(char *) * (len + 1));
+		argv = malloc(sizeof(char *) * (len + 1));
 		if (!argv)
 			return (NULL);
 		argv[len] = NULL;

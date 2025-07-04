@@ -6,11 +6,13 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 13:04:21 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:40:24 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+volatile sig_atomic_t	g_signal = 0;
 
 static int	read_and_prepare(t_shell *shell)
 {
