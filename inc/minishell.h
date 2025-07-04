@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/04 13:57:40 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:42:21 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,10 +201,9 @@ void							verif_tree(t_shell *shell, t_node *tree,
 									t_node *previous);
 /**/
 /*_________________________________EXPAND_____________________________________*/
-void							**expander(t_shell *shell, t_token *token);
-char							**word_splitting(char *str, int len);
-char							**quote_removal(char **str);
-
+char				**expand(t_shell *shell, t_token *token, char *str);
+char				**word_splitting(char **str, int index, int len);
+char				**quote_removal(char **str);
 char							*get_env_value(t_env *env, const char *key);
 char							*append_char(char *s, char c);
 char							*append_str(char *s1, char *s2);
