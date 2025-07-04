@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:30:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 13:17:28 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 15:34:49 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	**expand(t_shell *shell, t_token *arg)
 	char	**argv;
 
 	argv = get_arg(shell, arg, 0);
-	argv = word_splitting(argv[0], 0);
+	argv = word_splitting(argv, 0, 0);
 	argv = quote_removal(argv);
 	return (argv);
 }
@@ -57,6 +57,7 @@ char	**quote_removal(char **str)
 		i = 0;
 		while (str[j][i])
 		{
+			nbr = 0;
 			if (str[j][i] == '&'
 			&& (str[j][i + 1] == '\'' || str[j][i + 1] == '\"'))
 			{
@@ -86,14 +87,14 @@ static char	*copy_without(char *dst, char *src, int nbr)
 	j = 0;
 	while (i < nbr)
 	{
-		if (src[i + j] != '&'
-			&& (src[i + j + 1] != '\'' || src[i + j + 1] != '\"'))
+		if (src[i + j] == '&'
+			&& (src[i + j + 1] == '\'' || src[i + j + 1] == '\"'))
+			j = j + 2;
+		else
 		{
 			dst[i] = src[i + j];
 			i++;
 		}
-		else
-			j = j + 2;
 	}
 	return (dst);
 }

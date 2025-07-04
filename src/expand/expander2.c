@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:10:49 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 13:32:23 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 15:33:49 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 static void	arg_count(char *str, int *nbr, char *match_lst);
 static void	arg_fill(char **argv, char *str, int start, int end);
 
-char	**word_splitting(char *str, int len)
+char	**word_splitting(char **arr, int index, int len)
 {
 	char	**argv;
 	int		arg_nbr;
 
-	if (!str || !*str)
+	if (!arr[index] || !*arr[index])
 	{
 		argv = (char **)malloc(sizeof(char *) * (len + 1));
 		if (!argv)
@@ -29,11 +29,11 @@ char	**word_splitting(char *str, int len)
 		return (argv);
 	}
 	arg_nbr = 0;
-	arg_count(str, &arg_nbr, IFS);
-	argv = word_splitting(str + sizeof(char *), len + arg_nbr);
+	arg_count(arr[index], &arg_nbr, IFS);
+	argv = word_splitting(arr, index + 1, len + arg_nbr);
 	if (!argv)
 		return (NULL);
-	arg_fill(argv, str, len, arg_nbr);
+	arg_fill(argv, arr[index], len, arg_nbr);
 	return (argv);
 }
 
