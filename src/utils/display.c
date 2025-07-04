@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 14:41:41 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 15:29:52 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ void	display_prompt(void)
 	home = getenv("HOME");
 	cwd = getcwd(NULL, 0);
 	fcwd = ft_strrpl(cwd, home, "~");
+	if (!fcwd)
+	{
+		fcwd = ft_strdup(cwd);
+	}
 	tty = ttyname(STDIN_FILENO);
 	ttys = ttyslot();
 	printf("📁 %s%s 💻 %s%s 🎰 %s%d%s\n ", BOLD_CYAN, fcwd, BOLD_MAGENTA, tty,
