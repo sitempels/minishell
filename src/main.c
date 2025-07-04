@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/03 11:24:08 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 13:04:21 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	read_and_prepare(t_shell *shell)
 	display_prompt();
 	shell->cli = readline("\033[1;32m$\033[0m ");
 	if (!shell->cli)
-		return (printf("%sLEAVING the minishell...\n", BOLD_RED), 0);
+		return (printf("%sExiting the shell...\n", BOLD_RED), 0);
 	if (!is_valid_cli(shell->cli))
 	{
 		printf("%sUnclosed quotes%s\n", BOLD_RED, RESET);
@@ -64,6 +64,7 @@ int	minishell(t_shell *shell)
 {
 	while (1)
 	{
+		signals();
 		if (!read_and_prepare(shell))
 			break ;
 		if (!parse_and_execute(shell))
@@ -83,7 +84,6 @@ int	main(int argc, char **argv, char **envp)
 		return (write(1, "Error Arg!\n", 10));
 	if (argc == 2)
 		mode = argv[1][0] - 48;
-	signals();
 	display_banner();
 	shell = init_shell(mode, envp);
 	if (minishell(shell))

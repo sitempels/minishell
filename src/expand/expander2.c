@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:10:49 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 10:06:26 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 13:32:23 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ static void	arg_fill(char **argv, char *str, int start, int end);
 char	**word_splitting(char *str, int len)
 {
 	char	**argv;
-	int	arg_nbr;
-	
+	int		arg_nbr;
+
 	if (!str || !*str)
 	{
-		argv = (char **) malloc(sizeof(char *) * (len + 1));
+		argv = (char **)malloc(sizeof(char *) * (len + 1));
 		if (!argv)
 			return (NULL);
 		argv[len] = NULL;
@@ -30,17 +30,16 @@ char	**word_splitting(char *str, int len)
 	}
 	arg_nbr = 0;
 	arg_count(str, &arg_nbr, IFS);
-	argv = word_splitting(str + sizeof(char*), len + arg_nbr);
+	argv = word_splitting(str + sizeof(char *), len + arg_nbr);
 	if (!argv)
 		return (NULL);
 	arg_fill(argv, str, len, arg_nbr);
-	free(str);
 	return (argv);
 }
 
 static void	arg_count(char *str, int *nbr, char *match_lst)
 {
-	int	i;
+	int		i;
 	char	quote;
 
 	i = 0;
@@ -54,7 +53,7 @@ static void	arg_count(char *str, int *nbr, char *match_lst)
 			while (str[i] && str[i] != quote)
 				i++;
 		}
-		if (str[i])	
+		if (str[i])
 			(*nbr)++;
 		while (str[i] && !match(str[i], match_lst))
 			i++;
@@ -63,9 +62,9 @@ static void	arg_count(char *str, int *nbr, char *match_lst)
 
 static void	arg_fill(char **argv, char *str, int start, int end)
 {
-	int	i;
-	int	j;
-	int	k;
+	int		i;
+	int		j;
+	int		k;
 	char	quote;
 
 	i = 0;
@@ -83,7 +82,7 @@ static void	arg_fill(char **argv, char *str, int start, int end)
 		k = 0;
 		while (str[j + k] && !match(str[j + k], IFS))
 			k++;
-		argv[start + i] = (char *) malloc(sizeof(char) * (k + 1));
+		argv[start + i] = (char *)malloc(sizeof(char) * (k + 1));
 		if (!argv[start + i])
 			return ;
 		ft_strlcpy(argv[start + i], &str[j], k + 1);
