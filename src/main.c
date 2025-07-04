@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 14:40:24 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 19:51:13 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,12 @@ static int	read_and_prepare(t_shell *shell)
 	display_prompt();
 	shell->cli = readline("\033[1;32m$\033[0m ");
 	if (!shell->cli)
-		return (printf("%sExiting the shell...\n", BOLD_RED), 0);
+		ft_error(shell, 1, 1, "Leaving the shell");
 	if (!is_valid_cli(shell->cli))
 	{
 		printf("%sUnclosed quotes%s\n", BOLD_RED, RESET);
-		free(shell->cli);
-		shell->cli = NULL;
-		return (0);
+		clean_shell(shell);
+		return (1);
 	}
 	add_history(shell->cli);
 	return (1);
@@ -67,8 +66,8 @@ int	minishell(t_shell *shell)
 	while (1)
 	{
 		signals();
-		if (!read_and_prepare(shell))
-			break ;
+		if (read_and_prepare(shell))
+			continue ;
 		if (!parse_and_execute(shell))
 			continue ;
 		wait_and_restore(shell);

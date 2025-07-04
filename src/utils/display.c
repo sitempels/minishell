@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 16:17:41 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 19:52:27 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	display_prompt(void)
 	ttys = ttyslot();
 	if (tty)
 		printf("%s", tty);
-	printf(" 🎰 %s%d%s\n ", BOLD_YELLOW, ttys, RESET);
+	printf(" 🎰 %s%d%s\n", BOLD_YELLOW, ttys, RESET);
 	free(cwd);
 	free(fcwd);
 }

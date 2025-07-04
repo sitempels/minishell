@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:50 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 17:07:48 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 19:37:57 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ void	handle_here_doc(int sig)
 	if (sig == SIGINT)
 	{
 		g_signal = SIGINT;
-		write(STDOUT_FILENO, "\n", 2);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 	}
 }
 

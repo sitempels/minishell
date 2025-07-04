@@ -6,12 +6,9 @@ BUILTIN:
 
 GEN.:
 
-. protect the shell against segfault when current directory get deleted.
+OPT-SIMON. move the here_doc gestion from lexer to parser (if time)
 
-. move the here_doc gestion from lexer to parser (if time)
-
-. correct readline graphic glitch
-
+. correct readline graphic glitcha->manifestement du au couleurs
 
 NORME, LEAK and TRIM UNEEDED file !!!
 
@@ -19,14 +16,12 @@ NORME, LEAK and TRIM UNEEDED file !!!
 
 Selim's Note:
 
-!!! Handle cd when current dir is deleted
+Check your leaks
 
-if launch without env, when first cd, create oldpwd in env
+Need to make small changes in expand_string.c (one line too long)
 
-Fixing the here_doc
+------    TO DO BEFORE EVAL -------
 
-. When to clear the history
-. Need to make small changes in expand_string.c (one line too long)
 . Need to remove some debug functions
 . expander2 ? main_parser ? main_lexer ?
-. Delete misc, .vscode folders.
+. Delete misc, .vscode folders. !keep misc/valgrind.suppress
