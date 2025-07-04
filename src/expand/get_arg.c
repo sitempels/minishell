@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:30:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 08:49:35 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 09:46:43 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*quote_removal(char *str)
 		}
 		i++;
 	}
-	res = (char *) malloc(sizeof(char) * (i + 1));
+	res = (char *)malloc(sizeof(char) * (i + 1));
 	if (!res)
 		return (NULL);
 	res[i] = '\0';
@@ -64,7 +64,6 @@ char	*quote_removal(char *str)
 	free(str);
 	return (res);
 }
-
 
 static char	*copy_without(char *dst, char *src, int nbr)
 {

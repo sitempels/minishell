@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:20:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/03 05:25:40 by user             ###   ########.fr       */
+/*   Updated: 2025/07/04 09:35:50 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ char	*expand_string(const char *input, t_env *env, int exit_status)
 		return (NULL);
 	while (input[i])
 	{
-		if (input[i] == '$')
+		if (input[i] != '$')
+			res = append_char(res, input[i++]);
+		else
 		{
 			i++;
 			if (input[i] == '?')
@@ -35,11 +37,6 @@ char	*expand_string(const char *input, t_env *env, int exit_status)
 				res = expand_variable(input, &i, env, res);
 			else
 				res = append_char(res, '$');
-		}
-		else
-		{
-			res = append_char(res, input[i]);
-			i++;
 		}
 	}
 	return (res);
