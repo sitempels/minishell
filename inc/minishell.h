@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/04 09:54:11 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 13:18:17 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,9 +185,9 @@ t_node				*node_addback(t_node *node, t_node *new, int mode);
 void				verif_tree(t_shell *shell, t_node *tree, t_node *previous);
 /**/
 /*_________________________________EXPAND_____________________________________*/
-void				*expander(t_token *token);
+void				**expander(t_shell *shell, t_token *token);
 char				**word_splitting(char *str, int len);
-char				*quote_removal(char *str);
+char				**quote_removal(char **str);
 
 char				*get_env_value(t_env *env, const char *key);
 char				*append_char(char *s, char c);
@@ -197,9 +197,8 @@ char				*expand_variable(const char *input, size_t *i, t_env *env,
 						char *res);
 char				*expand_string(const char *input, t_env *env,
 						int exit_status);
-char				*process_arg(t_shell *shell, t_token *arg);
+char				*process_arg(t_shell *shell, char *arg, size_t size);
 char				**get_arg(t_shell *shell, t_token *arg, int nbr);
-char				*quote_removal(char *str);
 /**/
 /*_________________________________EXEC_______________________________________*/
 int					execute_and_or_if(t_shell *shell, t_node *tree);
@@ -219,7 +218,6 @@ int					create_fork(t_shell *shell);
 int					create_pipe(t_shell *shell, t_node *tree, int a,
 						int *pipefd);
 char				**get_arg(t_shell *shell, t_token *arg, int nbr);
-char				*process_arg(t_shell *shell, t_token *arg);
 int					wait_and_decrypt_child(t_shell *shell);
 /**/
 /*_________________________________UTILS______________________________________*/
