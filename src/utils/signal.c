@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:50 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 19:37:57 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 21:27:23 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	handle_sigint(int sig)
 	{
 		g_signal = SIGINT;
 		write(STDOUT_FILENO, "\n", 1);
-		display_prompt();
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();

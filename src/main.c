@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 19:51:13 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 21:31:51 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@ volatile sig_atomic_t	g_signal = 0;
 
 static int	read_and_prepare(t_shell *shell)
 {
-	display_prompt();
-	shell->cli = readline("\033[1;32m$\033[0m ");
+	char	*prompt;
+
+	prompt = build_color_prompt();
+	shell->cli = readline(prompt);
 	if (!shell->cli)
-		ft_error(shell, 1, 1, "Leaving the shell");
+		ft_error(shell, 1, 1, "leaving the shell...");
 	if (!is_valid_cli(shell->cli))
 	{
 		printf("%sUnclosed quotes%s\n", BOLD_RED, RESET);
@@ -66,7 +68,7 @@ int	minishell(t_shell *shell)
 	while (1)
 	{
 		signals();
-		if (read_and_prepare(shell))
+		if (!read_and_prepare(shell))
 			continue ;
 		if (!parse_and_execute(shell))
 			continue ;
