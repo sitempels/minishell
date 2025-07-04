@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:30:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/03 16:24:01 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 08:49:35 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ char	**get_arg(t_shell *shell, t_token *arg, int nbr)
 	argv[nbr] = process_arg(shell, arg);
 	if (!argv[nbr])
 		return (NULL);
+	argv = word_splitting(argv[0], 0);
 	argv[nbr] = quote_removal(argv[nbr]);
 	return (argv);
 }
 
-// 
 char	*quote_removal(char *str)
 {
 	int		i;
