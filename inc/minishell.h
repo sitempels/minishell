@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/04 21:27:06 by user             ###   ########.fr       */
+/*   Updated: 2025/07/04 22:06:59 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@
 # define IFS " \t\n"
 /* 0 or less prevent HERE_DOC creation */
 # define MAX_HEREDOC 50
+/** */
+# ifndef PATH_MAX
+#  define PATH_MAX 65535
+# endif
 /** */
 extern volatile sig_atomic_t	g_signal;
 /** */

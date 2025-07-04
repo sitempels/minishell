@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 21:31:51 by user             ###   ########.fr       */
+/*   Updated: 2025/07/04 22:12:56 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ static int	read_and_prepare(t_shell *shell)
 {
 	char	*prompt;
 
+	if (g_signal == SIGINT)
+	{
+		g_signal = 0;
+	}
 	prompt = build_color_prompt();
 	shell->cli = readline(prompt);
 	if (!shell->cli)
@@ -82,7 +86,7 @@ int	main(int argc, char **argv, char **envp)
 	int		mode;
 	t_shell	*shell;
 
-	mode = 1;
+	mode = 0;
 	if (argc > 2)
 		return (write(1, "Error Arg!\n", 10));
 	if (argc == 2)

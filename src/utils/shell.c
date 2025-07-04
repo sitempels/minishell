@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 21:00:47 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 13:09:22 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 22:03:32 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,37 @@ static t_env	*init_without_env(void)
 	t_env	*new;
 	t_env	*env;
 
-	value = (char *)malloc(sizeof(char) * (42 + 1));
-	new = create_env_node("PWD", getcwd(value, 43));
+	env = NULL; // Initialize env to NULL
+	value = (char *)malloc(sizeof(char) * (PATH_MAX + 1));
+	if (!value)
+		return (NULL);
+	if (getcwd(value, PATH_MAX) == NULL)
+	{
+		free(value);
+		value = ft_strdup(""); // Fallback if getcwd fails
+		if (!value)
+			return (NULL);
+	}
+	new = create_env_node(ft_strdup("PWD"), value);
+	if (!new)
+	{
+		free(value);
+		return (NULL);
+	}
 	env_addback(&env, new);
-	env_addback(&env, create_env_node("SHLVL", "0"));
+	env_addback(&env, create_env_node(ft_strdup("SHLVL"), ft_strdup("0")));
 	return (env);
 }
+
+// static t_env	*init_without_env(void)
+// {
+// 	char	*value;
+// 	t_env	*new;
+// 	t_env	*env;
+
+// 	value = (char *)malloc(sizeof(char) * (42 + 1));
+// 	new = create_env_node("PWD", getcwd(value, sizeof(value)));
+// 	env_addback(&env, new);
+// 	env_addback(&env, create_env_node("SHLVL", "0"));
+// 	return (env);
+// }

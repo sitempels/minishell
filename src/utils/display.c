@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 21:28:11 by user             ###   ########.fr       */
+/*   Updated: 2025/07/04 21:48:49 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,19 @@ char	*build_color_prompt(void)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
-		perror("getcwd");
-		return (ft_strdup("📁 <unknown> \033[1;35m$\033[0m "));
+		perror("cwd");
+		return (ft_strdup("📁 \033[1;36mBlack Hole \033[1;35m$\033[0m "));
 	}
 	fcwd = ft_strrpl(cwd, home, "~");
 	if (!fcwd)
 		fcwd = ft_strdup(cwd);
 	free(cwd);
 	if (!fcwd)
-		return (ft_strdup("📁 <unknown> \033[1;35m$\033[0m "));
+		return (ft_strdup("📁 \033[1;36mBlack Hole \033[1;35m$\033[0m "));
 	temp = ft_strjoin("📁 \033[1;36m", fcwd);
 	free(fcwd);
 	if (!temp)
-		return (ft_strdup("📁 <unknown> \033[1;35m$\033[0m "));
+		return (ft_strdup("📁 \033[1;36mBlack Hole \033[1;35m$\033[0m "));
 	prompt = ft_strjoin(temp, " \033[1;35m$\033[0m ");
 	return (free(temp), prompt);
 }
@@ -103,7 +103,7 @@ char	*build_prompt(void)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
-		perror("getcwd");
+		perror("cwd");
 		return (ft_strdup("<unknown> $ "));
 	}
 	fcwd = ft_strrpl(cwd, home, "~");

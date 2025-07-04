@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:43:28 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 16:51:14 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 21:52:56 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	builtin_cd(t_env *env, char *path)
 	if (!oldpwd)
 	{
 		perror("cd");
-		oldpwd = ft_strdup(""); // fallback safe pour éviter NULL
+		oldpwd = ft_strdup("");
 		if (!oldpwd)
 			return (1);
 	}
