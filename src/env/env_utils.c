@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:40:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/03 05:09:39 by user             ###   ########.fr       */
+/*   Updated: 2025/07/04 22:21:36 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,27 @@ char	*env_getpath(t_env *env)
 
 int	env_updateone(t_env **head, char *key, char *value)
 {
-	t_env	*tmp;
+	t_env	*node;
+	t_env	*new;
+	char	*entry;
 
-	if (!head || !*head || !key || !value)
+	if (!head || !key || !value)
 		return (1);
-	tmp = env_getone(*head, key, ft_strlen(key));
-	if (!tmp)
-		return (1);
-	free(tmp->value);
-	tmp->value = ft_strdup(value);
-	if (!tmp->value)
+	node = env_getone(*head, key, ft_strlen(key));
+	if (!node)
+	{
+		entry = ft_strjoin_var(3, key, "=", value);
+		if (!entry)
+			return (1);
+		new = new_env(entry);
+		free(entry);
+		if (!new || env_addback(head, new))
+			return (env_freeone(new), 1);
+		return (0);
+	}
+	free(node->value);
+	node->value = ft_strdup(value);
+	if (!node->value)
 		return (1);
 	return (0);
 }

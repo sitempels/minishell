@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/04 16:42:21 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 22:06:59 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@
 # define IFS " \t\n"
 /* 0 or less prevent HERE_DOC creation */
 # define MAX_HEREDOC 50
+/** */
+# ifndef PATH_MAX
+#  define PATH_MAX 65535
+# endif
 /** */
 extern volatile sig_atomic_t	g_signal;
 /** */
@@ -163,7 +167,9 @@ int								builtin_echo(char **argv);
 
 /*_________________________________DISPLAY____________________________________*/
 void							display_banner(void);
-void							display_prompt(void);
+// void							display_prompt(void);
+char							*build_prompt(void);
+char							*build_color_prompt(void);
 /*__________________________________LEXER_____________________________________*/
 int								is_valid_cli(const char *cli);
 int								match(char c, char *match_lst);
@@ -201,9 +207,11 @@ void							verif_tree(t_shell *shell, t_node *tree,
 									t_node *previous);
 /**/
 /*_________________________________EXPAND_____________________________________*/
-char				**expand(t_shell *shell, t_token *token, char *str);
-char				**word_splitting(char **str, int index, int len);
-char				**quote_removal(char **str);
+char							**expand(t_shell *shell, t_token *token,
+									char *str);
+char							**word_splitting(char **str, int index,
+									int len);
+char							**quote_removal(char **str);
 char							*get_env_value(t_env *env, const char *key);
 char							*append_char(char *s, char c);
 char							*append_str(char *s1, char *s2);

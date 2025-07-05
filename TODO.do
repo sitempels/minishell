@@ -1,17 +1,8 @@
 BUILTIN:
 
-. export: need to export empty value/without = variable (only when export)
-
-. cd doesn't create OLDPWD when program was started without environnement.
-
 GEN.:
 
-. protect the shell against segfault when current directory get deleted.
-
-. move the here_doc gestion from lexer to parser (if time)
-
-. correct readline graphic glitch
-
+OPT-SIMON. move the here_doc gestion from lexer to parser (if time)
 
 NORME, LEAK and TRIM UNEEDED file !!!
 
@@ -19,14 +10,12 @@ NORME, LEAK and TRIM UNEEDED file !!!
 
 Selim's Note:
 
-!!! Handle cd when current dir is deleted
+Check your leaks
+Need to make small changes in expand_string.c (one line too long)
 
-if launch without env, when first cd, create oldpwd in env
+------    TO DO BEFORE EVAL -------
 
-Fixing the here_doc
-
-. When to clear the history
-. Need to make small changes in expand_string.c (one line too long)
 . Need to remove some debug functions
+. Need to remove ft_itoa_base from libft just to pass the eval
 . expander2 ? main_parser ? main_lexer ?
-. Delete misc, .vscode folders.
+. Delete misc, .vscode folders. !keep misc/valgrind.suppress

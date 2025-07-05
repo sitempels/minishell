@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 14:40:24 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/04 22:12:56 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,21 @@ volatile sig_atomic_t	g_signal = 0;
 
 static int	read_and_prepare(t_shell *shell)
 {
-	display_prompt();
-	shell->cli = readline("\033[1;32m$\033[0m ");
+	char	*prompt;
+
+	if (g_signal == SIGINT)
+	{
+		g_signal = 0;
+	}
+	prompt = build_color_prompt();
+	shell->cli = readline(prompt);
 	if (!shell->cli)
-		return (printf("%sExiting the shell...\n", BOLD_RED), 0);
+		ft_error(shell, 1, 1, "leaving the shell...");
 	if (!is_valid_cli(shell->cli))
 	{
 		printf("%sUnclosed quotes%s\n", BOLD_RED, RESET);
-		free(shell->cli);
-		shell->cli = NULL;
-		return (0);
+		clean_shell(shell);
+		return (1);
 	}
 	add_history(shell->cli);
 	return (1);
@@ -68,7 +73,7 @@ int	minishell(t_shell *shell)
 	{
 		signals();
 		if (!read_and_prepare(shell))
-			break ;
+			continue ;
 		if (!parse_and_execute(shell))
 			continue ;
 		wait_and_restore(shell);
@@ -81,7 +86,7 @@ int	main(int argc, char **argv, char **envp)
 	int		mode;
 	t_shell	*shell;
 
-	mode = 1;
+	mode = 0;
 	if (argc > 2)
 		return (write(1, "Error Arg!\n", 10));
 	if (argc == 2)
