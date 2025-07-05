@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 17:47:59 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/05 09:23:44 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 static char	*create_heredoc(t_shell *shell, char *here_doc);
 static void	is_quoted(t_token *end, int *quoted);
+static int	write_heredoc(t_shell *shell, t_token end, int fd, int quoted);
 static int	heredoc_cmp(char *line, char *end, size_t len);
 
 t_token	*handle_heredoc(t_shell *shell, t_token *end)
 {
-	int		i;
 	int		fd;
 	int		quoted;
-	char	*line;
-	char	**line_arr;
 	char	*here_name;
 
 	here_name = create_heredoc(shell, ".here_doc/heredoc");
@@ -30,38 +28,44 @@ t_token	*handle_heredoc(t_shell *shell, t_token *end)
 	if (fd == -1)
 		ft_error(shell, 0, 2, "HERE_DOC", get_errnum(OPEN_FILE));
 	is_quoted(end, &quoted);
-	while (1)
-	{
-		signal(SIGINT, handle_here_doc);
-		line = readline("heredoc>> ");
-		if (!line || !heredoc_cmp(line, end->start, end->size))
-			break ;
-		if (g_signal == SIGINT)
-		{
-			g_signal = 0;
-			free(line);
-			return (NULL);
-		}
-		i = 0;
-		if (!quoted)
-		{
-			while (line_arr[i])
-			{
-				line_arr = expand(shell, NULL, line);
-				write(fd, line_arr[i], ft_strlen(line_arr[i]));
-				i++;
-			}
-		}
-		else
-			write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
-		free(line);
-	}
+	while (g_signal != SIGINT && write_heredoc(shell, *end, fd, quoted))
+		continue ;
+	if (g_signal == SIGINT)
+		return (NULL);
 	end->start = here_name;
 	end->size = ft_strlen(here_name);
 	if (-close(fd))
 		ft_error(shell, 0, 2, "HERE_DOC", get_errnum(CLOSE_FILE));
 	return (end);
+}
+
+static int	write_heredoc(t_shell *shell, t_token end, int fd, int quoted)
+{
+	int	i;
+	char	*line;
+	char	**line_arr;
+
+	signal(SIGINT, handle_here_doc);
+	line = readline("heredoc>> ");
+	if (!line)
+		return (0);
+	if (!heredoc_cmp(line, end.start, end.size) || g_signal == SIGINT)
+		return (free(line), 0);
+	i = 0;
+	if (!quoted)
+	{
+		line_arr = expand(shell, NULL, line);
+		while (line_arr[i])
+		{
+			write(fd, line_arr[i], ft_strlen(line_arr[i]));
+			free(line_arr[i++]);
+		}
+	}
+	else
+		write(fd, line, ft_strlen(line));
+	write(fd, "\n", 1);
+	free(line);
+	return (1);
 }
 
 static char	*create_heredoc(t_shell *shell, char *here_doc)
@@ -96,8 +100,7 @@ static int	heredoc_cmp(char *line, char *end, size_t len)
 	j = 0;
 	while (i + j < len)
 	{
-		if (end[i + j] && (end[i + j] == '\'' || end[i
-				+ j] == '\"'))
+		if (end[i + j] && (end[i + j] == '\'' || end[i + j] == '\"'))
 		{
 			j = j + 1;
 			continue ;

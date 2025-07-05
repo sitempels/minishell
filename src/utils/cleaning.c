@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/03 05:06:05 by user             ###   ########.fr       */
+/*   Updated: 2025/07/05 08:48:23 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	clean_shell(t_shell *shell)
 	if (shell->cli)
 		free(shell->cli);
 	shell->cli = NULL;
+	g_signal = 0;
 	return ;
 }
 
