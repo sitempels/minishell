@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/01 09:59:36 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/05 10:25:12 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_node	*parse_io_redirect(t_shell *shell, t_token **token)
 	{
 		get_usage(new, (new)->type);
 		new->right = create_node(shell, NULL, FILENAME);
-		(new->right)->use.arg = get_arg(shell, munch_token(token, 0), 0);
+		(new->right)->use.arg = expand(shell, munch_token(token, 0), NULL);
 	}
 	else
 	{

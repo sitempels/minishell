@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:25:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 13:32:51 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/05 10:27:51 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ static void	cpy_and_add(char *raw, char *start, size_t size);
 
 char	*process_arg(t_shell *shell, char *start, size_t size)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	quote;
 	char	*raw;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	while (i + j < (int)size)
+	while (++i + j < (int)size)
 	{
 		if (start[i + j] == '\'' || start[i + j] == '\"')
 		{
@@ -32,7 +32,6 @@ char	*process_arg(t_shell *shell, char *start, size_t size)
 				i++;
 			j++;
 		}
-		i++;
 	}
 	raw = (char *)ft_calloc(i + (2 * j) + 1, sizeof(char));
 	if (!raw)

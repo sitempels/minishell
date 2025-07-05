@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:10:49 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 17:28:31 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/05 10:07:58 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ static void	arg_fill(char **argv, char *str, int start, int end)
 	int		k;
 	char	quote;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	while (i < end)
+	while (++i < end)
 	{
 		while (str[j] && match(str[j], IFS))
 			j++;
@@ -86,6 +86,5 @@ static void	arg_fill(char **argv, char *str, int start, int end)
 		if (!argv[start + i])
 			return ;
 		ft_strlcpy(argv[start + i], &str[j], k + 1);
-		i++;
 	}
 }

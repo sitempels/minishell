@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/04 22:06:59 by user             ###   ########.fr       */
+/*   Updated: 2025/07/05 10:16:28 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,8 +222,6 @@ char							*expand_string(const char *input, t_env *env,
 									int exit_status);
 char							*process_arg(t_shell *shell, char *arg,
 									size_t size);
-char							**get_arg(t_shell *shell, t_token *arg,
-									int nbr);
 /**/
 /*_________________________________EXEC_______________________________________*/
 int								execute_and_or_if(t_shell *shell, t_node *tree);
