@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/05 14:18:40 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/05 15:44:11 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	main(int argc, char **argv, char **envp)
 
 	mode = 0;
 	if (argc > 2)
-		return (write(1, "Error Arg!\n", 10));
+		return (write(1, "Usage: ./minishell <mode>\n", 10));
 	if (argc == 2)
 		mode = argv[1][0] - 48;
 	display_banner();
