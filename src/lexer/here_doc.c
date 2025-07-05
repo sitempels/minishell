@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/05 09:23:44 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/05 09:27:37 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_token	*handle_heredoc(t_shell *shell, t_token *end)
 
 static int	write_heredoc(t_shell *shell, t_token end, int fd, int quoted)
 {
-	int	i;
+	int		i;
 	char	*line;
 	char	**line_arr;
 
