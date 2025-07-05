@@ -6,11 +6,39 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:05:48 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 21:30:41 by user             ###   ########.fr       */
+/*   Updated: 2025/07/05 14:07:09 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_error(t_shell *shell, int quit, int nbr_context, ...)
+{
+	char	*error;
+	va_list	error_msg;
+
+	if (nbr_context > 0)
+	{
+		write(2, "minishell: ", 11);
+		va_start(error_msg, nbr_context);
+		while (nbr_context > 0)
+		{
+			error = va_arg(error_msg, char *);
+			write(2, error, ft_strlen(error));
+			nbr_context--;
+		}
+		write(2, "\n", 1);
+		va_end(error_msg);
+	}
+	if (quit)
+	{
+		if (errno != 0)
+			builtin_exit(shell, 0, errno);
+		builtin_exit(shell, 0, shell->status);
+	}
+	clean_shell(shell);
+	return (shell->status);
+}
 
 char	*get_errnum(int error)
 {
@@ -39,30 +67,22 @@ char	*get_errnum(int error)
 	return (NULL);
 }
 
-int	ft_error(t_shell *shell, int quit, int nbr_context, ...)
+char	*get_type(int etype)
 {
-	char	*error;
-	va_list	error_msg;
-
-	if (nbr_context > 0)
-	{
-		write(2, "minishell: ", 11);
-		va_start(error_msg, nbr_context);
-		while (nbr_context > 0)
-		{
-			error = va_arg(error_msg, char *);
-			write(2, error, ft_strlen(error));
-			nbr_context--;
-		}
-		write(2, "\n", 1);
-		va_end(error_msg);
-	}
-	if (quit)
-	{
-		if (errno != 0)
-			builtin_exit(shell, 0, errno);
-		builtin_exit(shell, 0, shell->status);
-	}
-	clean_shell(shell);
-	return (shell->status);
+	if (etype == OR)
+		return ("|");
+	if (etype == OR_IF)
+		return ("||");
+	if (etype == AND_IF)
+		return ("&&");
+	if (etype == LESS)
+		return ("<");
+	if (etype == DLESS)
+		return ("<<");
+	if (etype == GREAT)
+		return (">");
+	if (etype == DGREAT)
+		return (">>");
+	else
+		return ("Error");
 }

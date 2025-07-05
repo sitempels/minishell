@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/05 08:48:31 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/05 14:10:55 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ t_token	*lexer(t_shell *shell, t_token **token_lst, char *cli)
 	new = NULL;
 	while (cli[i])
 	{
-		if (token_found(shell, &new, cli, &i))
+		shell->status = token_found(shell, &new, cli, &i);
+		if (shell->status > 0)
 			break ;
-		if (handle_case(shell, &new, cli, &i))
+		shell->status = handle_case(shell, &new, cli, &i);
+		if (shell->status > 0)
 			return (NULL);
 		token_addback(token_lst, new);
 	}
@@ -116,11 +118,11 @@ static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i)
 			free(*new);
 			if (next)
 				free(next);
-			return (ft_error(shell, 0, 2, get_errnum(NEAR), "'<<'"));
+			return (ft_error(shell, 0, 2, get_errnum(NEAR), "'<<'"), 1);
 		}
 		(*new)->next = handle_heredoc(shell, next);
 		if (!(*new)->next && g_signal != SIGINT)
-			return (ft_error(shell, 0, 2, get_errnum(NEAR), "'<<'"));
+			return (ft_error(shell, 0, 2, get_errnum(NEAR), "'<<'"), 1);
 		if (g_signal == SIGINT)
 			return (clean_shell(shell), 130);
 	}

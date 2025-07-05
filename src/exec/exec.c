@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/05 11:24:48 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/05 14:18:16 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ int	execute_and_or_if(t_shell *shell, t_node *tree)
 		shell->status = WEXITSTATUS(shell->status);
 	else if (WIFSIGNALED(shell->status))
 		shell->status = (WTERMSIG(shell->status));
-	open(shell->std_io[0], O_RDWR);
-	open(shell->std_io[1], O_RDWR);
+	restore_std_io(shell);
 	if (shell->status > 0 && tree->type == OR_IF)
 	{
 		shell->status = execute_node(shell, tree->right);

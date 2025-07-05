@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/05 11:28:37 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/05 14:18:40 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,19 +55,12 @@ static int	parse_and_execute(t_shell *shell)
 
 static void	wait_and_restore(t_shell *shell)
 {
-	int	fd;
-
 	while (shell->child_nbr > 0)
 	{
 		wait_and_decrypt_child(shell);
 		shell->child_nbr--;
 	}
-	fd = open(shell->std_io[0], O_RDWR);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-	fd = open(shell->std_io[1], O_RDWR);
-	dup2(fd, STDIN_FILENO);
-	close(fd);
+	restore_std_io(shell);
 	clean_shell(shell);
 }
 
