@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 16:30:57 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 18:56:22 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ int	execute_and_or_if(t_shell *shell, t_node *tree)
 		shell->status = WEXITSTATUS(shell->status);
 	else if (WIFSIGNALED(shell->status))
 		shell->status = (WTERMSIG(shell->status));
+	close(STDOUT_FILENO);
+	open(shell->std_io[0], O_RDWR);
+	close(STDIN_FILENO);
+	open(shell->std_io[1], O_RDWR);
 	if (shell->status > 0 && tree->type == OR_IF)
 	{
 		shell->status = execute_node(shell, tree->right);
@@ -58,6 +62,8 @@ int	execute_subshell(t_shell *shell, t_node *tree)
 	{
 		if (update_envint(shell->env, "SHLVL", 0, 1))
 			return (1);
+		shell->std_io[0] = ttyname(STDOUT_FILENO);
+		shell->std_io[1] = ttyname(STDIN_FILENO);
 		if (execute_node(shell, tree->right))
 			ft_error(shell, 1, 2, "EXEC", "SUBSHELL");
 		clean_shell(shell);

@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:30:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 16:44:30 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/04 19:28:53 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	**quote_removal(char **str)
 		res = (char *)malloc(sizeof(char) * (i - (2 * nbr)));
 		if (!res)
 			return (NULL);
-		res[i] = '\0';
+		res[i - (2 * nbr) - 1] = '\0';
 		res = copy_without(res, str[j], i);
 		free(str[j]);
 		str[j] = res;
