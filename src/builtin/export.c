@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:34 by user              #+#    #+#             */
-/*   Updated: 2025/07/05 15:02:49 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/07 15:48:53 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,10 @@ void	env_print_sorted(t_env *env)
 		return ;
 	while (sorted)
 	{
-		if (sorted->value[0])
+		if (sorted->value && sorted->value[0] != '\0')
 			printf("%s=%s\n", sorted->key, sorted->value);
+		else if (sorted->value && sorted->value[0] == '\0')
+			printf("%s=\"\"\n", sorted->key);
 		else
 			printf("%s\n", sorted->key);
 		sorted = sorted->next;
@@ -50,14 +52,17 @@ void	env_print_sorted(t_env *env)
 	env_freeall(sorted);
 }
 
-int	builtin_export(t_env *env, char **args)
+int	builtin_export(t_env **env, char **args)
 {
 	int		i;
 	char	*key;
 	char	*value;
 
 	if (!args[1])
-		return (env_print_sorted(env), 0);
+	{
+		env_print_sorted(*env);
+		return (0);
+	}
 	i = 1;
 	while (args[i])
 	{
@@ -67,10 +72,18 @@ int	builtin_export(t_env *env, char **args)
 		{
 			key = extract_key(args[i]);
 			value = extract_value(args[i]);
-			if (!env_getone(env, key, ft_strlen(key)))
-				env_addback(&env, new_env(args[i]));
+			if (!key)
+				return (1);
+			if (!env_getone(*env, key, ft_strlen(key)))
+			{
+				if (!env_addback(env, new_env(args[i])))
+					return (free(key), free(value), 1);
+			}
 			else if (value)
-				env_updateone(&env, key, value);
+			{
+				if (!env_updateone(env, key, value))
+					return (free(key), free(value), 1);
+			}
 			free(key);
 			free(value);
 		}

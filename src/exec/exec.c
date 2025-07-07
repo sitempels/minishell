@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 13:50:13 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 15:51:29 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	execute_and_or_if(t_shell *shell, t_node *tree)
 
 int	execute_pipe(t_shell *shell, t_node *tree)
 {
-	int		pipefd[2];
+	int	pipefd[2];
 
 	if (pipe(pipefd) == -1)
 		ft_error(shell, 0, 2, "EXEC: PIPE", get_errnum(N_CREAT));
@@ -117,7 +117,7 @@ static int	isbuiltin(t_shell *shell, char **argv)
 		status = builtin_exit(shell, 1, ft_atoi(argv[1]));
 	}
 	else if (!ft_strcmp(argv[0], "export"))
-		status = builtin_export(shell->env, argv);
+		status = builtin_export(&shell->env, argv);
 	else if (!ft_strcmp(argv[0], "pwd"))
 		status = builtin_pwd();
 	else if (!ft_strcmp(argv[0], "unset"))
