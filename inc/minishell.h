@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/07 10:02:11 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 10:05:45 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,18 +191,14 @@ t_node							*parse_complete_cmd(t_shell *shell,
 									t_token **token);
 
 /*____________CMD_______________*/
-<<<<<<< HEAD
 t_node	*parse_cmd(t_shell *shell, t_token **token);
 t_node	*parse_simple_cmd(t_shell *shell, t_token **token);
 t_node	*parse_io_redirect(t_shell *shell, t_token **token);
-=======
 t_node							*parse_cmd(t_shell *shell, t_token **token);
 t_node							*parse_simple_cmd(t_shell *shell,
 									t_token **token);
 t_node							*parse_io_redirect(t_shell *shell,
 									t_token **token);
->>>>>>> refs/remotes/origin/work
-
 /*____________UTILS_____________*/
 t_node							*create_node(t_shell *shell, t_token **token,
 									int type);
