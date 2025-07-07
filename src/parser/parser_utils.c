@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:51:06 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/05 13:51:17 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 11:07:31 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	verif_tree(t_shell *shell, t_node *tree, t_node *previous)
 	if (tree->type == ERROR)
 	{
 		if (previous->type == WORD)
-		{	
+		{
 			len = (previous->use.content)->size;
 			error = (char *) ft_calloc(len + 1, sizeof(char));
 			ft_strlcpy(error, (previous->use.content)->start, len + 1);

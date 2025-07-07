@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 21:00:47 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 22:03:32 by user             ###   ########.fr       */
+/*   Updated: 2025/07/07 11:08:15 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,14 @@ static t_env	*init_without_env(void)
 	t_env	*new;
 	t_env	*env;
 
-	env = NULL; // Initialize env to NULL
+	env = NULL;
 	value = (char *)malloc(sizeof(char) * (PATH_MAX + 1));
 	if (!value)
 		return (NULL);
 	if (getcwd(value, PATH_MAX) == NULL)
 	{
 		free(value);
-		value = ft_strdup(""); // Fallback if getcwd fails
+		value = ft_strdup("");
 		if (!value)
 			return (NULL);
 	}
