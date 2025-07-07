@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 15:18:27 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 17:06:18 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ void	destroy_shell(t_shell *shell)
 	while (shell->env)
 	{
 		tmp = shell->env;
-		shell->env = (shell->env)->next;
+		shell->env = tmp->next;
+		free(tmp->key);
 		free(tmp->value);
 		free(tmp);
 	}

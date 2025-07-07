@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:20:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/07 16:17:02 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/07 17:01:59 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,11 @@ t_env	*new_env(char *env)
 	{
 		value = extract_value(env);
 		if (!value)
-			return (free(new), free(key), NULL);
+		{
+			free(key);
+			free(new);
+			return (NULL);
+		}
 	}
 	else
 		value = NULL;
@@ -70,16 +74,4 @@ void	env_freeone(t_env *env)
 	free(env->key);
 	free(env->value);
 	free(env);
-}
-
-void	env_freeall(t_env *env)
-{
-	t_env	*tmp;
-
-	while (env)
-	{
-		tmp = env->next;
-		env_freeone(env);
-		env = tmp;
-	}
 }
