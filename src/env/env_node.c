@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:20:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 16:48:24 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/07 16:17:02 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,12 @@ char	*extract_key(char *env)
 
 char	*extract_value(char *env)
 {
-	size_t	start;
-	char	*value;
+	char	*equal_sign;
 
-	start = 0;
-	while (env[start] && env[start] != '=')
-		start++;
-	if (!env[start])
+	equal_sign = ft_strchr(env, '=');
+	if (!equal_sign)
 		return (NULL);
-	start++;
-	value = ft_strdup(&env[start]);
-	return (value);
+	return (ft_strdup(equal_sign + 1));
 }
 
 t_env	*new_env(char *env)
@@ -52,9 +47,16 @@ t_env	*new_env(char *env)
 	if (!new)
 		return (NULL);
 	key = extract_key(env);
-	value = extract_value(env);
 	if (!key)
-		return (free(key), free(value), free(new), NULL);
+		return (free(new), NULL);
+	if (ft_strchr(env, '='))
+	{
+		value = extract_value(env);
+		if (!value)
+			return (free(new), free(key), NULL);
+	}
+	else
+		value = NULL;
 	new->key = key;
 	new->value = value;
 	new->next = NULL;

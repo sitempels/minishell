@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_sort.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:54:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/03 05:16:30 by user             ###   ########.fr       */
+/*   Updated: 2025/07/07 16:21:56 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ t_env	*env_dup(t_env *src)
 			return (NULL);
 		}
 		new->key = ft_strdup(src->key);
-		new->value = ft_strdup(src->value);
+		if (src->value)
+			new->value = ft_strdup(src->value);
+		else
+			new->value = NULL;
 		if (!new->key || (src->value && !new->value))
 		{
 			env_freeall(copy);

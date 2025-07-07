@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:34 by user              #+#    #+#             */
-/*   Updated: 2025/07/07 15:48:53 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/07 16:23:22 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ void	env_print_sorted(t_env *env)
 	while (sorted)
 	{
 		if (sorted->value && sorted->value[0] != '\0')
-			printf("%s=%s\n", sorted->key, sorted->value);
+			printf("declare -x %s=%s\n", sorted->key, sorted->value);
 		else if (sorted->value && sorted->value[0] == '\0')
-			printf("%s=\"\"\n", sorted->key);
+			printf("declare -x %s=\"\"\n", sorted->key);
 		else
-			printf("%s\n", sorted->key);
+			printf("declare -x %s\n", sorted->key);
 		sorted = sorted->next;
 	}
 	env_freeall(sorted);
@@ -57,6 +57,7 @@ int	builtin_export(t_env **env, char **args)
 	int		i;
 	char	*key;
 	char	*value;
+	t_env	*new;
 
 	if (!args[1])
 	{
@@ -76,8 +77,24 @@ int	builtin_export(t_env **env, char **args)
 				return (1);
 			if (!env_getone(*env, key, ft_strlen(key)))
 			{
-				if (!env_addback(env, new_env(args[i])))
-					return (free(key), free(value), 1);
+				if (value == NULL)
+				{
+					new = malloc(sizeof(t_env));
+					if (!new)
+						return (free(key), 1);
+					new->key = key;
+					new->value = NULL;
+					new->next = NULL;
+					if (!env_addback(env, new))
+						return (free(value), 1);
+				}
+				else
+				{
+					if (!env_addback(env, new_env(args[i])))
+						return (free(key), free(value), 1);
+					free(key);
+				}
+				free(value);
 			}
 			else if (value)
 			{
