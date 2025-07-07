@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/07 11:06:15 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 15:50:02 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ int		builtin_env(t_env *env);
 int		builtin_cd(t_env *env, char *path);
 int		builtin_exit(t_shell *shell, int print, int status);
 int		builtin_pwd(void);
-int		builtin_export(t_env *env, char **args);
+int		builtin_export(t_env **env, char **args);
 int		builtin_unset(t_env **env, char **args);
 int		builtin_echo(char **argv);
 
