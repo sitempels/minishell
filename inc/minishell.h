@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/05 14:28:12 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/05 14:30:54 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ t_node	*parse_complete_cmd(t_shell *shell, t_token **token);
 
 /*____________CMD_______________*/
 t_node	*parse_cmd(t_shell *shell, t_token **token);
-t_node	*parse_simple_cmd(t_shell *shell, n **token);
+t_node	*parse_simple_cmd(t_shell *shell, t_token **token);
 t_node	*parse_io_redirect(t_shell *shell, t_token **token);
 
 /*____________UTILS_____________*/
