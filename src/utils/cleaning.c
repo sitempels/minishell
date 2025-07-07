@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/05 08:48:23 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 15:18:27 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,14 @@ void	clean_tree(t_node **tree)
 		clean_tree(&(*tree)->left);
 	if ((*tree)->right)
 		clean_tree(&(*tree)->right);
+	if ((*tree)->type == ARGUMENT || (*tree)->type == FILENAME)
+	{
+		if ((*tree)->use.content)
+		{
+			free((*tree)->use.content);
+			(*tree)->use.content = NULL;
+		}
+	}
 	free(*tree);
 	*tree = NULL;
 	return ;

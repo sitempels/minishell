@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 10:17:26 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 13:29:48 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ int	create_pipe(t_shell *shell, t_node *tree, int a, int *pipefd)
 		close(pipefd[(-a + 1)]);
 		if (execute_node(shell, tree))
 			builtin_exit(shell, 0, EXIT_FAILURE);
-		clean_shell(shell);
-		exit(0);
+		builtin_exit(shell, 0, EXIT_SUCCESS);
 	}
 	return (0);
 }

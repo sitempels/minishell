@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:30:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/05 10:26:53 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 15:22:48 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ static char	**get_arg_token(t_shell *shell, t_token *arg, int nbr)
 	}
 	argv = get_arg_token(shell, arg->next, nbr + 1);
 	if (!argv)
-		return (NULL);
+		return (free(arg), NULL);
 	argv[nbr] = process_arg(shell, arg->start, arg->size);
 	if (!argv[nbr])
-		return (NULL);
+		return (free(arg), NULL);
 	return (argv);
 }
 
@@ -57,5 +57,6 @@ static char	**get_arg_array(t_shell *shell, char *arg)
 		return (NULL);
 	argv[1] = NULL;
 	argv[0] = process_arg(shell, arg, ft_strlen(arg));
+	free(arg);
 	return (argv);
 }

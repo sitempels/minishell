@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 16:38:57 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 15:06:08 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,11 @@ t_node	*parser(t_shell *shell, t_token **token)
 	if (!token)
 		return (NULL);
 	shell->tree = parse_complete_cmd(shell, token);
-	if ((*token)->type == EOL)
+	if ((*token)->type == EOL && !(*token)->next)
 	{
 		free(*token);
 		*token = NULL;
 	}
-	else
-		ft_error(shell, 0, 1, "PARSER: SOMETHING WENT WRONG !!!\n");
 	if (shell->tree)
 		verif_tree(shell, shell->tree, NULL);
 	else
@@ -49,8 +47,10 @@ t_node	*parse_complete_cmd(t_shell *shell, t_token **token)
 	{
 		new = create_node(shell, token, (*token)->type);
 		new->left = node;
-		if ((*token)->type == EOL)
+		if (!new->left->right || (*token)->type == EOL)
 		{
+			free(new->left);
+			new->left = NULL;
 			new->right = create_node(shell, NULL, ERROR);
 			return (new);
 		}
@@ -75,8 +75,10 @@ t_node	*parse_pipeline(t_shell *shell, t_token **token)
 	{
 		new = create_node(shell, token, OR);
 		new->left = node;
-		if ((*token)->type == EOL)
+		if (!new->left->right || (*token)->type == EOL)
 		{
+			free(new->left);
+			new->left = NULL;
 			new->right = create_node(shell, NULL, ERROR);
 			return (new);
 		}

@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:51:06 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 11:07:31 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 13:13:34 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,12 @@ t_token	*munch_token(t_token **token, int clean)
 		return (NULL);
 	tmp = *token;
 	*token = (*token)->next;
+	tmp->next = NULL;
 	if (clean == 1)
 	{
 		free(tmp);
 		tmp = NULL;
 	}
-	else
-		tmp->next = NULL;
 	return (tmp);
 }
 
@@ -75,6 +74,8 @@ void	verif_tree(t_shell *shell, t_node *tree, t_node *previous)
 	size_t	len;
 	char	*error;
 
+	if (!tree)
+		return ;
 	error = NULL;
 	if (tree->type == ERROR)
 	{
@@ -87,6 +88,7 @@ void	verif_tree(t_shell *shell, t_node *tree, t_node *previous)
 		else
 			error = get_type(previous->type);
 		ft_error(shell, 0, 4, get_errnum(NEAR), "\'", error, "\'");
+		return ;
 	}
 	if (tree->left)
 		verif_tree(shell, tree->left, tree);

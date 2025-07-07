@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/05 15:44:11 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/07 15:09:11 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static void	wait_and_restore(t_shell *shell)
 
 int	minishell(t_shell *shell)
 {
+	printf("%ld\n%ld\n", sizeof(t_token), sizeof(t_node));
 	while (1)
 	{
 		signals();

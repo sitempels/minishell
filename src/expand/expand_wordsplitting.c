@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander2.c                                        :+:      :+:    :+:   */
+/*   expand_wordsplitting.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:10:49 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/05 10:07:58 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 12:29:06 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,27 @@ static void	arg_fill(char **argv, char *str, int start, int end);
 
 char	**word_splitting(char **arr, int index, int len)
 {
-	char	**argv;
 	int		arg_nbr;
+	char	**res;
 
-	if (!arr[index] || !*arr[index])
+	if (!arr[index])
 	{
-		argv = malloc(sizeof(char *) * (len + 1));
-		if (!argv)
+		res = (char **) malloc(sizeof(char *) * (len + 1));
+		if (!res)
 			return (NULL);
-		argv[len] = NULL;
-		return (argv);
+		res[len] = NULL;
+		return (res);
 	}
 	arg_nbr = 0;
 	arg_count(arr[index], &arg_nbr, IFS);
-	argv = word_splitting(arr, index + 1, len + arg_nbr);
-	if (!argv)
+	res = word_splitting(arr, index + 1, len + arg_nbr);
+	if (!res)
 		return (NULL);
-	arg_fill(argv, arr[index], len, arg_nbr);
-	return (argv);
+	arg_fill(res, arr[index], len, arg_nbr);
+	free(arr[index]);
+	if (index == 0)
+		free(arr);
+	return (res);
 }
 
 static void	arg_count(char *str, int *nbr, char *match_lst)
