@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/05 09:27:37 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 10:30:22 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ t_token	*handle_heredoc(t_shell *shell, t_token *end)
 	here_name = create_heredoc(shell, ".here_doc/heredoc");
 	fd = open(here_name, O_WRONLY | O_CREAT, 00644);
 	if (fd == -1)
+	{
+		shell->status = 1;
 		ft_error(shell, 0, 2, "HERE_DOC", get_errnum(OPEN_FILE));
+	}
 	is_quoted(end, &quoted);
 	while (g_signal != SIGINT && write_heredoc(shell, *end, fd, quoted))
 		continue ;

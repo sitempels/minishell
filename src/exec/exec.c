@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/05 14:18:16 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 10:09:22 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 	if (create_fork(shell))
 	{
 		path = get_path(argv[0], shell->env, F_OK + X_OK);
-		shell->status = execve(path, argv, envp_from_env(shell->env));
+		execve(path, argv, envp_from_env(shell->env));
+		shell->status = errno; 
 		ft_error(shell, 1, 3, argv[0], ": ", get_errnum(C_MISS));
 	}
 	wait_and_decrypt_child(shell);

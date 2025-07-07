@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/05 14:10:55 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 10:30:24 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,9 @@ t_token	*lexer(t_shell *shell, t_token **token_lst, char *cli)
 	new = NULL;
 	while (cli[i])
 	{
-		shell->status = token_found(shell, &new, cli, &i);
-		if (shell->status > 0)
+		if (token_found(shell, &new, cli, &i))
 			break ;
-		shell->status = handle_case(shell, &new, cli, &i);
-		if (shell->status > 0)
+		if (handle_case(shell, &new, cli, &i))
 			return (NULL);
 		token_addback(token_lst, new);
 	}
@@ -79,7 +77,10 @@ static int	token_found(t_shell *shell, t_token **new, char *cli, int *i)
 		size = handle_word(&cli[*i]);
 	*new = token_create(type, &cli[*i], size);
 	if (!new)
-		ft_error(shell, 0, 3, "LEXER", "TOKEN", get_errnum(N_CREAT));
+	{
+		shell->status = 1;
+		return (ft_error(shell, 0, 2, "LEXER TOKEN", get_errnum(N_CREAT)));
+	}
 	*i = *i + size;
 	return (0);
 }
@@ -118,7 +119,8 @@ static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i)
 			free(*new);
 			if (next)
 				free(next);
-			return (ft_error(shell, 0, 2, get_errnum(NEAR), "'<<'"), 1);
+			shell->status = 1;
+			return (ft_error(shell, 0, 2, get_errnum(NEAR), "'<<'"));
 		}
 		(*new)->next = handle_heredoc(shell, next);
 		if (!(*new)->next && g_signal != SIGINT)
