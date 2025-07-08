@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 15:18:27 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 16:20:06 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	destroy_shell(t_shell *shell)
 	{
 		tmp = shell->env;
 		shell->env = (shell->env)->next;
+		free(tmp->key);
 		free(tmp->value);
 		free(tmp);
 	}

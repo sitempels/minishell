@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 15:52:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 12:50:47 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/07 16:37:37 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,13 @@ char	*get_path(char *cmd, t_env *env, int mode)
 		path_full = ft_strjoin_var(3, paths[i], "/", cmd);
 		error = access(path_full, mode);
 		if (error == 0)
-			return (path_full);
+			return (free_array(paths, 0), free(paths), path_full);
 		free(path_full);
 		path_full = NULL;
 		i++;
 	}
+	free_array(paths, 0);
+	free(paths);
 	return (NULL);
 }
 /*
