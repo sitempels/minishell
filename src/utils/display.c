@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/04 21:48:49 by user             ###   ########.fr       */
+/*   Updated: 2025/07/08 18:02:13 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,9 @@ char	*build_color_prompt(void)
 		perror("cwd");
 		return (ft_strdup("📁 \033[1;36mBlack Hole \033[1;35m$\033[0m "));
 	}
-	fcwd = ft_strrpl(cwd, home, "~");
-	if (!fcwd)
+	if (home)
+		fcwd = ft_strrpl(cwd, home, "~");
+	else
 		fcwd = ft_strdup(cwd);
 	free(cwd);
 	if (!fcwd)
@@ -88,7 +89,8 @@ char	*build_color_prompt(void)
 	if (!temp)
 		return (ft_strdup("📁 \033[1;36mBlack Hole \033[1;35m$\033[0m "));
 	prompt = ft_strjoin(temp, " \033[1;35m$\033[0m ");
-	return (free(temp), prompt);
+	free(temp);
+	return (prompt);
 }
 
 char	*build_prompt(void)

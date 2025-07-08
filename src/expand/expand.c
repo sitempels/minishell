@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:30:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/07 15:22:48 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:41:09 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	**get_arg_array(t_shell *shell, char *arg)
 {
 	char	**argv;
 
-	argv = (char **) malloc(sizeof(char *) * (2));
+	argv = (char **)malloc(sizeof(char *) * (2));
 	if (!argv)
 		return (NULL);
 	argv[1] = NULL;

@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 21:00:47 by user              #+#    #+#             */
-/*   Updated: 2025/07/07 17:04:08 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:06:36 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ t_shell	*init_shell(int mode, char **envp)
 	if (!shell)
 		return (NULL);
 	shell->cli = NULL;
-	shell->env = (!envp || !*envp) ? init_without_env() : env_from_envp(envp);
+	if (!envp || !*envp)
+		shell->env = init_without_env();
+	else
+		shell->env = env_from_envp(envp);
 	if (!shell->env)
 		return (free(shell), NULL);
 	shell->tokens = NULL;
@@ -60,7 +63,7 @@ static t_env	*create_env_node(char *key, char *value)
 {
 	t_env	*new;
 
-	if (!key || !value)
+	if (!key)
 		return (free(key), free(value), NULL);
 	new = ft_calloc(1, sizeof(t_env));
 	if (!new)
@@ -92,6 +95,9 @@ static t_env	*init_without_env(void)
 	if (!node || env_addback(&env, node) != 0)
 		return (env_freeall(env), NULL);
 	node = create_env_node(ft_strdup("SHLVL"), ft_strdup("0"));
+	if (!node || env_addback(&env, node) != 0)
+		return (env_freeall(env), NULL);
+	node = create_env_node(ft_strdup("OLDPWD"), NULL);
 	if (!node || env_addback(&env, node) != 0)
 		return (env_freeall(env), NULL);
 	return (env);

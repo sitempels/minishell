@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:20:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/08 17:02:33 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:47:04 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ char	*expand_string(t_shell *shell, char *input)
 	i = 0;
 	while (input[i])
 	{
-		if (input[i] == '&' && input[i + 1] == '\'')
+		if (input[i] && input[i] == '&' && input[i + 1] == '\'')
 		{
 			i += 2;
 			while (!(input[i] == '&' && input[i + 1] == '\''))
 				i++;
 			i += 2;
 		}
-		else if (input[i] == '$')
+		else if (input[i] && input[i] == '$')
 		{
 			if (input[i + 1] == '?')
 			{
