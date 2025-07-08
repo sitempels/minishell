@@ -6,11 +6,55 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:40:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/07 16:15:19 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/08 14:27:52 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// char	*envp_getone(t_env *env)
+// {
+// 	char	*result;
+// 	char	*tmp;
+
+// 	if (!env || !env->key || !env->value)
+// 		return (NULL);
+// 	result = ft_strjoin(env->key, "=");
+// 	if (!result)
+// 		return (NULL);
+// 	tmp = ft_strjoin(result, env->value);
+// 	free(result);
+// 	return (tmp);
+// }
+
+// char	**envp_from_env(t_env *env)
+// {
+// 	char	**result;
+// 	t_env	*tmp;
+// 	size_t	i;
+
+// 	if (!env)
+// 		return (NULL);
+// 	result = ft_calloc(env_size(env) + 1, sizeof(char *));
+// 	if (!result)
+// 		return (NULL);
+// 	tmp = env;
+// 	i = 0;
+// 	while (tmp)
+// 	{
+// 		result[i] = envp_getone(tmp);
+// 		if (!result[i])
+// 		{
+// 			while (i--)
+// 				free(result[i]);
+// 			free(result);
+// 			return (NULL);
+// 		}
+// 		tmp = tmp->next;
+// 		i++;
+// 	}
+// 	return (result);
+// }
 
 char	*envp_getone(t_env *env)
 {
@@ -42,17 +86,21 @@ char	**envp_from_env(t_env *env)
 	i = 0;
 	while (tmp)
 	{
-		result[i] = envp_getone(tmp);
-		if (!result[i])
+		if (tmp->key && tmp->value) // Skip invalid entries
 		{
-			while (i--)
-				free(result[i]);
-			free(result);
-			return (NULL);
+			result[i] = envp_getone(tmp);
+			if (!result[i])
+			{
+				while (i--)
+					free(result[i]);
+				free(result);
+				return (NULL);
+			}
+			i++;
 		}
 		tmp = tmp->next;
-		i++;
 	}
+	result[i] = NULL;
 	return (result);
 }
 

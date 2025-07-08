@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:34 by user              #+#    #+#             */
-/*   Updated: 2025/07/07 16:23:22 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/08 14:22:42 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	env_print_sorted(t_env *env)
 	while (sorted)
 	{
 		if (sorted->value && sorted->value[0] != '\0')
-			printf("declare -x %s=%s\n", sorted->key, sorted->value);
+			printf("declare -x %s=\"%s\"\n", sorted->key, sorted->value);
 		else if (sorted->value && sorted->value[0] == '\0')
 			printf("declare -x %s=\"\"\n", sorted->key);
 		else
