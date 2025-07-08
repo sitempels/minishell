@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 10:11:02 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 12:47:20 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:42:43 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ static char	*copy_without(char *dst, char *src, int nbr)
 	j = 0;
 	while (i < nbr)
 	{
-		if (src[i + j] == '&'
+		if (src[i + j] && src[i + j] == '&'
 			&& (src[i + j + 1] == '\'' || src[i + j + 1] == '\"'))
 			j = j + 2;
-		else
+		else if (src[i + j])
 		{
 			dst[i] = src[i + j];
 			i++;

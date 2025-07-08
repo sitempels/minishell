@@ -6,13 +6,13 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 15:51:29 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:57:32 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	isbuiltin(t_shell *shell, char **argv);
+static int	isbuiltin(t_shell *shell, char **argv, int status);
 
 int	execute_and_or_if(t_shell *shell, t_node *tree)
 {
@@ -81,10 +81,7 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 		return (ft_error(shell, 0, 2, "EXEC", "REDIRECTION FAILED"));
 	if (tree->right)
 		argv = expand(shell, (tree->right)->use.content, NULL);
-	shell->status = isbuiltin(shell, argv);
-	if (shell->status >= 0)
-		return (shell->status);
-	if (create_fork(shell))
+	if (!isbuiltin(shell, argv, 0) && create_fork(shell))
 	{
 		path = get_path(argv[0], shell->env, F_OK + X_OK);
 		execve(path, argv, envp_from_env(shell->env));
@@ -97,30 +94,30 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 	return (shell->status);
 }
 
-static int	isbuiltin(t_shell *shell, char **argv)
+static int	isbuiltin(t_shell *shell, char **argv, int status)
 {
-	int	status;
-
 	if (!argv || !argv[0])
 		return (-1);
-	status = -1;
+	status = 1;
 	if (!ft_strcmp(argv[0], "cd"))
-		status = builtin_cd(shell->env, argv[1]);
+		shell->status = builtin_cd(shell->env, argv[1]);
 	else if (!ft_strcmp(argv[0], "echo"))
-		status = builtin_echo(argv);
+		shell->status = builtin_echo(argv);
 	else if (!ft_strcmp(argv[0], "env"))
-		status = builtin_env(shell->env);
+		shell->status = builtin_env(shell->env);
 	else if (!ft_strcmp(argv[0], "exit"))
 	{
 		if (!argv[1])
-			status = builtin_exit(shell, 1, 0);
-		status = builtin_exit(shell, 1, ft_atoi(argv[1]));
+			shell->status = builtin_exit(shell, 1, 0);
+		shell->status = builtin_exit(shell, 1, ft_atoi(argv[1]));
 	}
 	else if (!ft_strcmp(argv[0], "export"))
-		status = builtin_export(&shell->env, argv);
+		shell->status = builtin_export(&shell->env, argv);
 	else if (!ft_strcmp(argv[0], "pwd"))
-		status = builtin_pwd();
+		shell->status = builtin_pwd();
 	else if (!ft_strcmp(argv[0], "unset"))
-		status = builtin_unset(&shell->env, argv);
+		shell->status = builtin_unset(&shell->env, argv);
+	else
+		status = 0;
 	return (status);
 }
