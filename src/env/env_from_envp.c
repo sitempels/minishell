@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_from_envp.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:50:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/03 05:10:47 by user             ###   ########.fr       */
+/*   Updated: 2025/07/07 17:01:33 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int	envp_size(char **envp)
 t_env	*env_from_envp(char **envp)
 {
 	t_env	*head;
-	t_env	*env;
-	size_t	i;
+	t_env	*node;
+	int		i;
 
 	head = NULL;
 	if (!envp)
@@ -36,19 +36,31 @@ t_env	*env_from_envp(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		env = new_env(envp[i]);
-		if (!env)
+		node = new_env(envp[i]);
+		if (!node)
 		{
 			env_freeall(head);
 			return (NULL);
 		}
-		if (env_addback(&head, env) != 0)
+		if (env_addback(&head, node) != 0)
 		{
+			env_freeone(node);
 			env_freeall(head);
-			env_freeone(env);
 			return (NULL);
 		}
 		i++;
 	}
 	return (head);
+}
+
+void	env_freeall(t_env *env)
+{
+	t_env	*tmp;
+
+	while (env)
+	{
+		tmp = env->next;
+		env_freeone(env);
+		env = tmp;
+	}
 }
