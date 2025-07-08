@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 15:55:10 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/08 14:48:16 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	read_and_prepare(t_shell *shell)
 	{
 		printf("%sUnclosed quotes%s\n", BOLD_RED, RESET);
 		clean_shell(shell);
-		return (1);
+		return (0);
 	}
 	add_history(shell->cli);
 	return (1);

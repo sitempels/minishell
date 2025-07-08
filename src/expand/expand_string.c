@@ -3,41 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   expand_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:20:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 09:35:50 by user             ###   ########.fr       */
+/*   Updated: 2025/07/08 17:02:33 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*expand_string(const char *input, t_env *env, int exit_status)
+char	*expand_string(t_shell *shell, char *input)
 {
 	size_t	i;
-	char	*res;
 
 	i = 0;
-	res = ft_strdup("");
-	if (!res)
-		return (NULL);
 	while (input[i])
 	{
-		if (input[i] != '$')
-			res = append_char(res, input[i++]);
-		else
+		if (input[i] == '&' && input[i + 1] == '\'')
 		{
-			i++;
-			if (input[i] == '?')
-			{
-				res = expand_exit_code(res, exit_status);
+			i += 2;
+			while (!(input[i] == '&' && input[i + 1] == '\''))
 				i++;
-			}
-			else if (ft_isalpha(input[i]) || input[i] == '_')
-				res = expand_variable(input, &i, env, res);
-			else
-				res = append_char(res, '$');
+			i += 2;
 		}
+		else if (input[i] == '$')
+		{
+			if (input[i + 1] == '?')
+			{
+				input = expand_exit_code(input, i, shell->status);
+				if (!input)
+					return (NULL);
+				i += 2;
+			}
+			else if (ft_isalpha(input[i + 1]) || input[i + 1] == '_')
+			{
+				i++;
+				input = expand_variable(input, &i, shell->env);
+				if (!input)
+					return (NULL);
+			}
+			else if (input[i + 1] == '$')
+				i += 2;
+			else
+				i++;
+			continue ;
+		}
+		i++;
 	}
-	return (res);
+	return (input);
 }

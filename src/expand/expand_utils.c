@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:10:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/03 05:24:15 by user             ###   ########.fr       */
+/*   Updated: 2025/07/08 17:00:59 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*get_env_value(t_env *env, const char *key)
 			return (env->value);
 		env = env->next;
 	}
-	return ("");
+	return (NULL);
 }
 
 char	*append_char(char *s, char c)
@@ -37,13 +37,4 @@ char	*append_char(char *s, char c)
 	new[len + 1] = '\0';
 	free(s);
 	return (new);
-}
-
-char	*append_str(char *s1, char *s2)
-{
-	char	*joined;
-
-	joined = ft_strjoin(s1, s2);
-	free(s1);
-	return (joined);
 }

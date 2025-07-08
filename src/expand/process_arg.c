@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_arg.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:25:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/08 14:41:49 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:15:30 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ char	*process_arg(t_shell *shell, char *start, size_t size)
 		return (NULL);
 	raw[i + (2 * j)] = '\0';
 	cpy_and_add(raw, start, size);
-	start = expand_string(raw, shell->env, shell->status);
-	free(raw);
+	start = expand_string(shell, raw);
 	return (start);
 }
 
