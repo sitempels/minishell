@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:34 by user              #+#    #+#             */
-/*   Updated: 2025/07/09 14:55:43 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:59:26 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,17 @@ static int	is_valid_identifier(const char *s)
 void	env_print_sorted(t_env *env)
 {
 	t_env	*sorted;
+	t_env	*head;
 
-	sorted = NULL;
 	sorted = env_dup(env);
 	if (!sorted)
 		return ;
 	if (env_sortkey(&sorted) != 0)
+	{
+		env_freeall(sorted);
 		return ;
+	}
+	head = sorted;
 	while (sorted)
 	{
 		if (sorted->value && sorted->value[0] != '\0')
@@ -49,15 +53,16 @@ void	env_print_sorted(t_env *env)
 			printf("declare -x %s\n", sorted->key);
 		sorted = sorted->next;
 	}
-	env_freeall(sorted);
+	env_freeall(head);
 }
 
 int	builtin_export(t_env **env, char **args)
 {
 	int		i;
+	t_env	*new;
 	char	*key;
 	char	*value;
-	t_env	*new;
+	t_env	*existing;
 
 	if (!args[1])
 	{
@@ -72,12 +77,18 @@ int	builtin_export(t_env **env, char **args)
 		else
 		{
 			key = extract_key(args[i]);
-			value = extract_value(args[i]);
 			if (!key)
 				return (1);
-			if (!env_getone(*env, key, ft_strlen(key)))
+			existing = env_getone(*env, key, ft_strlen(key));
+			if (!existing)
 			{
-				if (value == NULL)
+				if (ft_strchr(args[i], '='))
+				{
+					new = new_env(args[i]);
+					if (!new || env_addback(env, new))
+						return (env_freeone(new), free(key), 1);
+				}
+				else
 				{
 					new = malloc(sizeof(t_env));
 					if (!new)
@@ -85,24 +96,21 @@ int	builtin_export(t_env **env, char **args)
 					new->key = key;
 					new->value = NULL;
 					new->next = NULL;
-					if (!env_addback(env, new))
-						return (free(value), 1);
+					if (env_addback(env, new))
+						return (env_freeone(new), 1);
+					key = NULL;
 				}
-				else
-				{
-					if (!env_addback(env, new_env(args[i])))
-						return (free(key), free(value), 1);
-					free(key);
-				}
+			}
+			else if (ft_strchr(args[i], '='))
+			{
+				value = extract_value(args[i]);
+				if (!value)
+					return (free(key), 1);
+				if (env_updateone(env, key, value))
+					return (free(key), free(value), 1);
 				free(value);
 			}
-			else if (value)
-			{
-				if (!env_updateone(env, key, value))
-					return (free(key), free(value), 1);
-			}
 			free(key);
-			free(value);
 		}
 		i++;
 	}

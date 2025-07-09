@@ -6,7 +6,7 @@
 #    By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/07/09 11:36:34 by stempels         ###   ########.fr        #
+#    Updated: 2025/07/09 15:17:49 by sjacquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,6 +111,7 @@ re: ffclean all
 #
 debug: clean $(OBJ) $(LIBFT) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
+	@mkdir -p .here_doc
 	@echo "$(NAME) created !"
 #
 -include $(DEPENDS)
