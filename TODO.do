@@ -20,11 +20,20 @@ Need to make small changes in expand_string.c (one line too long)
 . expander2 ? main_parser ? main_lexer ?
 . Delete misc, .vscode folders. !keep misc/valgrind.suppress
 
-
+-------------------------------------------------------------------------------
 THIS SOULD WORKS
 📁 ~/projects/minishell $ export LS="ls -la"
-📁 ~/projects/4_circle/minishell $ <<end cat
+📁 ~/projects/minishell $ $LS
 
+UPDATE
+📁 ~/Projects/minishell $ export test="ls -la"
+📁 ~/Projects/minishell $ export | grep test
+declare -x test="ls"
+📁 ~/Projects/minishell $ $test
+debug_minishell  inc  libft  Makefile  minishell  misc  obj  README.md  src  TODO.do
+
+NOW IT WORKS BUT WITH HAVE A LITTLE PROBLEM WITH AS YOU CAN SEE.
+-------------------------------------------------------------------------------
 LEXER OUTPUT: 
 
 TOKEN_TYPE: 11	<<
@@ -35,4 +44,4 @@ TOKEN_TYPE: 8	EOL
 ==39321== Warning: noted but unhandled ioctl 0x5412 with no size/direction hints.
 ==39321==    This could cause spurious value errors to appear.
 ==39321==    See README_MISSING_SYSCALL_OR_IOCTL for guidance on writing a proper wrapper.
-📁 ~/projects/minishell $ $LS
+-------------------------------------------------------------------------------
