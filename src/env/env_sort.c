@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:54:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/07 16:21:56 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:38:20 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@ t_env	*env_dup(t_env *src)
 	{
 		new = ft_calloc(1, sizeof(t_env));
 		if (!new)
-		{
-			env_freeall(copy);
-			return (NULL);
-		}
+			return (env_freeall(copy), NULL);
 		new->key = ft_strdup(src->key);
 		if (src->value)
 			new->value = ft_strdup(src->value);

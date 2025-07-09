@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_quoteremoval.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 10:11:02 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/08 17:42:43 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:08:14 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	**quote_removal(char **str)
 		if (!res)
 			return (NULL);
 		res[i - (2 * nbr)] = '\0';
-		res = copy_without(res, str[j], i);
+		res = copy_without(res, str[j], i - (2 * nbr));
 		free(str[j]);
 		str[j] = res;
 		j++;
@@ -46,8 +46,7 @@ static int	calc_size(char *str, int *i)
 	nbr = 0;
 	while (str[*i])
 	{
-		if (str[*i] == '&'
-			&& (str[*i + 1] == '\'' || str[*i + 1] == '\"'))
+		if (str[*i] == '&' && (str[*i + 1] == '\'' || str[*i + 1] == '\"'))
 		{
 			nbr++;
 			(*i)++;
@@ -66,8 +65,8 @@ static char	*copy_without(char *dst, char *src, int nbr)
 	j = 0;
 	while (i < nbr)
 	{
-		if (src[i + j] && src[i + j] == '&'
-			&& (src[i + j + 1] == '\'' || src[i + j + 1] == '\"'))
+		if (src[i + j] && src[i + j] == '&' && (src[i + j + 1] == '\'' || src[i
+				+ j + 1] == '\"'))
 			j = j + 2;
 		else if (src[i + j])
 		{

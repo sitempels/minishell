@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:40:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/08 14:27:52 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:39:16 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,14 @@ char	**envp_from_env(t_env *env)
 	i = 0;
 	while (tmp)
 	{
-		if (tmp->key && tmp->value) // Skip invalid entries
+		if (tmp->key && tmp->value)
 		{
 			result[i] = envp_getone(tmp);
 			if (!result[i])
 			{
 				while (i--)
 					free(result[i]);
-				free(result);
-				return (NULL);
+				return (free(result), NULL);
 			}
 			i++;
 		}

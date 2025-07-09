@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:08:28 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 16:44:30 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:52:12 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,21 @@ int	env_addback(t_env **head, t_env *new)
 {
 	t_env	*last;
 
-	if (!new)
+	if (!head || !new)
 		return (1);
+	new->next = NULL;
 	if (!*head)
-		return (*head = new, 0);
-	last = env_getlast(*head);
+	{
+		*head = new;
+		return (0);
+	}
+	last = *head;
+	while (last->next)
+	{
+		if (last->next == new)
+			return (1);
+		last = last->next;
+	}
 	last->next = new;
 	return (0);
 }
