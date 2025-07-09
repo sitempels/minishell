@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:30:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/09 14:26:10 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:21:06 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ static char	**get_arg_token(t_shell *shell, t_token *arg, int nbr)
 	}
 	argv = get_arg_token(shell, arg->next, nbr + 1);
 	if (!argv)
-		return (free(arg), NULL);
+		return (NULL);
 	argv[nbr] = process_arg(shell, arg->start, arg->size);
 	if (!argv[nbr])
-		return (free(arg), NULL);
+		return (NULL);
 	return (argv);
 }
 

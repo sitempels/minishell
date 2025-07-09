@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/08 14:39:46 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:19:43 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	clean_tree(t_node **tree)
 {
+	t_token	*tmp;
+	t_token	*tmp2;
+
 	if (!tree || !*tree)
 		return ;
 	if ((*tree)->left)
@@ -24,8 +27,13 @@ void	clean_tree(t_node **tree)
 	{
 		if ((*tree)->use.content)
 		{
-			free((*tree)->use.content);
-			(*tree)->use.content = NULL;
+			tmp = (*tree)->use.content;
+			while (tmp)
+			{
+				tmp2 = tmp->next;
+				free(tmp);
+				tmp = tmp2;
+			}
 		}
 	}
 	free(*tree);

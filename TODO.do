@@ -24,5 +24,3 @@ Need to make small changes in expand_string.c (one line too long)
 THIS SOULD WORKS
 📁 ~/projects/minishell $ export LS="ls -la"
 📁 ~/projects/minishell $ $LS
-minishell: : Command not found
-📁 ~/projects/minishell $ 
