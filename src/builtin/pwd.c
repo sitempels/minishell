@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:37:26 by user              #+#    #+#             */
-/*   Updated: 2025/07/03 04:55:27 by user             ###   ########.fr       */
+/*   Updated: 2025/07/09 16:16:27 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,17 @@ int	builtin_pwd(void)
 	if (!cwd)
 	{
 		if (errno == ENOMEM)
-			return (printf("pwd: not enough memory (ENOMEM)\n"), 12);
+			printf("pwd: not enough memory (ENOMEM)\n");
 		else if (errno == ENOENT)
-			return (printf("pwd: this directory no longer exists (ENOENT)\n"),
-				2);
+			printf("pwd: this directory no longer exists (ENOENT)\n");
 		else if (errno == EACCES)
-			return (printf("pwd: permission denied (EACCES)\n"), 13);
+			printf("pwd: permission denied (EACCES)\n");
 		else
-			return (perror("pwd"), 1);
+			perror("pwd");
+		if (errno)
+			return (errno);
+		else
+			return (1);
 	}
 	printf("%s\n", cwd);
 	free(cwd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:43:28 by user              #+#    #+#             */
-/*   Updated: 2025/07/04 22:45:55 by user             ###   ########.fr       */
+/*   Updated: 2025/07/09 16:10:41 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,7 @@ static char	*get_safe_cwd(void)
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
-	{
 		perror("cd");
-		cwd = ft_strdup("");
-	}
 	return (cwd);
 }
 
@@ -46,8 +43,13 @@ static int	update_env_dirs(t_env *env, char *oldpwd, char *newpwd)
 		newpwd = ft_strdup("");
 	if (!newpwd)
 		return (free(oldpwd), 1);
-	env_updateone(&env, "OLDPWD", oldpwd);
-	env_updateone(&env, "PWD", newpwd);
+	if (env_updateone(&env, "OLDPWD", oldpwd) || env_updateone(&env, "PWD",
+			newpwd))
+	{
+		free(oldpwd);
+		free(newpwd);
+		return (1);
+	}
 	free(oldpwd);
 	free(newpwd);
 	return (0);
@@ -62,8 +64,17 @@ int	builtin_cd(t_env *env, char *path)
 	if (!oldpwd)
 		return (1);
 	path = get_target_path(env, path);
-	if (!path || chdir(path) != 0)
-		return (perror("cd"), free(oldpwd), 1);
+	if (!path)
+	{
+		free(oldpwd);
+		return (1);
+	}
+	if (chdir(path) != 0)
+	{
+		perror("cd");
+		free(oldpwd);
+		return (1);
+	}
 	newpwd = getcwd(NULL, 0);
 	return (update_env_dirs(env, oldpwd, newpwd));
 }

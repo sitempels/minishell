@@ -6,23 +6,22 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:34 by user              #+#    #+#             */
-/*   Updated: 2025/07/09 15:59:26 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:07:05 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// check for valid key (first char must be alpha/_)
-static int	is_valid_identifier(const char *s)
+static int	is_valid_identifier(const char *str)
 {
 	int	i;
 
-	if (!s || (!ft_isalpha(s[0]) && s[0] != '_'))
+	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
 		return (0);
 	i = 1;
-	while (s[i] && s[i] != '=')
+	while (str[i] && str[i] != '=')
 	{
-		if (!ft_isalnum(s[i]) && s[i] != '_')
+		if (!ft_isalnum(str[i]) && str[i] != '_')
 			return (0);
 		i++;
 	}

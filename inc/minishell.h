@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/09 14:36:00 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:14:44 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef enum e_type
 
 typedef union u_usage
 {
-	int					fd;
+	int							fd;
 	int							(*fct)();
 	char						**arg;
 	struct s_token				*content;
@@ -212,7 +212,7 @@ t_node							*node_addback(t_node *node, t_node *new,
 									int mode);
 void							verif_tree(t_shell *shell, t_node *tree,
 									t_node *previous);
-void	is_quoted(t_token *end, int *quoted);
+void							is_quoted(t_token *end, int *quoted);
 /**/
 /*_________________________________EXPAND_____________________________________*/
 char							**expand(t_shell *shell, t_token *token,
@@ -240,7 +240,7 @@ int								execute_cmd(t_shell *shell, t_node *tree);
 /*____________REDIR_____________*/
 int								execute_redir_input(t_shell *shell,
 									t_node *tree);
-int	execute_heredoc(t_shell *shell, t_node *tree);
+int								execute_heredoc(t_shell *shell, t_node *tree);
 int								execute_redir_output(t_shell *shell,
 									t_node *tree);
 int								execute_redir_output_a(t_shell *shell,
