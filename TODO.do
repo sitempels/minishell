@@ -40,3 +40,7 @@ TOKEN_TYPE: 8	EOL
 PROBLEM WITH SIGNAL SIGINT (TRY TO SET SIGNAL ELSEWHERE)
 
 -------------------------------------------------------------------------------
+
+WHY MAKE DEBUG RECOMPILE EACH TIME?
+
+-------------------------------------------------------------------------------

@@ -6,13 +6,26 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 21:20:58 by user             ###   ########.fr       */
+/*   Updated: 2025/07/09 21:38:33 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 volatile sig_atomic_t	g_signal = 0;
+
+int	ft_is_all_whitespace(const char *str)
+{
+	if (!str)
+		return (1);
+	while (*str)
+	{
+		if (!ft_isspace((unsigned char)*str))
+			return (0);
+		str++;
+	}
+	return (1);
+}
 
 static int	read_and_prepare(t_shell *shell)
 {
@@ -25,14 +38,14 @@ static int	read_and_prepare(t_shell *shell)
 	prompt = build_color_prompt();
 	shell->cli = readline(prompt);
 	free(prompt);
-	if (shell->cli && shell->cli[0] == '\0')
+	if (!shell->cli) // si NULL => fin de shell (Ctrl+D)
+		ft_error(shell, 1, 1, "leaving the shell...");
+	if (shell->cli[0] == '\0' || ft_is_all_whitespace(shell->cli))
 	{
 		free(shell->cli);
 		shell->cli = NULL;
 		return (0);
 	}
-	if (!shell->cli)
-		ft_error(shell, 1, 1, "leaving the shell...");
 	if (!is_valid_cli(shell->cli))
 	{
 		printf("%sUnclosed quotes%s\n", BOLD_RED, RESET);
@@ -45,6 +58,8 @@ static int	read_and_prepare(t_shell *shell)
 
 static int	parse_and_execute(t_shell *shell)
 {
+	if (!shell->cli)
+		return (0);
 	shell->tokens = lexer(shell, &shell->tokens, shell->cli);
 	if (!shell->tokens || shell->tokens->type == EOL)
 		return (0);
