@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 16:31:24 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:30:57 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,29 @@ int	execute_redir_input(t_shell *shell, t_node *tree)
 	if (!path)
 		ft_error(shell, 0, 2, arg[0], get_errnum(I_MISS));
 	fd = open(path, O_RDONLY, O_CLOEXEC);
-	if (tree->type == DLESS)
-		unlink(path);
 	dup2(fd, 0);
 	close(fd);
 	if (path)
 		free(path);
 	free_array(arg, 0);
+	if (tree->left)
+		execute_node(shell, tree->left);
+	return (0);
+}
+
+int	execute_heredoc(t_shell *shell, t_node *tree)
+{
+	int		fd;
+	char	*path;
+
+	path = tree->right->use.content->start;
+	if (!path)
+		ft_error(shell, 0, 2, path, get_errnum(I_MISS));
+	fd = open(path, O_RDONLY, O_CLOEXEC);
+	unlink(path);
+	dup2(fd, 0);
+	close(fd);
+	free(path);
 	if (tree->left)
 		execute_node(shell, tree->left);
 	return (0);

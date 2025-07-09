@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:25:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/08 17:38:42 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:29:58 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,16 @@ static void	cpy_and_add(char *raw, char *start, size_t size)
 		{
 			quote = start[i];
 			raw[i + j++] = '&';
-			raw[i + j] = start[i++];
+			raw[i + j] = start[i];
+			i++;
 			while (start[i] && start[i] != quote)
-				raw[i + j] = start[i++];
+			{
+				raw[i + j] = start[i];
+				i++;
+			}
 			raw[i + j++] = '&';
-			raw[i + j] = start[i++];
+			raw[i + j] = start[i];
+			i++;
 		}
 		else
 			raw[i + j] = start[i];

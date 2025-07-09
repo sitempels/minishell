@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 16:19:03 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:45:19 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,15 @@ t_node	*parse_io_redirect(t_shell *shell, t_token **token)
 		get_usage(new, (new)->type);
 		new->right = create_node(shell, NULL, FILENAME);
 		(new->right)->use.content = munch_token(token, 0);
+		if (new->type == DLESS)
+		{
+			new->right = handle_heredoc(shell, new->right);
+			if (g_signal == SIGINT)
+			{
+				shell->status = 130;
+				return (NULL);
+			}
+		}
 	}
 	else
 	{
@@ -88,8 +97,10 @@ t_node	*parse_io_redirect(t_shell *shell, t_token **token)
 
 static void	get_usage(t_node *node, int type)
 {
-	if (type == LESS || type == DLESS)
+	if (type == LESS)
 		node->use.fct = &execute_redir_input;
+	if (type == DLESS)
+		node->use.fct = &execute_heredoc;
 	if (type == GREAT)
 		node->use.fct = &execute_redir_output;
 	if (type == DGREAT)

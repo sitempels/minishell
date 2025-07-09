@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/08 17:00:28 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:26:00 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,21 +175,20 @@ int								is_valid_cli(const char *cli);
 int								match(char c, char *match_lst);
 t_token							*lexer(t_shell *shell, t_token **token_lst,
 									char *cli);
-t_token							*handle_heredoc(t_shell *shell, t_token *end);
-
+/**/
 /*____________UTILS_____________*/
 t_token							*token_addback(t_token **tokens, t_token *new);
 t_token							*token_create(int type, char *start,
 									size_t size);
 t_token							*token_last(t_token **token_lst);
-
+/**/
 /*_________________________________PARSER_____________________________________*/
 t_node							*parser(t_shell *shell, t_token **token);
 t_node							*parse_pipeline(t_shell *shell,
 									t_token **token);
 t_node							*parse_complete_cmd(t_shell *shell,
 									t_token **token);
-
+/**/
 /*____________CMD_______________*/
 t_node							*parse_cmd(t_shell *shell, t_token **token);
 t_node							*parse_simple_cmd(t_shell *shell,
@@ -201,6 +200,9 @@ t_node							*parse_simple_cmd(t_shell *shell,
 									t_token **token);
 t_node							*parse_io_redirect(t_shell *shell,
 									t_token **token);
+/*____________HERE_DOC__________*/
+t_node							*handle_heredoc(t_shell *shell, t_node *del);
+/**/
 /*____________UTILS_____________*/
 t_node							*create_node(t_shell *shell, t_token **token,
 									int type);
@@ -209,6 +211,7 @@ t_node							*node_addback(t_node *node, t_node *new,
 									int mode);
 void							verif_tree(t_shell *shell, t_node *tree,
 									t_node *previous);
+void	is_quoted(t_token *end, int *quoted);
 /**/
 /*_________________________________EXPAND_____________________________________*/
 char							**expand(t_shell *shell, t_token *token,
@@ -236,6 +239,7 @@ int								execute_cmd(t_shell *shell, t_node *tree);
 /*____________REDIR_____________*/
 int								execute_redir_input(t_shell *shell,
 									t_node *tree);
+int	execute_heredoc(t_shell *shell, t_node *tree);
 int								execute_redir_output(t_shell *shell,
 									t_node *tree);
 int								execute_redir_output_a(t_shell *shell,

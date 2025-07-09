@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 10:30:24 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:09:36 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	token_found(t_shell *shell, t_token **new, char *cli, int *i);
 static int	handle_word(char *cli);
-static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i);
+//static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i);
 
 t_token	*lexer(t_shell *shell, t_token **token_lst, char *cli)
 {
@@ -27,8 +27,10 @@ t_token	*lexer(t_shell *shell, t_token **token_lst, char *cli)
 	{
 		if (token_found(shell, &new, cli, &i))
 			break ;
-		if (handle_case(shell, &new, cli, &i))
-			return (NULL);
+		//if (handle_case(shell, &new, cli, &i))
+		if (new && new->type == IF)
+			if (ft_error(shell, 0, 2, "& ", get_errnum(NOT_H)))
+				return (NULL);
 		token_addback(token_lst, new);
 	}
 	if (!cli[i])
@@ -103,14 +105,12 @@ static int	handle_word(char *cli)
 	return (i);
 }
 
+/*
 static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i)
 {
-	t_token	*next;
+//	t_token	*next;
 
-	next = NULL;
-	if (*new && (*new)->type == IF)
-		if (ft_error(shell, 0, 2, "& ", get_errnum(NOT_H)))
-			return (1);
+//	next = NULL;
 	if (*new && (*new)->type == DLESS)
 	{
 		token_found(shell, &next, cli, i);
@@ -130,3 +130,4 @@ static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i)
 	}
 	return (0);
 }
+*/

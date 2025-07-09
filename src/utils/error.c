@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:05:48 by user              #+#    #+#             */
-/*   Updated: 2025/07/05 14:07:09 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:43:00 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ int	ft_error(t_shell *shell, int quit, int nbr_context, ...)
 		write(2, "\n", 1);
 		va_end(error_msg);
 	}
+	if (errno != 0)
+		shell->status = errno;
+	if (g_signal == SIGINT)
+		shell->status = 128 + SIGINT;
 	if (quit)
-	{
-		if (errno != 0)
-			builtin_exit(shell, 0, errno);
 		builtin_exit(shell, 0, shell->status);
-	}
 	clean_shell(shell);
 	return (shell->status);
 }

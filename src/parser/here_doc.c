@@ -6,18 +6,17 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 10:30:22 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:35:13 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static char	*create_heredoc(t_shell *shell, char *here_doc);
-static void	is_quoted(t_token *end, int *quoted);
-static int	write_heredoc(t_shell *shell, t_token end, int fd, int quoted);
-static int	heredoc_cmp(char *line, char *end, size_t len);
+static int	write_heredoc(t_shell *shell, t_token del, int fd, int quoted);
+static int	heredoc_cmp(char *line, char *del, size_t len);
 
-t_token	*handle_heredoc(t_shell *shell, t_token *end)
+t_node	*handle_heredoc(t_shell *shell, t_node *del)
 {
 	int		fd;
 	int		quoted;
@@ -28,47 +27,20 @@ t_token	*handle_heredoc(t_shell *shell, t_token *end)
 	if (fd == -1)
 	{
 		shell->status = 1;
+		free(here_name);
 		ft_error(shell, 0, 2, "HERE_DOC", get_errnum(OPEN_FILE));
 	}
-	is_quoted(end, &quoted);
-	while (g_signal != SIGINT && write_heredoc(shell, *end, fd, quoted))
+	is_quoted(del->use.content, &quoted);
+	while (g_signal != SIGINT
+		&& write_heredoc(shell, *(del->use.content), fd, quoted))
 		continue ;
 	if (g_signal == SIGINT)
-		return (NULL);
-	end->start = here_name;
-	end->size = ft_strlen(here_name);
+		return (clean_shell(shell), NULL);
+	del->use.content->start = here_name;
+	del->use.content->size = ft_strlen(here_name);
 	if (-close(fd))
 		ft_error(shell, 0, 2, "HERE_DOC", get_errnum(CLOSE_FILE));
-	return (end);
-}
-
-static int	write_heredoc(t_shell *shell, t_token end, int fd, int quoted)
-{
-	int		i;
-	char	*line;
-	char	**line_arr;
-
-	signal(SIGINT, handle_here_doc);
-	line = readline("heredoc>> ");
-	if (!line)
-		return (0);
-	if (!heredoc_cmp(line, end.start, end.size) || g_signal == SIGINT)
-		return (free(line), 0);
-	i = 0;
-	if (!quoted)
-	{
-		line_arr = expand(shell, NULL, line);
-		while (line_arr[i])
-		{
-			write(fd, line_arr[i], ft_strlen(line_arr[i]));
-			free(line_arr[i++]);
-		}
-	}
-	else
-		write(fd, line, ft_strlen(line));
-	write(fd, "\n", 1);
-	free(line);
-	return (1);
+	return (del);
 }
 
 static char	*create_heredoc(t_shell *shell, char *here_doc)
@@ -94,7 +66,36 @@ static char	*create_heredoc(t_shell *shell, char *here_doc)
 	return (NULL);
 }
 
-static int	heredoc_cmp(char *line, char *end, size_t len)
+static int	write_heredoc(t_shell *shell, t_token del, int fd, int quoted)
+{
+	int		i;
+	char	*line;
+	char	**line_arr;
+
+	signal(SIGINT, handle_here_doc);
+	line = readline("heredoc>> ");
+	if (!line)
+		return (0);
+	if (!heredoc_cmp(line, del.start, del.size) || g_signal == SIGINT)
+		return (free(line), 0);
+	i = 0;
+	if (!quoted)
+	{
+		line_arr = expand(shell, NULL, line);
+		while (line_arr[i])
+		{
+			write(fd, line_arr[i], ft_strlen(line_arr[i]));
+			free(line_arr[i++]);
+		}
+	}
+	else
+		write(fd, line, ft_strlen(line));
+	write(fd, "\n", 1);
+	free(line);
+	return (1);
+}
+
+static int	heredoc_cmp(char *line, char *del, size_t len)
 {
 	size_t	i;
 	size_t	j;	
@@ -103,30 +104,16 @@ static int	heredoc_cmp(char *line, char *end, size_t len)
 	j = 0;
 	while (i + j < len)
 	{
-		if (end[i + j] && (end[i + j] == '\'' || end[i + j] == '\"'))
+		if (del[i + j] && (del[i + j] == '\'' || del[i + j] == '\"'))
 		{
 			j = j + 1;
 			continue ;
 		}
-		if (!line[i] || line[i] != end[i + j])
+		if (!line[i] || line[i] != del[i + j])
 			return (1);
 		i++;
 	}
 	if (!line[i] && i + j == len)
 		return (0);
 	return (1);
-}
-
-static void	is_quoted(t_token *end, int *quoted)
-{
-	size_t	i;
-
-	i = 0;
-	*quoted = 0;
-	while (i < end->size)
-	{
-		if (end->start[i] == '\'' || end->start[i] == '\"')
-			(*quoted)++;
-		i++;
-	}
 }

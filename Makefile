@@ -6,7 +6,7 @@
 #    By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/07/07 16:47:39 by sjacquet         ###   ########.fr        #
+#    Updated: 2025/07/09 11:36:34 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,10 +37,10 @@ ENV_DIR = env
 SRC_ENV = $(addprefix $(ENV_DIR)/, env_list env_node env_utils env_from_envp env_del env_sort)
 #
 LEXER_DIR = lexer
-SRC_LEXER = $(addprefix $(LEXER_DIR)/, lexer lexer_utils here_doc)
+SRC_LEXER = $(addprefix $(LEXER_DIR)/, lexer lexer_utils)
 #
 PARSER_DIR = parser
-SRC_PARSER = $(addprefix $(PARSER_DIR)/, parser parser_cmd parser_utils)
+SRC_PARSER = $(addprefix $(PARSER_DIR)/, parser parser_cmd here_doc parser_utils)
 #
 EXEC_DIR = exec
 SRC_EXEC = $(addprefix $(EXEC_DIR)/, exec execute_redir exec_utils)

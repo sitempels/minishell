@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:51:06 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 13:13:34 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:02:44 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	verif_tree(t_shell *shell, t_node *tree, t_node *previous)
 		}
 		else
 			error = get_type(previous->type);
+		shell->status = 1;
 		ft_error(shell, 0, 4, get_errnum(NEAR), "\'", error, "\'");
 		return ;
 	}
@@ -95,4 +96,18 @@ void	verif_tree(t_shell *shell, t_node *tree, t_node *previous)
 	if (tree->right)
 		verif_tree(shell, tree->right, tree);
 	return ;
+}
+
+void	is_quoted(t_token *end, int *quoted)
+{
+	size_t	i;
+
+	i = 0;
+	*quoted = 0;
+	while (i < end->size)
+	{
+		if (end->start[i] == '\'' || end->start[i] == '\"')
+			(*quoted)++;
+		i++;
+	}
 }
