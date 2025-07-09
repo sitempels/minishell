@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/09 11:26:00 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:36:00 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef enum e_type
 
 typedef union u_usage
 {
+	int					fd;
 	int							(*fct)();
 	char						**arg;
 	struct s_token				*content;

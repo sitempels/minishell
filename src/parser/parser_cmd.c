@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 11:45:19 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:52:17 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_node	*parse_cmd(t_shell *shell, t_token **token)
 {
 	t_node	*new;
 
-	if ((*token)->type == EOL)
+	if (g_signal == SIGINT || (*token)->type == EOL)
 		return (NULL);
 	new = NULL;
 	if ((*token)->type != LEFT_PAREN)
@@ -44,6 +44,8 @@ t_node	*parse_simple_cmd(t_shell *shell, t_token **token)
 	t_token	**tmp;
 	t_node	*new;
 
+	if (g_signal == SIGINT || (*token)->type == EOL)
+		return (NULL);
 	new = create_node(shell, NULL, CMD);
 	new->use.fct = &execute_cmd;
 	while ((*token)->type == LESS || (*token)->type == DLESS
@@ -70,7 +72,7 @@ t_node	*parse_io_redirect(t_shell *shell, t_token **token)
 {
 	t_node	*new;
 
-	if ((*token)->type == EOL)
+	if (g_signal == SIGINT || (*token)->type == EOL)
 		return (NULL);
 	new = create_node(shell, token, (*token)->type);
 	if ((*token)->type == WORD)
@@ -83,7 +85,6 @@ t_node	*parse_io_redirect(t_shell *shell, t_token **token)
 			new->right = handle_heredoc(shell, new->right);
 			if (g_signal == SIGINT)
 			{
-				shell->status = 130;
 				return (NULL);
 			}
 		}

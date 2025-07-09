@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 15:06:08 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:54:46 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ t_node	*parser(t_shell *shell, t_token **token)
 	if (!token)
 		return (NULL);
 	shell->tree = parse_complete_cmd(shell, token);
+	if (g_signal == SIGINT)
+	{
+		clean_shell(shell);
+		return (NULL);
+	}
 	if ((*token)->type == EOL && !(*token)->next)
 	{
 		free(*token);
@@ -39,7 +44,7 @@ t_node	*parse_complete_cmd(t_shell *shell, t_token **token)
 	t_node	*node;
 	t_node	*new;
 
-	if ((*token)->type == EOL)
+	if (g_signal == SIGINT || (*token)->type == EOL)
 		return (NULL);
 	new = NULL;
 	node = parse_pipeline(shell, token);
@@ -67,7 +72,7 @@ t_node	*parse_pipeline(t_shell *shell, t_token **token)
 	t_node	*node;
 	t_node	*new;
 
-	if ((*token)->type == EOL)
+	if (g_signal == SIGINT || (*token)->type == EOL)
 		return (NULL);
 	new = NULL;
 	node = parse_cmd(shell, token);

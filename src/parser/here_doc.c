@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 11:35:13 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:41:57 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,13 @@ t_node	*handle_heredoc(t_shell *shell, t_node *del)
 	while (g_signal != SIGINT
 		&& write_heredoc(shell, *(del->use.content), fd, quoted))
 		continue ;
+	//unlink(here_name);
+	free(here_name);
+	del->use.fd = fd;
 	if (g_signal == SIGINT)
-		return (clean_shell(shell), NULL);
-	del->use.content->start = here_name;
-	del->use.content->size = ft_strlen(here_name);
-	if (-close(fd))
-		ft_error(shell, 0, 2, "HERE_DOC", get_errnum(CLOSE_FILE));
+		return (free(del), NULL);
+	//if (-close(fd))
+	//	ft_error(shell, 0, 2, "HERE_DOC", get_errnum(CLOSE_FILE));
 	return (del);
 }
 
@@ -47,13 +48,16 @@ static char	*create_heredoc(t_shell *shell, char *here_doc)
 {
 	int		nbr;
 	int		found;
+	char	*str_nbr;
 	char	*here_name;
 
 	nbr = 0;
 	found = 0;
 	while (found >= 0 && nbr < MAX_HEREDOC)
 	{
-		here_name = ft_strjoin(here_doc, ft_itoa(nbr));
+		str_nbr = ft_itoa(nbr);
+		here_name = ft_strjoin(here_doc, str_nbr);
+		free(str_nbr);
 		if (!here_name)
 			ft_error(shell, 0, 2, "HERE_DOC", get_errnum(CREAT_FILE));
 		found = access(here_name, F_OK);
@@ -78,15 +82,16 @@ static int	write_heredoc(t_shell *shell, t_token del, int fd, int quoted)
 		return (0);
 	if (!heredoc_cmp(line, del.start, del.size) || g_signal == SIGINT)
 		return (free(line), 0);
-	i = 0;
 	if (!quoted)
 	{
 		line_arr = expand(shell, NULL, line);
-		while (line_arr[i])
+		i = -1;
+		while (line_arr[++i])
 		{
 			write(fd, line_arr[i], ft_strlen(line_arr[i]));
-			free(line_arr[i++]);
+			free(line_arr[i]);
 		}
+		free(line_arr);
 	}
 	else
 		write(fd, line, ft_strlen(line));

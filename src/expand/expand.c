@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:30:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/08 17:41:09 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:26:10 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,5 @@ static char	**get_arg_array(t_shell *shell, char *arg)
 		return (NULL);
 	argv[1] = NULL;
 	argv[0] = process_arg(shell, arg, ft_strlen(arg));
-	free(arg);
 	return (argv);
 }
