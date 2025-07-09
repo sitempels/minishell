@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 16:05:10 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:42:45 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	execute_pipe(t_shell *shell, t_node *tree)
 int	execute_subshell(t_shell *shell, t_node *tree)
 {
 	if (execute_node(shell, tree->left))
-		return (ft_error(shell, 0, 2, "EXEC", "REDIRECTION FAILED"));
+		return (1);
 	if (create_fork(shell))
 	{
 		shell->std_io[0] = ttyname(STDOUT_FILENO);
@@ -78,7 +78,7 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 
 	argv = NULL;
 	if (execute_node(shell, tree->left))
-		return (ft_error(shell, 0, 2, "EXEC", "REDIRECTION FAILED"));
+		return (1);
 	if (tree->right)
 		argv = expand(shell, (tree->right)->use.content, NULL);
 	if (!isbuiltin(shell, argv, 0) && create_fork(shell))

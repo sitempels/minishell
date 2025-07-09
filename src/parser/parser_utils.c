@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:51:06 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 11:02:44 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:00:03 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ void	verif_tree(t_shell *shell, t_node *tree, t_node *previous)
 		ft_error(shell, 0, 4, get_errnum(NEAR), "\'", error, "\'");
 		return ;
 	}
-	if (tree->left)
+	if (shell->tree && tree->left)
 		verif_tree(shell, tree->left, tree);
-	if (tree->right)
+	if (shell->tree && tree->right)
 		verif_tree(shell, tree->right, tree);
 	return ;
 }

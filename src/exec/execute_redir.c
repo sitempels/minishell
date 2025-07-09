@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 14:45:27 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:37:24 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,12 @@ int	execute_redir_input(t_shell *shell, t_node *tree)
 		path = get_path(arg[0], shell->env, F_OK + R_OK);
 	}
 	if (!path)
-		ft_error(shell, 0, 2, arg[0], get_errnum(I_MISS));
+	{
+		ft_error(shell, 0, 3, arg[0], ": ", get_errnum(I_MISS));
+		free_array(arg, 0);
+		free(arg);
+		return (1);
+	}
 	fd = open(path, O_RDONLY, O_CLOEXEC);
 	dup2(fd, 0);
 	close(fd);

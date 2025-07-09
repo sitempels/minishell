@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 15:59:58 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:35:38 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_node	*parse_io_redirect(t_shell *shell, t_token **token)
 		{
 			new->right = handle_heredoc(shell, new->right);
 			if (g_signal == SIGINT)
-				return (NULL);
+				return (free(new->right), free(new), NULL);
 		}
 	}
 	else
