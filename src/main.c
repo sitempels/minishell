@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/08 14:48:16 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/09 21:20:58 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ static int	read_and_prepare(t_shell *shell)
 	prompt = build_color_prompt();
 	shell->cli = readline(prompt);
 	free(prompt);
+	if (shell->cli && shell->cli[0] == '\0')
+	{
+		free(shell->cli);
+		shell->cli = NULL;
+		return (0);
+	}
 	if (!shell->cli)
 		ft_error(shell, 1, 1, "leaving the shell...");
 	if (!is_valid_cli(shell->cli))

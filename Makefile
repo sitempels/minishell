@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+         #
+#    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/07/09 16:25:03 by stempels         ###   ########.fr        #
+#    Updated: 2025/07/09 21:24:01 by user             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,6 +89,9 @@ $(NAME): $(OBJ) $(LIBFT)
 
 run: $(NAME)
 	@./$(NAME)
+#
+leak: debug
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --suppressions=./misc/valgrind.supp ./debug_$(NAME_PROJECT)
 #
 clean:
 	rm -rf $(OBJ_DIR) $(DEPENDS)
