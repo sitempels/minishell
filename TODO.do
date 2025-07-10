@@ -11,20 +11,41 @@ MAYBE WE CAN FIND A GOOD FRIEND THAT CAN TRY SOME COMMANDS AND CHECK IF EVERYTHI
 
 -------------------------------------------------------------------------------
 
-THIS SOULD WORKS
-📁 ~/projects/minishell $ export LS="ls -la"
-📁 ~/projects/minishell $ $LS
+WEIRD BEHAVIOUR
 
-UPDATE
-📁 ~/Projects/minishell $ export test="ls -la"
-📁 ~/Projects/minishell $ export | grep test
-declare -x test="ls"
-📁 ~/Projects/minishell $ $test
-debug_minishell  inc  libft  Makefile  minishell  misc  obj  README.md  src  TODO.do
+📁 ~/projects/4_circle/minishell $ export TEST=ls
+📁 ~/projects/4_circle/minishell $ export | grep TEST
+declare -x TEST="ls"
+📁 ~/projects/4_circle/minishell $ export | grep TEST
+declare -x TEST="ls"
+📁 ~/projects/4_circle/minishell $ export | grep TEST
+declare -x TEST="ls"
+📁 ~/projects/4_circle/minishell $ export TES="ls -a"
+📁 ~/projects/4_circle/minishell $ export | grep TES
+declare -x TES="ls -a"
+declare -x TEST="ls"
+📁 ~/projects/4_circle/minishell $ export TEST="ls -a"
+📁 ~/projects/4_circle/minishell $ export | grep TES
+declare -x TES="ls -a"
+declare -x TEST="ls -a"
+📁 ~/projects/4_circle/minishell $ export TEST=ls
+📁 ~/projects/4_circle/minishell $ export | grep TES
+grep: TES: No such file or directory
+grep: : No such file or directory
+📁 ~/projects/4_circle/minishell $ export | grep TEST
+declare -x TEST="ls"
+📁 ~/projects/4_circle/minishell $ export | grep TES
+declare -x TES="ls -a"
+declare -x TEST="ls"
+📁 ~/projects/4_circle/minishell $ export TEST=ls
+📁 ~/projects/4_circle/minishell $ export | grep TES
+grep: : No such file or directory
+📁 ~/projects/4_circle/minishell $ export | grep TES
+declare -x TES="ls -a"
+declare -x TEST="ls"
+📁 ~/projects/4_circle/minishell $ 
+-------------------------------------------------------------------------------
 
-NOW IT WORKS BUT WITH HAVE A LITTLE PROBLEM WITH AS YOU CAN SEE.
-CORRECTED but ->
-1) export doesn't discriminate between LS and LS_TRUC for exemple
 -------------------------------------------------------------------------------
 
 LEXER OUTPUT: 

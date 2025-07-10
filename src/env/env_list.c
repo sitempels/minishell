@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:08:28 by user              #+#    #+#             */
-/*   Updated: 2025/07/09 14:52:12 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/10 11:10:13 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_env	*env_getone(t_env *head, char *key, size_t len)
 	tmp = head;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->key, key, len) == 0)
+		if (ft_strcmp(tmp->key, key) == 0)
 			return (tmp);
 		tmp = tmp->next;
 	}
