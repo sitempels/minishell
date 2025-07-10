@@ -23,7 +23,8 @@ declare -x test="ls"
 debug_minishell  inc  libft  Makefile  minishell  misc  obj  README.md  src  TODO.do
 
 NOW IT WORKS BUT WITH HAVE A LITTLE PROBLEM WITH AS YOU CAN SEE.
-
+CORRECTED but ->
+1) export doesn't discriminate between LS and LS_TRUC for exemple
 -------------------------------------------------------------------------------
 
 LEXER OUTPUT: 

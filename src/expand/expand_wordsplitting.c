@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:10:49 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 12:29:06 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/10 10:47:37 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,18 @@ static void	arg_count(char *str, int *nbr, char *match_lst)
 	{
 		while (str[i] && match(str[i], match_lst))
 			i++;
-		if (str[i] && (str[i] == '\'' || str[i] == '\"'))
+		if (str[i])
+			(*nbr)++;
+		while (str[i] && !match(str[i], match_lst) && str[i] != '&')
+			i++;
+		if (str[i] && str[i] == '&' && ((str[i + 1] == '\'' || str[i + 1] == '\"')))
 		{
-			quote = str[i++];
+			quote = str[i + 1];
+			i = i + 2;
 			while (str[i] && str[i] != quote)
 				i++;
 		}
-		if (str[i])
-			(*nbr)++;
-		while (str[i] && !match(str[i], match_lst))
-			i++;
+		i++;
 	}
 }
 
@@ -74,20 +76,23 @@ static void	arg_fill(char **argv, char *str, int start, int end)
 	j = 0;
 	while (++i < end)
 	{
+		k = 0;
 		while (str[j] && match(str[j], IFS))
 			j++;
-		if (str[j] && (str[j] == '\'' || str[j] == '\"'))
-		{
-			quote = str[j++];
-			while (str[j] && str[j] != quote)
-				j++;
-		}
-		k = 0;
-		while (str[j + k] && !match(str[j + k], IFS))
+		while (str[j + k] && !match(str[j + k], IFS) && str[j + k] != '&')
 			k++;
+		if (str[j + k] && str[j + k] == '&' && ((str[j + k + 1] == '\'' || str[j + k + 1] == '\"')))
+		{
+			quote = str[j + k + 1];
+			k = k + 2;
+			while (str[j + k] && (str[j + k] != quote))
+				k++;
+			k++;
+		}
 		argv[start + i] = (char *)malloc(sizeof(char) * (k + 1));
 		if (!argv[start + i])
 			return ;
 		ft_strlcpy(argv[start + i], &str[j], k + 1);
+		j = j + k + 1;
 	}
 }
