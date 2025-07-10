@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:10:49 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/10 16:56:39 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:25:55 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static void	arg_count(char *str, int *nbr, char *match_lst)
 			i = i + 2;
 			while (str[i] && str[i] != quote)
 				i++;
+			i++;
 		}
 	}
 }
