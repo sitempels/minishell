@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:34 by user              #+#    #+#             */
-/*   Updated: 2025/07/09 16:58:11 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/10 13:42:36 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	builtin_export(t_env **env, char **args)
 			key = extract_key(args[i]);
 			if (!key)
 				return (1);
-			existing = env_getone(*env, key, ft_strlen(key));
+			existing = env_getone(*env, key);
 			if (!existing)
 			{
 				if (ft_strchr(args[i], '='))

@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:08:28 by user              #+#    #+#             */
-/*   Updated: 2025/07/10 11:10:13 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/10 13:40:33 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	env_addback(t_env **head, t_env *new)
 	return (0);
 }
 
-t_env	*env_getone(t_env *head, char *key, size_t len)
+t_env	*env_getone(t_env *head, char *key)
 {
 	t_env	*tmp;
 

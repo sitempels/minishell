@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:43:28 by user              #+#    #+#             */
-/*   Updated: 2025/07/09 16:10:41 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/10 13:42:15 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*get_target_path(t_env *env, char *path)
 
 	if (path)
 		return (path);
-	home = env_getone(env, "HOME", 4);
+	home = env_getone(env, "HOME");
 	if (!home || !home->value)
 	{
 		printf("cd: home not set in env\n");

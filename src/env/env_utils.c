@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:40:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/09 14:39:16 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/10 13:41:52 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ char	*env_getpath(t_env *env)
 {
 	t_env	*tmp;
 
-	tmp = env_getone(env, "PATH", 4);
+	tmp = env_getone(env, "PATH");
 	if (!tmp)
 		return (NULL);
 	return (tmp->value);
@@ -131,7 +131,7 @@ int	env_updateone(t_env **head, char *key, char *value)
 
 	if (!head || !key)
 		return (1);
-	node = env_getone(*head, key, ft_strlen(key));
+	node = env_getone(*head, key);
 	if (!node)
 	{
 		if (value)

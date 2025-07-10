@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/09 16:14:44 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/10 13:44:38 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,7 @@ typedef struct s_shell
 void							signals(void);
 void							handle_here_doc(int sig);
 t_shell							*init_shell(int mode, char **envp);
-int								update_envint(t_env *env, char *key, size_t len,
-									int modif);
+int								update_envint(t_env *env, char *key, int modif);
 
 /*__________________________________ENV_______________________________________*/
 t_env							*new_env(char *env);
@@ -139,7 +138,7 @@ t_env							*env_from_envp(char **envp);
 char							*envp_getone(t_env *env);
 char							**envp_from_env(t_env *env);
 t_env							*env_getlast(t_env *lst);
-t_env							*env_getone(t_env *head, char *key, size_t len);
+t_env							*env_getone(t_env *head, char *key);
 char							*env_getpath(t_env *env);
 char							**env_getallpaths(char *path);
 int								env_addfront(t_env **head, t_env *new);

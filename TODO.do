@@ -11,43 +11,6 @@ MAYBE WE CAN FIND A GOOD FRIEND THAT CAN TRY SOME COMMANDS AND CHECK IF EVERYTHI
 
 -------------------------------------------------------------------------------
 
-WEIRD BEHAVIOUR
-
-📁 ~/projects/4_circle/minishell $ export TEST=ls
-📁 ~/projects/4_circle/minishell $ export | grep TEST
-declare -x TEST="ls"
-📁 ~/projects/4_circle/minishell $ export | grep TEST
-declare -x TEST="ls"
-📁 ~/projects/4_circle/minishell $ export | grep TEST
-declare -x TEST="ls"
-📁 ~/projects/4_circle/minishell $ export TES="ls -a"
-📁 ~/projects/4_circle/minishell $ export | grep TES
-declare -x TES="ls -a"
-declare -x TEST="ls"
-📁 ~/projects/4_circle/minishell $ export TEST="ls -a"
-📁 ~/projects/4_circle/minishell $ export | grep TES
-declare -x TES="ls -a"
-declare -x TEST="ls -a"
-📁 ~/projects/4_circle/minishell $ export TEST=ls
-📁 ~/projects/4_circle/minishell $ export | grep TES
-grep: TES: No such file or directory
-grep: : No such file or directory
-📁 ~/projects/4_circle/minishell $ export | grep TEST
-declare -x TEST="ls"
-📁 ~/projects/4_circle/minishell $ export | grep TES
-declare -x TES="ls -a"
-declare -x TEST="ls"
-📁 ~/projects/4_circle/minishell $ export TEST=ls
-📁 ~/projects/4_circle/minishell $ export | grep TES
-grep: : No such file or directory
-📁 ~/projects/4_circle/minishell $ export | grep TES
-declare -x TES="ls -a"
-declare -x TEST="ls"
-📁 ~/projects/4_circle/minishell $ 
--------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------
-
 LEXER OUTPUT: 
 
 TOKEN_TYPE: 11	<<
@@ -63,6 +26,7 @@ PROBLEM WITH SIGNAL SIGINT (TRY TO SET SIGNAL ELSEWHERE)
 
 -------------------------------------------------------------------------------
 
-WHY MAKE DEBUG RECOMPILE EACH TIME?
+signal valu for shell->status, on exit and return.
+clean the paths of return.
 
 -------------------------------------------------------------------------------
