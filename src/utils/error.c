@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:05:48 by user              #+#    #+#             */
-/*   Updated: 2025/07/09 11:43:00 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:41:24 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ char	*get_errnum(int error)
 		return ("Argument missing");
 	if (error == I_MISS)
 		return ("Input file missing");
-	if (error == O_MISS)
-		return ("Output file missing");
 	if (error == NOT_H)
 		return ("not handled");
 	if (error == NEAR)

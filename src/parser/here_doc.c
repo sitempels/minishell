@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 16:00:55 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:04:23 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_node	*handle_heredoc(t_shell *shell, t_node *del)
 	unlink(here_name);
 	free(here_name);
 	if (g_signal == SIGINT)
-		return (free(del), NULL);
+		return (free(del), close(fd), NULL);
 	return (del);
 }
 

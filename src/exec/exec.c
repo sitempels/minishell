@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/10 16:58:42 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:14:31 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ int	execute_subshell(t_shell *shell, t_node *tree)
 	{
 		shell->std_io[0] = ttyname(STDOUT_FILENO);
 		shell->std_io[1] = ttyname(STDIN_FILENO);
-		if (update_envint(shell->env, "SHLVL", 0, 1))
+		if (update_envint(shell->env, "SHLVL", 1))
 			return (1);
 		if (execute_node(shell, tree->right))
 			ft_error(shell, 1, 2, "EXEC", "SUBSHELL");
 		clean_shell(shell);
-		if (update_envint(shell->env, "SHLVL", 0, -1))
+		if (update_envint(shell->env, "SHLVL", -1))
 			return (1);
 		builtin_exit(shell, 0, EXIT_SUCCESS);
 	}
@@ -84,9 +84,10 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 	if (!isbuiltin(shell, argv, 0) && create_fork(shell))
 	{
 		path = get_path(argv[0], shell->env, F_OK + X_OK);
-		execve(path, argv, envp_from_env(shell->env));
+		if (path)
+			execve(path, argv, envp_from_env(shell->env));
+		ft_error(shell, 0, 3, argv[0], ": ", get_errnum(C_MISS));
 		shell->status = errno;
-		ft_error(shell, 1, 3, argv[0], ": ", get_errnum(C_MISS));
 	}
 	free_array(argv, 0);
 	free(argv);

@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:25:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/09 11:29:58 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:16:58 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*process_arg(t_shell *shell, char *start, size_t size)
 	if (!raw)
 		return (NULL);
 	raw[i + (2 * j)] = '\0';
-	cpy_and_add(raw, start, size);
+	cpy_and_add(raw, start, (i + (2 * j)));
 	start = expand_string(shell, raw);
 	return (start);
 }
