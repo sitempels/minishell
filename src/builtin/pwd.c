@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:37:26 by user              #+#    #+#             */
-/*   Updated: 2025/07/09 16:16:27 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:05:11 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ int	builtin_pwd(void)
 	if (!cwd)
 	{
 		if (errno == ENOMEM)
-			printf("pwd: not enough memory (ENOMEM)\n");
+			ft_putendl_fd("pwd: not enough memory", 2);
 		else if (errno == ENOENT)
-			printf("pwd: this directory no longer exists (ENOENT)\n");
+			ft_putendl_fd("pwd: current directory does not exist", 2);
 		else if (errno == EACCES)
-			printf("pwd: permission denied (EACCES)\n");
+			ft_putendl_fd("pwd: permission denied", 2);
 		else
 			perror("pwd");
 		if (errno)

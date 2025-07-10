@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 21:00:47 by user              #+#    #+#             */
-/*   Updated: 2025/07/08 18:06:36 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:00:10 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	update_envint(t_env *env, char *key, size_t len, int modif)
 
 	if (len == 0)
 		len = ft_strlen(key);
-	target = env_getone(env, key, len);
+	target = env_getone(env, key);
 	if (!target)
 		return (1);
 	new_val = ft_itoa(ft_atoi(target->value) + modif);

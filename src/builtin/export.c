@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:34 by user              #+#    #+#             */
-/*   Updated: 2025/07/09 16:58:11 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:04:08 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,101 @@ void	env_print_sorted(t_env *env)
 	env_freeall(head);
 }
 
-int	builtin_export(t_env **env, char **args)
+static t_env	*create_env_no_value(char *key)
 {
-	int		i;
 	t_env	*new;
-	char	*key;
+
+	new = malloc(sizeof(t_env));
+	if (!new)
+	{
+		free(key);
+		return (NULL);
+	}
+	new->key = key;
+	new->value = NULL;
+	new->next = NULL;
+	return (new);
+}
+
+static int	handle_new_var(t_env **env, char *arg, char *key)
+{
+	t_env	*new;
+
+	if (ft_strchr(arg, '='))
+	{
+		new = new_env(arg);
+		if (!new || env_addback(env, new))
+		{
+			env_freeone(new);
+			free(key);
+			return (1);
+		}
+	}
+	else
+	{
+		new = create_env_no_value(key);
+		if (!new || env_addback(env, new))
+		{
+			env_freeone(new);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+static int	handle_update_var(t_env **env, char *arg, char *key)
+{
 	char	*value;
+
+	value = extract_value(arg);
+	if (!value)
+	{
+		free(key);
+		return (1);
+	}
+	if (env_updateone(env, key, value))
+	{
+		free(key);
+		free(value);
+		return (1);
+	}
+	free(value);
+	free(key);
+	return (0);
+}
+
+static int	process_export_arg(t_env **env, char *arg, int *error_flag)
+{
+	char	*key;
 	t_env	*existing;
 
+	if (!is_valid_identifier(arg))
+	{
+		ft_putstr_fd("export: `", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		*error_flag = 1;
+		return (0);
+	}
+	key = extract_key(arg);
+	if (!key)
+		return (1);
+	existing = env_getone(*env, key);
+	if (!existing)
+		return (handle_new_var(env, arg, key));
+	else if (ft_strchr(arg, '='))
+		return (handle_update_var(env, arg, key));
+	free(key);
+	return (0);
+}
+
+int	builtin_export(t_env **env, char **args)
+{
+	int	i;
+	int	error;
+	int	ret;
+
+	error = 0;
 	if (!args[1])
 	{
 		env_print_sorted(*env);
@@ -71,47 +158,10 @@ int	builtin_export(t_env **env, char **args)
 	i = 1;
 	while (args[i])
 	{
-		if (!is_valid_identifier(args[i]))
-			printf("export: `%s': not a valid identifier\n", args[i]);
-		else
-		{
-			key = extract_key(args[i]);
-			if (!key)
-				return (1);
-			existing = env_getone(*env, key, ft_strlen(key));
-			if (!existing)
-			{
-				if (ft_strchr(args[i], '='))
-				{
-					new = new_env(args[i]);
-					if (!new || env_addback(env, new))
-						return (env_freeone(new), free(key), 1);
-				}
-				else
-				{
-					new = malloc(sizeof(t_env));
-					if (!new)
-						return (free(key), 1);
-					new->key = key;
-					new->value = NULL;
-					new->next = NULL;
-					if (env_addback(env, new))
-						return (env_freeone(new), 1);
-					key = NULL;
-				}
-			}
-			else if (ft_strchr(args[i], '='))
-			{
-				value = extract_value(args[i]);
-				if (!value)
-					return (free(key), 1);
-				if (env_updateone(env, key, value))
-					return (free(key), free(value), 1);
-				free(value);
-			}
-			free(key);
-		}
+		ret = process_export_arg(env, args[i], &error);
+		if (ret)
+			return (ret);
 		i++;
 	}
-	return (0);
+	return (error);
 }

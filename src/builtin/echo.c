@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:43:40 by user              #+#    #+#             */
-/*   Updated: 2025/06/25 12:47:24 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:51:33 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Check if the argument starts with '-n' or contains only 'n's
 static int	is_n_option(const char *arg)
 {
 	int	i;
@@ -29,12 +28,6 @@ static int	is_n_option(const char *arg)
 	return (1);
 }
 
-/*
- * Print the arguments to stdout.
- * If the first argument is '-n', do not print a newline at the end.
- * If no arguments are provided, print a newline.
- * Return 0 on success.
- */
 int	builtin_echo(char **argv)
 {
 	int	i;

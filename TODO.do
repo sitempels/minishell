@@ -66,3 +66,10 @@ PROBLEM WITH SIGNAL SIGINT (TRY TO SET SIGNAL ELSEWHERE)
 WHY MAKE DEBUG RECOMPILE EACH TIME?
 
 -------------------------------------------------------------------------------
+
+Quest-ce qui doit rendre une valeur de retour
+Return les bons code, les codes erreurs, les stayus code, exit code
+
+-------------------------------------------------------------------------------
+
+check ft_error

@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/09 16:14:44 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:59:10 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ t_env							*env_from_envp(char **envp);
 char							*envp_getone(t_env *env);
 char							**envp_from_env(t_env *env);
 t_env							*env_getlast(t_env *lst);
-t_env							*env_getone(t_env *head, char *key, size_t len);
+t_env							*env_getone(t_env *head, char *key);
 char							*env_getpath(t_env *env);
 char							**env_getallpaths(char *path);
 int								env_addfront(t_env **head, t_env *new);
@@ -159,7 +159,7 @@ t_env							*env_dup(t_env *src);
 /*_________________________________BUILTINS___________________________________*/
 int								builtin_env(t_env *env);
 int								builtin_cd(t_env *env, char *path);
-int								builtin_exit(t_shell *shell, int print,
+void							builtin_exit(t_shell *shell, int print,
 									int status);
 int								builtin_pwd(void);
 int								builtin_export(t_env **env, char **args);

@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 16:42:45 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:58:42 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,8 @@ static int	isbuiltin(t_shell *shell, char **argv, int status)
 	else if (!ft_strcmp(argv[0], "exit"))
 	{
 		if (!argv[1])
-			shell->status = builtin_exit(shell, 1, 0);
-		shell->status = builtin_exit(shell, 1, ft_atoi(argv[1]));
+			builtin_exit(shell, 1, 0);
+		builtin_exit(shell, 1, ft_atoi(argv[1]));
 	}
 	else if (!ft_strcmp(argv[0], "export"))
 		shell->status = builtin_export(&shell->env, argv);
