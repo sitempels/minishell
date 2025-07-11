@@ -37,3 +37,24 @@ Return les bons code, les codes erreurs, les stayus code, exit code
 -------------------------------------------------------------------------------
 
 check ft_error
+
+-------------------------------------------------------------------------------
+
+SOME WORK TO DO BUT FIRST PROMISING IMPLEMENTATION
+
+SIG:
+on empty prompt:	ctr+C: ok
+			ctrl+D: ok
+			ctr+\: ok
+
+on non_empty prompt:	ctr+C: ok
+			ctrl+D: ok
+			ctr+\: okeyish (they say it need to quit the shell, but bash does nothing)
+				=> my guess, it's actually to make it easier to implement. We could as (see below ->pt3)
+
+blocking cmd with:	ctrl+C: work but display multiple prompt
+			ctrl+D: work
+			ctr+\c: doesn't work
+
+pt3: For ctrl+\, I guess we could implement the following behaviour:	if prompt empty, does nothing.
+									if prompt non empty, quit.

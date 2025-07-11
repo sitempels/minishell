@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 21:38:33 by user             ###   ########.fr       */
+/*   Updated: 2025/07/11 13:37:37 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ static int	read_and_prepare(t_shell *shell)
 		clean_shell(shell);
 		return (0);
 	}
-	add_history(shell->cli);
+	if (shell->cli && *shell->cli)
+		add_history(shell->cli);
 	return (1);
 }
 
