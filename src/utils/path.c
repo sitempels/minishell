@@ -6,14 +6,14 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 15:52:04 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 12:50:47 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/13 14:27:08 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//static char	**get_all_paths(char *name, char **env);
-//static char	*get_full_path(char const *s1, char const *s2);
+// static char	**get_all_paths(char *name, char **env);
+// static char	*get_full_path(char const *s1, char const *s2);
 
 char	*get_path(char *cmd, t_env *env, int mode)
 {
@@ -22,24 +22,25 @@ char	*get_path(char *cmd, t_env *env, int mode)
 	char	*path_full;
 	char	**paths;
 
-	paths = ft_strsplit((env_getone(env, "PATH", 4))->value, ':');
+	paths = ft_strsplit((env_getone(env, "PATH"))->value, ':');
 	if (!paths)
 		return (NULL);
 	error = access(cmd, mode);
 	if (error == 0)
-		return (cmd);
+		return (ft_free_array_pos(&paths, 0), cmd);
 	i = 0;
 	while (paths[i])
 	{
 		path_full = ft_strjoin_var(3, paths[i], "/", cmd);
 		error = access(path_full, mode);
 		if (error == 0)
-			return (path_full);
+			break ;
 		free(path_full);
 		path_full = NULL;
 		i++;
 	}
-	return (NULL);
+	ft_free_array_pos(&paths, 0);
+	return (path_full);
 }
 /*
 int	is_builtin(char *cmd, char *path)
@@ -52,6 +53,11 @@ int	is_builtin(char *cmd, char *path)
 	int		i;
 	char	**paths;
 	size_t	n_size;
+	char	*s3;
+	size_t	lens1;
+	size_t	lens2;
+	size_t	i;
+	size_t	j;
 
 	n_size = ft_strlen(name);
 	i = 0;
@@ -69,12 +75,6 @@ int	is_builtin(char *cmd, char *path)
 /*
 static char	*get_full_path(char const *s1, char const *s2)
 {
-	char	*s3;
-	size_t	lens1;
-	size_t	lens2;
-	size_t	i;
-	size_t	j;
-
 	if (!s1 && !s2)
 		return (NULL);
 	if (!s1)

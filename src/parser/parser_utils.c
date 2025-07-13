@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:51:06 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 16:40:41 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:00:03 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_node	*create_node(t_shell *shell, t_token **token, int type)
 	if (new->type == ARGUMENT || new->type == FILENAME)
 		new->use.content = munch_token(token, 0);
 	else
-		new->use.content = munch_token(token, 0);
+		new->use.content = munch_token(token, 1);
 	return (new);
 }
 
@@ -35,13 +35,12 @@ t_token	*munch_token(t_token **token, int clean)
 		return (NULL);
 	tmp = *token;
 	*token = (*token)->next;
+	tmp->next = NULL;
 	if (clean == 1)
 	{
 		free(tmp);
 		tmp = NULL;
 	}
-	else
-		tmp->next = NULL;
 	return (tmp);
 }
 
@@ -75,17 +74,40 @@ void	verif_tree(t_shell *shell, t_node *tree, t_node *previous)
 	size_t	len;
 	char	*error;
 
+	if (!tree)
+		return ;
 	error = NULL;
 	if (tree->type == ERROR)
 	{
-		len = (previous->use.content)->size;
-		error = (char *) ft_calloc(len + 1, sizeof(char));
-		ft_strlcpy(error, (previous->use.content)->start, len + 1);
+		if (previous->type == WORD)
+		{
+			len = (previous->use.content)->size;
+			error = (char *) ft_calloc(len + 1, sizeof(char));
+			ft_strlcpy(error, (previous->use.content)->start, len + 1);
+		}
+		else
+			error = get_type(previous->type);
+		shell->status = 1;
 		ft_error(shell, 0, 4, get_errnum(NEAR), "\'", error, "\'");
+		return ;
 	}
-	if (tree->left)
+	if (shell->tree && tree->left)
 		verif_tree(shell, tree->left, tree);
-	if (tree->right)
+	if (shell->tree && tree->right)
 		verif_tree(shell, tree->right, tree);
 	return ;
+}
+
+void	is_quoted(t_token *end, int *quoted)
+{
+	size_t	i;
+
+	i = 0;
+	*quoted = 0;
+	while (i < end->size)
+	{
+		if (end->start[i] == '\'' || end->start[i] == '\"')
+			(*quoted)++;
+		i++;
+	}
 }

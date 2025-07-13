@@ -1,53 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   env_del.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/09 21:43:40 by user              #+#    #+#             */
-/*   Updated: 2025/07/10 16:51:33 by sjacquet         ###   ########.fr       */
+/*   Created: 2025/07/03 05:52:00 by user              #+#    #+#             */
+/*   Updated: 2025/07/09 16:18:24 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_n_option(const char *arg)
+int	env_delone(t_env **head, char *key)
 {
-	int	i;
+	t_env	*curr;
+	t_env	*prev;
 
-	if (!arg || arg[0] != '-')
-		return (0);
-	i = 1;
-	while (arg[i])
+	if (!head || !*head || !key)
+		return (1);
+	curr = *head;
+	prev = NULL;
+	while (curr)
 	{
-		if (arg[i] != 'n')
+		if (ft_strcmp(curr->key, key) == 0)
+		{
+			if (prev)
+				prev->next = curr->next;
+			else
+				*head = curr->next;
+			env_freeone(curr);
 			return (0);
-		i++;
+		}
+		prev = curr;
+		curr = curr->next;
 	}
 	return (1);
-}
-
-int	builtin_echo(char **argv)
-{
-	int	i;
-	int	newline;
-
-	i = 1;
-	newline = 1;
-	while (argv[i] && is_n_option(argv[i]))
-	{
-		newline = 0;
-		i++;
-	}
-	while (argv[i])
-	{
-		printf("%s", argv[i]);
-		if (argv[i + 1])
-			printf(" ");
-		i++;
-	}
-	if (newline)
-		printf("\n");
-	return (0);
 }

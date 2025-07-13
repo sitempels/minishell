@@ -6,75 +6,108 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 11:29:29 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/13 14:13:33 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	execute_redir_input(t_shell *shell, t_node *tree, t_env *env)
+static size_t	ft_arrlen(char **array)
+{
+	size_t	i;
+
+	i = 0;
+	while (array[i])
+		i++;
+	return (i);
+}
+
+int	execute_redir_input(t_shell *shell, t_node *tree)
 {
 	int		fd;
 	char	*path;
+	char	**arg;
 
 	path = NULL;
 	if (tree->right)
-		path = get_path(((tree->right)->use.arg)[0], env, F_OK + R_OK);
+	{
+		arg = expand(shell, (tree->right)->use.content, NULL);
+		if (ft_arrlen(arg) > 1)
+			ft_error(shell, 0, 1, "ambiguous redirect");
+		path = get_path(arg[0], shell->env, F_OK + R_OK);
+	}
 	if (!path)
-		ft_error(shell, 0, 2, (tree->right)->use.arg[0], get_errnum(I_MISS));
+	{
+		ft_error(shell, 0, 3, arg[0], ": ", get_errnum(I_MISS));
+		ft_free_array_pos(&arg, 0);
+		return (1);
+	}
 	fd = open(path, O_RDONLY, O_CLOEXEC);
-	if (tree->type == DLESS)
-		unlink(path);
-	close(0);
+	dup2(fd, 0);
+	close(fd);
+	ft_free_array_pos(&arg, 0);
+	if (tree->left)
+		execute_node(shell, tree->left);
+	return (0);
+}
+
+int	execute_heredoc(t_shell *shell, t_node *tree)
+{
+	int		fd;
+
+	fd = (tree->right)->use.fd;
+	(tree->right)->use.content = NULL;
 	dup2(fd, 0);
 	close(fd);
 	if (tree->left)
-		execute_node(shell, tree->left, env);
+		execute_node(shell, tree->left);
 	return (0);
 }
 
-int	execute_redir_output(t_shell *shell, t_node *tree, t_env *env)
+int	execute_redir_output(t_shell *shell, t_node *tree)
 {
 	int		fd;
 	char	*path;
+	char	**arg;
 
 	path = NULL;
 	if (tree->right)
-		path = get_path(((tree->right)->use.arg)[0], env, F_OK + W_OK);
-	if (!path)
 	{
-		path = (tree->right)->use.arg[0];
-		fd = open(path, O_RDWR | O_CREAT, 00644);
+		arg = expand(shell, (tree->right)->use.content, NULL);
+		path = get_path(arg[0], shell->env, F_OK + R_OK);
 	}
+	if (!path)
+		fd = open(arg[0], O_RDWR | O_CREAT, 00644);
 	else
 		fd = open(path, O_WRONLY | O_TRUNC);
-	close(1);
 	dup2(fd, 1);
 	close(fd);
+	ft_free_array_pos(&arg, 0);
 	if (tree->left)
-		execute_node(shell, tree->left, env);
+		execute_node(shell, tree->left);
 	return (0);
 }
 
-int	execute_redir_output_a(t_shell *shell, t_node *tree, t_env *env)
+int	execute_redir_output_a(t_shell *shell, t_node *tree)
 {
 	int		fd;
 	char	*path;
+	char	**arg;
 
 	path = NULL;
 	if (tree->right)
-		path = get_path(((tree->right)->use.arg)[0], env, F_OK + W_OK);
-	if (!path)
 	{
-		path = (tree->right)->use.arg[0];
-		fd = open(path, O_RDWR | O_CREAT, 00644);
+		arg = expand(shell, (tree->right)->use.content, NULL);
+		path = get_path(arg[0], shell->env, F_OK + R_OK);
 	}
+	if (!path)
+		fd = open(arg[0], O_RDWR | O_CREAT, 00644);
 	else
-		fd = open(path, O_WRONLY | O_APPEND, 00644);
-	close(1);
+		fd = open(path, O_WRONLY | O_APPEND);
 	dup2(fd, 1);
 	close(fd);
+	ft_free_array_pos(&arg, 0);
 	if (tree->left)
-		execute_node(shell, tree->left, env);
+		execute_node(shell, tree->left);
 	return (0);
 }

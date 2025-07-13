@@ -1,32 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/09 21:42:56 by user              #+#    #+#             */
-/*   Updated: 2025/07/13 14:11:04 by stempels         ###   ########.fr       */
+/*   Created: 2025/07/03 06:10:00 by user              #+#    #+#             */
+/*   Updated: 2025/07/08 17:00:59 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Exit the shell and free resources
-void	builtin_exit(t_shell *shell, int print, char *status)
+char	*get_env_value(t_env *env, const char *key)
 {
-	int	intstatus;
-
-	if (print)
-		ft_printf("minishell: exiting the shell...\n");
-	if (status)
+	while (env)
 	{
-		intstatus = ft_atoi(status);
-		//add_verif to atoi for intmax\min
-		shell->status = intstatus;
+		if (ft_strcmp(env->key, key) == 0)
+			return (env->value);
+		env = env->next;
 	}
-	else
-		intstatus = shell->status;
-	destroy_shell(shell);
-	exit(intstatus);
+	return (NULL);
+}
+
+char	*append_char(char *s, char c)
+{
+	char	*new;
+	size_t	len;
+
+	len = ft_strlen(s);
+	new = malloc(len + 2);
+	if (!new)
+		return (NULL);
+	ft_strlcpy(new, s, len + 1);
+	new[len] = c;
+	new[len + 1] = '\0';
+	free(s);
+	return (new);
 }

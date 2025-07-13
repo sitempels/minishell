@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 16:40:25 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/13 09:27:03 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,18 @@ void	clean_tree(t_node **tree)
 {
 	if (!tree || !*tree)
 		return ;
+	if ((*tree)->type == DLESS)
+		if (((*tree)->right)->use.content)
+		{
+			close(((*tree)->right)->use.fd);
+			((*tree)->right)->use.content = NULL;
+		}
 	if ((*tree)->left)
 		clean_tree(&(*tree)->left);
 	if ((*tree)->right)
 		clean_tree(&(*tree)->right);
-	free(*tree);
-	*tree = NULL;
+	clean_node(tree);
 	return ;
-}
-
-char	**free_array(char **array, int pos)
-{
-	if (!array)
-		return (NULL);
-	while (array[pos])
-	{
-		if (array[pos])
-		{
-			free(array[pos]);
-			array[pos] = NULL;
-		}
-		pos++;
-	}
-	return (NULL);
 }
 
 void	clean_token_lst(t_token **token_lst)
@@ -52,59 +41,16 @@ void	clean_token_lst(t_token **token_lst)
 	return ;
 }
 
-char	*get_errnum(int error)
+void	clean_node(t_node **node)
 {
-	if (error == N_PRINT)
-		return ("");
-	if (error == CREAT_FILE)
-		return ("Could not create file");
-	if (error == OPEN_FILE)
-		return ("Could not open file");
-	if (error == CLOSE_FILE)
-		return ("could not close file");
-	if (error == N_CREAT)
-		return ("Could not create");
-	if (error == C_MISS)
-		return ("Command not found");
-	if (error == A_MISS)
-		return ("Argument missing");
-	if (error == I_MISS)
-		return ("Input file missing");
-	if (error == O_MISS)
-		return ("Output file missing");
-	if (error == NOT_H)
-		return ("not handled");
-	if (error == NEAR)
-		return ("syntax error near unexpected token ");
-	return (NULL);
-}
-
-int	ft_error(t_shell *shell, int quit, int nbr_context, ...)
-{
-	char	*error;
-	va_list	error_msg;
-
-	if (nbr_context > 0)
-	{
-		write(2, "minishell: ", 11);
-		va_start(error_msg, nbr_context);
-		while (nbr_context > 0)
-		{
-			error = va_arg(error_msg, char *);
-			write(2, error, ft_strlen(error));
-			nbr_context--;
-		}
-		write(2, "\n", 1);
-		va_end(error_msg);
-	}
-	if (quit)
-	{
-		if (errno != 0)
-			builtin_exit(shell, 0, errno);
-		builtin_exit(shell, 0, quit);
-	}
-	clean_shell(shell);
-	return (1);
+	if (!*node)
+		return ;
+	if ((*node)->type == ARGUMENT || (*node)->type == FILENAME)
+		if ((*node)->use.content)
+			clean_token_lst(&(*node)->use.content);
+	free(*node);
+	node = NULL;
+	return ;
 }
 
 void	clean_shell(t_shell *shell)
@@ -118,6 +64,7 @@ void	clean_shell(t_shell *shell)
 	if (shell->cli)
 		free(shell->cli);
 	shell->cli = NULL;
+	g_signal = 0;
 	return ;
 }
 
@@ -129,7 +76,8 @@ void	destroy_shell(t_shell *shell)
 	while (shell->env)
 	{
 		tmp = shell->env;
-		shell->env = (shell->env)->next;
+		shell->env = tmp->next;
+		free(tmp->key);
 		free(tmp->value);
 		free(tmp);
 	}

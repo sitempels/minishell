@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/06/23 11:45:39 by stempels         ###   ########.fr        #
+#    Updated: 2025/07/13 09:18:30 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,25 +33,28 @@ INC_FLAG = -I$(INC_DIR)
 MAIN = main
 SRC_DIR = src
 #
+ENV_DIR = env
+SRC_ENV = $(addprefix $(ENV_DIR)/, env_list env_node env_utils env_from_envp env_del env_sort)
+#
 LEXER_DIR = lexer
-SRC_LEXER = $(addprefix $(LEXER_DIR)/, lexer lexer_utils here_doc)
+SRC_LEXER = $(addprefix $(LEXER_DIR)/, lexer lexer_utils)
 #
 PARSER_DIR = parser
-SRC_PARSER = $(addprefix $(PARSER_DIR)/, parser parser_cmd parser_utils)
+SRC_PARSER = $(addprefix $(PARSER_DIR)/, parser parser_cmd here_doc parser_utils)
 #
 EXEC_DIR = exec
 SRC_EXEC = $(addprefix $(EXEC_DIR)/, exec execute_redir exec_utils)
 #
 EXPAND_DIR = expand
-SRC_EXPAND = $(addprefix $(EXPAND_DIR)/, expander)
+SRC_EXPAND = $(addprefix $(EXPAND_DIR)/, expand process_arg expand_wordsplitting expand_quoteremoval expand_utils expand_string expand_exit expand_var)
 #
 BUILTIN_DIR = builtin
 SRC_BUILTIN = $(addprefix $(BUILTIN_DIR)/, cd echo env exit export pwd unset)
 #
 UTILS_DIR = utils
-SRC_UTILS = $(addprefix $(UTILS_DIR)/, debug path env signal display shell cleaning)
+SRC_UTILS = $(addprefix $(UTILS_DIR)/, debug error path signal display shell cleaning redir)
 #
-SRCS ::= $(MAIN) $(SRC_LEXER) $(SRC_PARSER) $(SRC_EXEC) $(SRC_EXPAND) $(SRC_BUILTIN) $(SRC_UTILS)
+SRCS ::= $(MAIN) $(SRC_LEXER) $(SRC_ENV) $(SRC_PARSER) $(SRC_EXEC) $(SRC_EXPAND) $(SRC_BUILTIN) $(SRC_UTILS)
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 
 #
 #----------------------------OBJ-----------------------------------------------#
@@ -87,6 +90,9 @@ $(NAME): $(OBJ) $(LIBFT)
 run: $(NAME)
 	@./$(NAME)
 #
+leak: debug
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --verbose --suppressions=./misc/valgrind.supp ./debug_$(NAME_PROJECT)
+#
 clean:
 	rm -rf $(OBJ_DIR) $(DEPENDS)
 	@echo "$(NAME) $(GREEN)$@ed !$(NC)"
@@ -108,6 +114,7 @@ re: ffclean all
 #
 debug: clean $(OBJ) $(LIBFT) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
+	@mkdir -p .here_doc
 	@echo "$(NAME) created !"
 #
 -include $(DEPENDS)

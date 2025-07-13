@@ -1,32 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   expand_exit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/09 21:42:56 by user              #+#    #+#             */
-/*   Updated: 2025/07/13 14:11:04 by stempels         ###   ########.fr       */
+/*   Created: 2025/07/03 06:15:00 by user              #+#    #+#             */
+/*   Updated: 2025/07/13 11:59:55 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Exit the shell and free resources
-void	builtin_exit(t_shell *shell, int print, char *status)
+char	*expand_exit_code(char *input, int i, int exit_status)
 {
-	int	intstatus;
+	size_t	len;
+	char	*res;
+	char	*code;
 
-	if (print)
-		ft_printf("minishell: exiting the shell...\n");
-	if (status)
+	code = ft_itoa(exit_status);
+	if (!code)
+		return (input);
+	len = ft_strlen(code);
+	res = NULL;
+	if (i != 0)
 	{
-		intstatus = ft_atoi(status);
-		//add_verif to atoi for intmax\min
-		shell->status = intstatus;
+		res = (char *)malloc(sizeof(char) * (i));
+		if (!res)
+			return (free(input), NULL);
+		res[i + len] = '\0';
+		ft_strlcpy(res, input, i);
 	}
-	else
-		intstatus = shell->status;
-	destroy_shell(shell);
-	exit(intstatus);
+	res = ft_strjoin_var(3, res, code, &input[i + 2]);
+	free(code);
+	free(input);
+	return (res);
 }

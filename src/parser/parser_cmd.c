@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/25 16:27:09 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:35:38 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_node	*parse_cmd(t_shell *shell, t_token **token)
 {
 	t_node	*new;
 
-	if ((*token)->type == EOL)
+	if (g_signal == SIGINT || (*token)->type == EOL)
 		return (NULL);
 	new = NULL;
 	if ((*token)->type != LEFT_PAREN)
@@ -29,7 +29,7 @@ t_node	*parse_cmd(t_shell *shell, t_token **token)
 		new->use.fct = &execute_subshell;
 		new->right = parse_complete_cmd(shell, token);
 		if ((*token)->type != RIGHT_PAREN)
-			ft_error(shell, 0, 1, "PARSER: Unexpected ')'");
+			ft_error(shell, 0, 1, "PARSER: Expected ')'");
 		if ((*token)->type == RIGHT_PAREN)
 			munch_token(token, 1);
 		while ((*token)->type == LESS || (*token)->type == GREAT
@@ -44,6 +44,8 @@ t_node	*parse_simple_cmd(t_shell *shell, t_token **token)
 	t_token	**tmp;
 	t_node	*new;
 
+	if (g_signal == SIGINT || (*token)->type == EOL)
+		return (NULL);
 	new = create_node(shell, NULL, CMD);
 	new->use.fct = &execute_cmd;
 	while ((*token)->type == LESS || (*token)->type == DLESS
@@ -70,26 +72,32 @@ t_node	*parse_io_redirect(t_shell *shell, t_token **token)
 {
 	t_node	*new;
 
-	if ((*token)->type == EOL)
+	if (g_signal == SIGINT || (*token)->type == EOL)
 		return (NULL);
 	new = create_node(shell, token, (*token)->type);
 	if ((*token)->type == WORD)
 	{
 		get_usage(new, (new)->type);
 		new->right = create_node(shell, NULL, FILENAME);
-		(new->right)->use.arg = get_arg(munch_token(token, 0), 0, NULL, 0);
+		(new->right)->use.content = munch_token(token, 0);
+		if (new->type == DLESS)
+		{
+			new->right = handle_heredoc(shell, new->right);
+			if (g_signal == SIGINT)
+				return (free(new->right), free(new), NULL);
+		}
 	}
 	else
-	{
 		new->right = create_node(shell, NULL, ERROR);
-	}
 	return (new);
 }
 
 static void	get_usage(t_node *node, int type)
 {
-	if (type == LESS || type == DLESS)
+	if (type == LESS)
 		node->use.fct = &execute_redir_input;
+	if (type == DLESS)
+		node->use.fct = &execute_heredoc;
 	if (type == GREAT)
 		node->use.fct = &execute_redir_output;
 	if (type == DGREAT)

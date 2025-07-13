@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/06/24 10:46:28 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:02:13 by sjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,94 @@ void	display_banner(void)
 	printf(RESET);
 }
 
-void	display_prompt(void)
+// void	display_prompt(void)
+// {
+// 	char	*home;
+// 	char	*cwd;
+// 	char	*fcwd;
+// 	char	*tty;
+// 	int		ttys;
+
+// 	home = getenv("HOME");
+// 	cwd = getcwd(NULL, 0);
+// 	if (!cwd)
+// 	{
+// 		perror("getcwd CD RM DIR ERROR");
+// 		cwd = ft_strdup("<unknown>");
+// 		if (!cwd)
+// 			return ;
+// 	}
+// 	fcwd = ft_strrpl(cwd, home, "~");
+// 	if (!fcwd)
+// 	{
+// 		fcwd = ft_strdup(cwd);
+// 		if (!fcwd)
+// 		{
+// 			free(cwd);
+// 			return ;
+// 		}
+// 	}
+// 	printf("📁 %s%s 💻 %s", BOLD_CYAN, fcwd, BOLD_MAGENTA);
+// 	free(cwd);
+// 	free(fcwd);
+// }
+
+char	*build_color_prompt(void)
 {
 	char	*home;
 	char	*cwd;
 	char	*fcwd;
-	char	*tty;
-	int		ttys;
+	char	*prompt;
+	char	*temp;
 
 	home = getenv("HOME");
 	cwd = getcwd(NULL, 0);
-	fcwd = ft_strrpl(cwd, home, "~");
-	tty = ttyname(STDIN_FILENO);
-	ttys = ttyslot();
-	printf("📁 %s%s 💻 %s%s 🎰 %s%d%s\n ", BOLD_CYAN, fcwd, BOLD_MAGENTA, tty,
-		BOLD_YELLOW, ttys, RESET);
+	if (!cwd)
+	{
+		perror("cwd");
+		return (ft_strdup("📁 \033[1;36mBlack Hole \033[1;35m$\033[0m "));
+	}
+	if (home)
+		fcwd = ft_strrpl(cwd, home, "~");
+	else
+		fcwd = ft_strdup(cwd);
 	free(cwd);
+	if (!fcwd)
+		return (ft_strdup("📁 \033[1;36mBlack Hole \033[1;35m$\033[0m "));
+	temp = ft_strjoin("📁 \033[1;36m", fcwd);
 	free(fcwd);
+	if (!temp)
+		return (ft_strdup("📁 \033[1;36mBlack Hole \033[1;35m$\033[0m "));
+	prompt = ft_strjoin(temp, " \033[1;35m$\033[0m ");
+	free(temp);
+	return (prompt);
+}
+
+char	*build_prompt(void)
+{
+	char	*home;
+	char	*cwd;
+	char	*fcwd;
+	char	*prompt;
+	char	*temp;
+
+	home = getenv("HOME");
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+	{
+		perror("cwd");
+		return (ft_strdup("<unknown> $ "));
+	}
+	fcwd = ft_strrpl(cwd, home, "~");
+	if (!fcwd)
+		fcwd = ft_strdup(cwd);
+	free(cwd);
+	if (!fcwd)
+		return (ft_strdup("<unknown> $ "));
+	temp = ft_strjoin("", fcwd);
+	free(fcwd);
+	if (!temp)
+		return (ft_strdup("<unknown> $ "));
+	prompt = ft_strjoin(temp, " $ ");
+	return (free(temp), prompt);
 }
