@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/13 09:29:02 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/13 12:36:26 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,13 @@ static int	isbuiltin(t_shell *shell, char **argv, int status);
 
 int	execute_and_or_if(t_shell *shell, t_node *tree)
 {
-	shell->status = execute_node(shell, tree->left);
-	wait(&shell->status);
-	if (WIFEXITED(shell->status))
-		shell->status = WEXITSTATUS(shell->status);
-	else if (WIFSIGNALED(shell->status))
-		shell->status = (WTERMSIG(shell->status));
+	execute_node(shell, tree->left);
+	wait_and_decrypt_child(shell);
 	restore_std_io(shell);
-	if (shell->status > 0 && tree->type == OR_IF)
-	{
-		shell->status = execute_node(shell, tree->right);
-		if (shell->status > 0)
-			ft_error(shell, 0, 2, "EXEC", " 1");
-	}
+	if (shell->status != 0 && tree->type == OR_IF)
+		execute_node(shell, tree->right);
 	else if (shell->status == 0 && tree->type == AND_IF)
-	{
-		shell->status = execute_node(shell, tree->right);
-		if (shell->status > 0)
-			ft_error(shell, 0, 2, "EXEC", " 2");
-	}
+		execute_node(shell, tree->right);
 	return (shell->status);
 }
 
@@ -43,7 +31,7 @@ int	execute_pipe(t_shell *shell, t_node *tree)
 	int	pipefd[2];
 
 	if (pipe(pipefd) == -1)
-		ft_error(shell, 0, 2, "EXEC: PIPE", get_errnum(N_CREAT));
+		return (ft_error(shell, 0, 2, "PIPE", get_errnum(N_CREAT)), 1);
 	create_pipe(shell, tree->left, 0, pipefd);
 	create_pipe(shell, tree->right, 1, pipefd);
 	close(pipefd[0]);
@@ -87,18 +75,19 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 		if (path)
 			execve(path, argv, envp_from_env(shell->env));
 		ft_error(shell, 0, 3, argv[0], ": ", get_errnum(C_MISS));
-		shell->status = errno;
+		ft_free_array_pos(&argv, 0);
+		builtin_exit(shell, 0, "127");
 	}
 	ft_free_array_pos(&argv, 0);
-	wait_and_decrypt_child(shell);
+//	wait_and_decrypt_child(shell);
 	return (shell->status);
 }
 
-static int	isbuiltin(t_shell *shell, char **argv, int status)
+static int	isbuiltin(t_shell *shell, char **argv, int found)
 {
 	if (!argv || !argv[0])
 		return (-1);
-	status = 1;
+	found = 1;
 	if (!ft_strcmp(argv[0], "cd"))
 		shell->status = builtin_cd(shell->env, argv[1]);
 	else if (!ft_strcmp(argv[0], "echo"))
@@ -106,11 +95,7 @@ static int	isbuiltin(t_shell *shell, char **argv, int status)
 	else if (!ft_strcmp(argv[0], "env"))
 		shell->status = builtin_env(shell->env);
 	else if (!ft_strcmp(argv[0], "exit"))
-	{
-		if (!argv[1])
-			builtin_exit(shell, 1, 0);
-		builtin_exit(shell, 1, ft_atoi(argv[1]));
-	}
+		builtin_exit(shell, 1, argv[1]);
 	else if (!ft_strcmp(argv[0], "export"))
 		shell->status = builtin_export(&shell->env, argv);
 	else if (!ft_strcmp(argv[0], "pwd"))
@@ -118,6 +103,6 @@ static int	isbuiltin(t_shell *shell, char **argv, int status)
 	else if (!ft_strcmp(argv[0], "unset"))
 		shell->status = builtin_unset(&shell->env, argv);
 	else
-		status = 0;
-	return (status);
+		found = 0;
+	return (found);
 }

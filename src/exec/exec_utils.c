@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/07 13:29:48 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/13 12:25:40 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	execute_node(t_shell *shell, t_node *tree)
 		return (1);
 	if (!tree)
 		return (0);
-	shell->status = tree->use.fct(shell, tree);
+	tree->use.fct(shell, tree);
 	return (shell->status);
 }
 
@@ -44,18 +44,22 @@ int	create_pipe(t_shell *shell, t_node *tree, int a, int *pipefd)
 		dup2(pipefd[(-a + 1)], -a + 1);
 		close(pipefd[(-a + 1)]);
 		if (execute_node(shell, tree))
-			builtin_exit(shell, 0, EXIT_FAILURE);
-		builtin_exit(shell, 0, EXIT_SUCCESS);
+			builtin_exit(shell, 0, "1");
+		builtin_exit(shell, 0, "0");
 	}
 	return (0);
 }
 
 int	wait_and_decrypt_child(t_shell *shell)
 {
-	wait(&shell->status);
-	if (WIFEXITED(shell->status))
-		shell->status = WEXITSTATUS(shell->status);
-	else if (WIFSIGNALED(shell->status))
-		shell->status = (WTERMSIG(shell->status));
+	int	status;
+
+	wait(&status);
+	if (WIFEXITED(status))
+		shell->status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		shell->status = (WTERMSIG(status));
+	else
+		shell->status = shell->status;
 	return (shell->status);
 }

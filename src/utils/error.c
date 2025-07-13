@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:05:48 by user              #+#    #+#             */
-/*   Updated: 2025/07/10 17:41:24 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/13 10:34:18 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_error(t_shell *shell, int quit, int nbr_context, ...)
 	if (g_signal == SIGINT)
 		shell->status = 128 + SIGINT;
 	if (quit)
-		builtin_exit(shell, 0, shell->status);
+		builtin_exit(shell, 0, NULL);
 	clean_shell(shell);
 	return (shell->status);
 }

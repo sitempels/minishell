@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/13 09:28:50 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/13 11:09:48 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	execute_redir_output_a(t_shell *shell, t_node *tree)
 		fd = open(arg[0], O_RDWR | O_CREAT, 00644);
 	else
 	{
-		fd = open(path, O_WRONLY | O_TRUNC);
+		fd = open(path, O_WRONLY | O_APPEND);
 //		free(path);
 	}
 	dup2(fd, 1);
