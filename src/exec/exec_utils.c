@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/13 12:25:40 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/13 14:08:24 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	wait_and_decrypt_child(t_shell *shell)
 {
 	int	status;
 
+	status = 0;
 	wait(&status);
 	if (WIFEXITED(status))
 		shell->status = WEXITSTATUS(status);

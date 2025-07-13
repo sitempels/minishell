@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/13 11:09:48 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/13 14:13:33 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ int	execute_redir_input(t_shell *shell, t_node *tree)
 	fd = open(path, O_RDONLY, O_CLOEXEC);
 	dup2(fd, 0);
 	close(fd);
-//	if (path)
-//		free(path);
 	ft_free_array_pos(&arg, 0);
 	if (tree->left)
 		execute_node(shell, tree->left);
@@ -56,18 +54,11 @@ int	execute_redir_input(t_shell *shell, t_node *tree)
 int	execute_heredoc(t_shell *shell, t_node *tree)
 {
 	int		fd;
-//	char	*path;
 
-//	path = tree->right->use.content->start;
-//	if (!path)
-//		ft_error(shell, 0, 2, path, get_errnum(I_MISS));
-//	fd = open(path, O_RDONLY, O_CLOEXEC);
 	fd = (tree->right)->use.fd;
 	(tree->right)->use.content = NULL;
-//	unlink(path);
 	dup2(fd, 0);
 	close(fd);
-//	free(path);
 	if (tree->left)
 		execute_node(shell, tree->left);
 	return (0);
@@ -88,10 +79,7 @@ int	execute_redir_output(t_shell *shell, t_node *tree)
 	if (!path)
 		fd = open(arg[0], O_RDWR | O_CREAT, 00644);
 	else
-	{
 		fd = open(path, O_WRONLY | O_TRUNC);
-//		free(path);
-	}
 	dup2(fd, 1);
 	close(fd);
 	ft_free_array_pos(&arg, 0);
@@ -115,10 +103,7 @@ int	execute_redir_output_a(t_shell *shell, t_node *tree)
 	if (!path)
 		fd = open(arg[0], O_RDWR | O_CREAT, 00644);
 	else
-	{
 		fd = open(path, O_WRONLY | O_APPEND);
-//		free(path);
-	}
 	dup2(fd, 1);
 	close(fd);
 	ft_free_array_pos(&arg, 0);

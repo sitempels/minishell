@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:50 by user              #+#    #+#             */
-/*   Updated: 2025/07/13 13:31:54 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/13 14:06:27 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static void	handle_sigint(int sig)
 		rl_on_new_line();
 		rl_redisplay();
 	}
+	/*else
+		do nothing*/
 }
 
 static void	handle_sigquit(int sig)

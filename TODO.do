@@ -26,13 +26,10 @@ PROBLEM WITH SIGNAL SIGINT (TRY TO SET SIGNAL ELSEWHERE)
 
 -------------------------------------------------------------------------------
 
-signal valu for shell->status, on exit and return.
-clean the paths of return.
+EXIT/RETURN STATUS FIXED
 
--------------------------------------------------------------------------------
-
-Quest-ce qui doit rendre une valeur de retour
-Return les bons code, les codes erreurs, les stayus code, exit code
+verify the value returned in evvery case.
+Some off them may not be the correct one.
 
 -------------------------------------------------------------------------------
 
@@ -40,7 +37,7 @@ check ft_error
 
 -------------------------------------------------------------------------------
 
-SOME WORK TO DO BUT FIRST PROMISING IMPLEMENTATION
+MOSTLY WORK, DETAILS ON ctrl+\ TO DO AND CHECK CORRECTNESS OF THE OTHERS SIGNALS
 
 SIG:
 on empty prompt:	ctr+C: ok
