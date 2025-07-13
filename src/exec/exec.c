@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/10 18:14:31 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/13 09:29:02 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,7 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 		ft_error(shell, 0, 3, argv[0], ": ", get_errnum(C_MISS));
 		shell->status = errno;
 	}
-	free_array(argv, 0);
-	free(argv);
+	ft_free_array_pos(&argv, 0);
 	wait_and_decrypt_child(shell);
 	return (shell->status);
 }

@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/11 13:37:06 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/13 09:25:26 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,8 +258,8 @@ char							**get_arg(t_shell *shell, t_token *arg,
 char							*get_path(char *cmd, t_env *env, int mode);
 /**/
 /*____________CLEAN_____________*/
-char							**free_array(char **array, int pos);
 void							clean_token_lst(t_token **token_lst);
+void							clean_node(t_node **node);
 void							clean_tree(t_node **tree);
 void							clean_shell(t_shell *shell);
 void							destroy_shell(t_shell *shell);

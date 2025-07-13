@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 16:19:43 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/13 09:27:03 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,20 @@
 
 void	clean_tree(t_node **tree)
 {
-	t_token	*tmp;
-	t_token	*tmp2;
-
 	if (!tree || !*tree)
 		return ;
+	if ((*tree)->type == DLESS)
+		if (((*tree)->right)->use.content)
+		{
+			close(((*tree)->right)->use.fd);
+			((*tree)->right)->use.content = NULL;
+		}
 	if ((*tree)->left)
 		clean_tree(&(*tree)->left);
 	if ((*tree)->right)
 		clean_tree(&(*tree)->right);
-	if ((*tree)->type == ARGUMENT || (*tree)->type == FILENAME)
-	{
-		if ((*tree)->use.content)
-		{
-			tmp = (*tree)->use.content;
-			while (tmp)
-			{
-				tmp2 = tmp->next;
-				free(tmp);
-				tmp = tmp2;
-			}
-		}
-	}
-	free(*tree);
-	*tree = NULL;
+	clean_node(tree);
 	return ;
-}
-
-char	**free_array(char **array, int pos)
-{
-	if (!array)
-		return (NULL);
-	while (array[pos])
-	{
-		if (array[pos])
-		{
-			free(array[pos]);
-			array[pos] = NULL;
-		}
-		pos++;
-	}
-	return (NULL);
 }
 
 void	clean_token_lst(t_token **token_lst)
@@ -65,6 +38,18 @@ void	clean_token_lst(t_token **token_lst)
 		clean_token_lst(&(*token_lst)->next);
 	free(*token_lst);
 	*token_lst = NULL;
+	return ;
+}
+
+void	clean_node(t_node **node)
+{
+	if (!*node)
+		return ;
+	if ((*node)->type == ARGUMENT || (*node)->type == FILENAME)
+		if ((*node)->use.content)
+			clean_token_lst(&(*node)->use.content);
+	free(*node);
+	node = NULL;
 	return ;
 }
 

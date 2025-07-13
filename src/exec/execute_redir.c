@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 16:37:24 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/13 09:28:50 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ int	execute_redir_input(t_shell *shell, t_node *tree)
 	if (!path)
 	{
 		ft_error(shell, 0, 3, arg[0], ": ", get_errnum(I_MISS));
-		free_array(arg, 0);
-		free(arg);
+		ft_free_array_pos(&arg, 0);
 		return (1);
 	}
 	fd = open(path, O_RDONLY, O_CLOEXEC);
@@ -48,7 +47,7 @@ int	execute_redir_input(t_shell *shell, t_node *tree)
 	close(fd);
 //	if (path)
 //		free(path);
-	free_array(arg, 0);
+	ft_free_array_pos(&arg, 0);
 	if (tree->left)
 		execute_node(shell, tree->left);
 	return (0);
@@ -95,7 +94,7 @@ int	execute_redir_output(t_shell *shell, t_node *tree)
 	}
 	dup2(fd, 1);
 	close(fd);
-	free_array(arg, 0);
+	ft_free_array_pos(&arg, 0);
 	if (tree->left)
 		execute_node(shell, tree->left);
 	return (0);
@@ -122,7 +121,7 @@ int	execute_redir_output_a(t_shell *shell, t_node *tree)
 	}
 	dup2(fd, 1);
 	close(fd);
-	free_array(arg, 0);
+	ft_free_array_pos(&arg, 0);
 	if (tree->left)
 		execute_node(shell, tree->left);
 	return (0);
