@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/14 19:48:55 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 20:04:39 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,10 @@ static int	parse_and_execute(t_shell *shell)
 	shell->tokens = lexer(shell, &shell->tokens, shell->cli);
 	if (!shell->tokens || shell->tokens->type == EOL)
 		return (0);
-	if (shell->mode == 1 || (shell->mode >= 2 && shell->mode != 4))
-		show_lexeme(shell->tokens);
 	parser(shell, &shell->tokens);
 	if (!shell->tree)
 		return (0);
-	if (shell->mode == 1 || shell->mode >= 3)
-		show_tree(shell->tree, 1);
-	if (shell->mode <= 1)
-		execute_node(shell, shell->tree);
+	execute_node(shell, shell->tree);
 	if (g_signal != 0)
 		shell->status = 128 + g_signal;
 	return (1);
@@ -81,7 +76,6 @@ int	minishell(t_shell *shell)
 	{
 		if (g_signal != 0)
 			shell->status = 128 + g_signal;
-		printf("%d      %d\n", g_signal, shell->status);
 		g_signal = 0;
 		signals();
 		if (!read_and_prepare(shell))
@@ -94,18 +88,13 @@ int	minishell(t_shell *shell)
 	return (0);
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(void)
 {
-	int		mode;
-	t_shell	*shell;
+	t_shell		*shell;
+	extern char	**environ;
 
-	mode = 0;
-	if (argc > 2)
-		return (write(1, "Usage: ./minishell <mode>\n", 10));
-	if (argc == 2)
-		mode = argv[1][0] - 48;
 	display_banner();
-	shell = init_shell(mode, envp);
+	shell = init_shell(environ);
 	if (minishell(shell))
 		return (1);
 	destroy_shell(shell);

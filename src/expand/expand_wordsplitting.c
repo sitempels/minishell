@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:10:49 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/14 11:20:33 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 20:16:49 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ static void	arg_count(char *str, int *nbr, char *match_lst)
 			(*nbr)++;
 		while (str[i] && !match(str[i], match_lst) && str[i] != '&')
 			i++;
-		if (str[i] && str[i] == '&' && ((str[i + 1] == '\'' || str[i + 1] == '\"')))
+		if (str[i] && str[i] == '&' && ((str[i + 1] == '\''
+					|| str[i + 1] == '\"')))
 		{
 			quote = str[i + 1];
 			i = i + 2;
@@ -81,7 +82,8 @@ static void	arg_fill(char **argv, char *str, int start, int end)
 			j++;
 		while (str[j + k] && !match(str[j + k], IFS) && str[j + k] != '&')
 			k++;
-		if (str[j + k] && str[j + k] == '&' && ((str[j + k + 1] == '\'' || str[j + k + 1] == '\"')))
+		if (str[j + k] && str[j + k] == '&' && ((str[j + k + 1] == '\''
+					|| str[j + k + 1] == '\"')))
 			handle_quote(str, &k, &j);
 		argv[start + i] = (char *)malloc(sizeof(char) * (k + 1));
 		if (!argv[start + i])

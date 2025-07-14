@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/13 09:27:03 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 19:50:26 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	clean_shell(t_shell *shell)
 	if (shell->cli)
 		free(shell->cli);
 	shell->cli = NULL;
-	g_signal = 0;
 	return ;
 }
 

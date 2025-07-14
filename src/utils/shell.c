@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 21:00:47 by user              #+#    #+#             */
-/*   Updated: 2025/07/10 18:15:10 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/14 20:00:34 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static t_env	*create_env_node(char *key, char *value);
 static t_env	*init_without_env(void);
 
-t_shell	*init_shell(int mode, char **envp)
+t_shell	*init_shell(char **envp)
 {
 	t_shell	*shell;
 
@@ -31,7 +31,6 @@ t_shell	*init_shell(int mode, char **envp)
 		return (free(shell), NULL);
 	shell->tokens = NULL;
 	shell->tree = NULL;
-	shell->mode = mode;
 	shell->status = 0;
 	shell->child_nbr = 0;
 	shell->std_io[0] = ttyname(STDOUT_FILENO);

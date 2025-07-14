@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/14 19:13:08 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 20:03:55 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void							signals(void);
 void							handle_sigint(int sig);
 void							handle_sigquit(int sig);
 void							handle_here_doc(int sig);
-t_shell							*init_shell(int mode, char **envp);
+t_shell							*init_shell(char **envp);
 int								update_envint(t_env *env, char *key, int modif);
 
 /*__________________________________ENV_______________________________________*/
@@ -161,7 +161,8 @@ t_env							*env_dup(t_env *src);
 /*_________________________________BUILTINS___________________________________*/
 int								builtin_env(t_env *env);
 int								builtin_cd(t_env *env, char *path);
-void							builtin_exit(t_shell *shell, int print, char *status);
+void							builtin_exit(t_shell *shell, int print,
+								char *status);
 int								builtin_pwd(void);
 int								builtin_export(t_env **env, char **args);
 int								builtin_unset(t_env **env, char **args);
