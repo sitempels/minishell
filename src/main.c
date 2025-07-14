@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/11 13:37:37 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:56:52 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static int	read_and_prepare(t_shell *shell)
 	free(prompt);
 	if (!shell->cli) // si NULL => fin de shell (Ctrl+D)
 		ft_error(shell, 1, 1, "leaving the shell...");
+	signal(SIGQUIT, handle_sigquit);
 	if (shell->cli[0] == '\0' || ft_is_all_whitespace(shell->cli))
 	{
 		free(shell->cli);
@@ -78,11 +79,11 @@ static int	parse_and_execute(t_shell *shell)
 
 static void	wait_and_restore(t_shell *shell)
 {
-	while (shell->child_nbr > 0)
-	{
-		wait_and_decrypt_child(shell);
-		shell->child_nbr--;
-	}
+//	while (shell->child_nbr > 0)
+//	{
+//		wait_and_decrypt_child(shell);
+//		shell->child_nbr--;
+//	}
 	restore_std_io(shell);
 	clean_shell(shell);
 }

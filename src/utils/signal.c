@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:50 by user              #+#    #+#             */
-/*   Updated: 2025/07/14 09:15:21 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 10:49:25 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	handle_sigint(int sig)
 	}
 }
 
-static void	handle_sigquit(int sig)
+void	handle_sigquit(int sig)
 {
 	if (sig == SIGQUIT)
 	{
@@ -62,7 +62,7 @@ void	signals(void)
 		perror("sigaction(SIGINT)");
 	sigemptyset(&sa_quit.sa_mask);
 	sa_quit.sa_flags = 0;
-	sa_quit.sa_handler = handle_sigquit;
+	sa_quit.sa_handler = SIG_IGN;
 	if (sigaction(SIGQUIT, &sa_quit, NULL) == -1)
 		perror("sigaction(SIGQUIT)");
 }

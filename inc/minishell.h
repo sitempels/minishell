@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/14 10:41:19 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 10:49:07 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct s_shell
 }								t_shell;
 /*_________________________________SETUP______________________________________*/
 void							signals(void);
+void							handle_sigquit(int sig);
 void							handle_here_doc(int sig);
 t_shell							*init_shell(int mode, char **envp);
 int								update_envint(t_env *env, char *key, int modif);
