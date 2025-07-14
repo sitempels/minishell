@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/13 12:36:26 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 10:42:48 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 		builtin_exit(shell, 0, "127");
 	}
 	ft_free_array_pos(&argv, 0);
-//	wait_and_decrypt_child(shell);
 	return (shell->status);
 }
 

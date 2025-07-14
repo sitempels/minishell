@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/13 10:18:21 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 10:41:19 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef enum e_errnum
 	I_MISS,
 	O_MISS,
 	NEAR,
+	EOL_DEL,
 }								t_errnum;
 
 typedef enum e_descend
