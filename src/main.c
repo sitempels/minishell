@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/14 16:56:52 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 19:11:03 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,11 @@ static int	read_and_prepare(t_shell *shell)
 	char	*prompt;
 
 	if (g_signal == SIGINT)
-	{
 		g_signal = 0;
-	}
 	prompt = build_color_prompt();
 	shell->cli = readline(prompt);
 	free(prompt);
-	if (!shell->cli) // si NULL => fin de shell (Ctrl+D)
+	if (!shell->cli)
 		ft_error(shell, 1, 1, "leaving the shell...");
 	signal(SIGQUIT, handle_sigquit);
 	if (shell->cli[0] == '\0' || ft_is_all_whitespace(shell->cli))
@@ -77,17 +75,6 @@ static int	parse_and_execute(t_shell *shell)
 	return (1);
 }
 
-static void	wait_and_restore(t_shell *shell)
-{
-//	while (shell->child_nbr > 0)
-//	{
-//		wait_and_decrypt_child(shell);
-//		shell->child_nbr--;
-//	}
-	restore_std_io(shell);
-	clean_shell(shell);
-}
-
 int	minishell(t_shell *shell)
 {
 	while (1)
@@ -97,7 +84,8 @@ int	minishell(t_shell *shell)
 			continue ;
 		if (!parse_and_execute(shell))
 			continue ;
-		wait_and_restore(shell);
+		restore_std_io(shell);
+		clean_shell(shell);
 	}
 	return (0);
 }
