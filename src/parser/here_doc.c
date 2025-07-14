@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/10 18:04:23 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 10:40:23 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static char	*create_heredoc(t_shell *shell, char *here_doc);
 static int	write_heredoc(t_shell *shell, t_token del, int fd, int quoted);
+static void	expand_and_write(t_shell *shell, char *line, int fd);
 static int	heredoc_cmp(char *line, char *del, size_t len);
 
 t_node	*handle_heredoc(t_shell *shell, t_node *del)
@@ -28,7 +29,7 @@ t_node	*handle_heredoc(t_shell *shell, t_node *del)
 	{
 		shell->status = 1;
 		free(here_name);
-		ft_error(shell, 0, 2, "HERE_DOC", get_errnum(OPEN_FILE));
+		return (ft_error(shell, 0, 2, "HERE_DOC", get_errnum(OPEN_FILE)), NULL);
 	}
 	is_quoted(del->use.content, &quoted);
 	while (g_signal != SIGINT
@@ -72,32 +73,41 @@ static char	*create_heredoc(t_shell *shell, char *here_doc)
 
 static int	write_heredoc(t_shell *shell, t_token del, int fd, int quoted)
 {
-	int		i;
 	char	*line;
-	char	**line_arr;
 
 	signal(SIGINT, handle_here_doc);
 	line = readline("heredoc>> ");
 	if (!line)
+	{
+		printf("%s (wanted '%.*s')\n", get_errnum(EOL_DEL),
+			(int)del.size, del.start);
 		return (0);
+	}
 	if (!heredoc_cmp(line, del.start, del.size) || g_signal == SIGINT)
 		return (free(line), 0);
 	if (!quoted)
-	{
-		line_arr = expand(shell, NULL, line);
-		i = -1;
-		while (line_arr[++i])
-		{
-			write(fd, line_arr[i], ft_strlen(line_arr[i]));
-			free(line_arr[i]);
-		}
-		free(line_arr);
-	}
+		expand_and_write(shell, line, fd);
 	else
 		write(fd, line, ft_strlen(line));
 	write(fd, "\n", 1);
 	free(line);
 	return (1);
+}
+
+static void	expand_and_write(t_shell *shell, char *line, int fd)
+{
+	int		i;
+	char	**line_arr;
+
+	i = 0;
+	line_arr = expand(shell, NULL, line);
+	while (line_arr[i])
+	{
+		write(fd, line_arr[i], ft_strlen(line_arr[i]));
+		free(line_arr[i]);
+		i++;
+	}
+	free(line_arr);
 }
 
 static int	heredoc_cmp(char *line, char *del, size_t len)

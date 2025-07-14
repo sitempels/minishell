@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:05:48 by user              #+#    #+#             */
-/*   Updated: 2025/07/13 10:34:18 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 10:41:39 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ char	*get_errnum(int error)
 		return ("not handled");
 	if (error == NEAR)
 		return ("syntax error near unexpected token ");
+	if (error == EOL_DEL)
+		return ("minishell: warning: here-document delimited by end-of-file");
 	return (NULL);
 }
 

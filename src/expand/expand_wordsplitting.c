@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:10:49 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/10 18:25:55 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:20:33 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	arg_count(char *str, int *nbr, char *match_lst);
 static void	arg_fill(char **argv, char *str, int start, int end);
+static void	handle_quote(char *str, int *k, int *j);
 
 char	**word_splitting(char **arr, int index, int len)
 {
@@ -70,7 +71,6 @@ static void	arg_fill(char **argv, char *str, int start, int end)
 	int		i;
 	int		j;
 	int		k;
-	char	quote;
 
 	i = -1;
 	j = 0;
@@ -82,17 +82,22 @@ static void	arg_fill(char **argv, char *str, int start, int end)
 		while (str[j + k] && !match(str[j + k], IFS) && str[j + k] != '&')
 			k++;
 		if (str[j + k] && str[j + k] == '&' && ((str[j + k + 1] == '\'' || str[j + k + 1] == '\"')))
-		{
-			quote = str[j + k + 1];
-			k = k + 2;
-			while (str[j + k] && (str[j + k] != quote))
-				k++;
-			k++;
-		}
+			handle_quote(str, &k, &j);
 		argv[start + i] = (char *)malloc(sizeof(char) * (k + 1));
 		if (!argv[start + i])
 			return ;
 		ft_strlcpy(argv[start + i], &str[j], k + 1);
 		j = j + k + 1;
 	}
+}
+
+static void	handle_quote(char *str, int *k, int *j)
+{
+	char	quote;
+
+	quote = str[*j + *k + 1];
+	*k = *k + 2;
+	while (str[*j + *k] && (str[*j + *k] != quote))
+		(*k)++;
+	(*k)++;
 }

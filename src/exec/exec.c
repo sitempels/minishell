@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/13 12:36:26 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 17:02:43 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	isbuiltin(t_shell *shell, char **argv, int status);
 int	execute_and_or_if(t_shell *shell, t_node *tree)
 {
 	execute_node(shell, tree->left);
-	wait_and_decrypt_child(shell);
 	restore_std_io(shell);
 	if (shell->status != 0 && tree->type == OR_IF)
 		execute_node(shell, tree->right);
@@ -36,7 +35,12 @@ int	execute_pipe(t_shell *shell, t_node *tree)
 	create_pipe(shell, tree->right, 1, pipefd);
 	close(pipefd[0]);
 	close(pipefd[1]);
-	return (0);
+	while (shell->child_nbr > 0)
+	{
+		wait_and_decrypt_child(shell);
+		shell->child_nbr--;
+	}
+	return (shell->status);
 }
 
 int	execute_subshell(t_shell *shell, t_node *tree)
@@ -49,14 +53,14 @@ int	execute_subshell(t_shell *shell, t_node *tree)
 		shell->std_io[1] = ttyname(STDIN_FILENO);
 		if (update_envint(shell->env, "SHLVL", 1))
 			return (1);
-		if (execute_node(shell, tree->right))
-			ft_error(shell, 1, 2, "EXEC", "SUBSHELL");
+		execute_node(shell, tree->right);
 		clean_shell(shell);
 		if (update_envint(shell->env, "SHLVL", -1))
 			return (1);
-		builtin_exit(shell, 0, EXIT_SUCCESS);
+		builtin_exit(shell, 0, NULL);
 	}
-	return (0);
+	wait_and_decrypt_child(shell);
+	return (shell->status);
 }
 
 int	execute_cmd(t_shell *shell, t_node *tree)
@@ -79,7 +83,7 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 		builtin_exit(shell, 0, "127");
 	}
 	ft_free_array_pos(&argv, 0);
-//	wait_and_decrypt_child(shell);
+	wait_and_decrypt_child(shell);
 	return (shell->status);
 }
 
