@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/14 19:11:03 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 19:48:55 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ static int	read_and_prepare(t_shell *shell)
 {
 	char	*prompt;
 
-	if (g_signal == SIGINT)
-		g_signal = 0;
 	prompt = build_color_prompt();
 	shell->cli = readline(prompt);
 	free(prompt);
@@ -72,6 +70,8 @@ static int	parse_and_execute(t_shell *shell)
 		show_tree(shell->tree, 1);
 	if (shell->mode <= 1)
 		execute_node(shell, shell->tree);
+	if (g_signal != 0)
+		shell->status = 128 + g_signal;
 	return (1);
 }
 
@@ -79,6 +79,10 @@ int	minishell(t_shell *shell)
 {
 	while (1)
 	{
+		if (g_signal != 0)
+			shell->status = 128 + g_signal;
+		printf("%d      %d\n", g_signal, shell->status);
+		g_signal = 0;
 		signals();
 		if (!read_and_prepare(shell))
 			continue ;

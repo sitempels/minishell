@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:50 by user              #+#    #+#             */
-/*   Updated: 2025/07/14 19:31:37 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/14 19:46:34 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	handle_sigint(int sig)
 		else
 			write(STDOUT_FILENO, "\n", 1);
 		rl_replace_line("", 0);
-	//	rl_redisplay();
 		rl_on_new_line();
 	}
 }
