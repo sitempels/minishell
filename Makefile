@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/07/15 07:01:49 by user             ###   ########.fr        #
+#    Updated: 2025/07/15 07:15:44 by user             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ MAIN = main
 SRC_DIR = src
 #
 ENV_DIR = env
-SRC_ENV = $(addprefix $(ENV_DIR)/, env_list env_node env_utils env_from_envp env_del env_sort)
+SRC_ENV = $(addprefix $(ENV_DIR)/, env_list env_node env_utils env_update env_from_envp env_del env_sort)
 #
 LEXER_DIR = lexer
 SRC_LEXER = $(addprefix $(LEXER_DIR)/, lexer lexer_utils)
