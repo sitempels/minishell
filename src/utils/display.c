@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/15 07:21:20 by user             ###   ########.fr       */
+/*   Updated: 2025/07/15 08:08:52 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,75 +30,45 @@ void	display_banner(void)
 	printf(RESET);
 }
 
-// void	display_prompt(void)
-// {
-// 	char	*home;
-// 	char	*cwd;
-// 	char	*fcwd;
-// 	char	*tty;
-// 	int		ttys;
-
-// 	home = getenv("HOME");
-// 	cwd = getcwd(NULL, 0);
-// 	if (!cwd)
-// 	{
-// 		perror("getcwd CD RM DIR ERROR");
-// 		cwd = ft_strdup("<unknown>");
-// 		if (!cwd)
-// 			return ;
-// 	}
-// 	fcwd = ft_strrpl(cwd, home, "~");
-// 	if (!fcwd)
-// 	{
-// 		fcwd = ft_strdup(cwd);
-// 		if (!fcwd)
-// 		{
-// 			free(cwd);
-// 			return ;
-// 		}
-// 	}
-// 	printf("📁 %s%s 💻 %s", BOLD_CYAN, fcwd, BOLD_MAGENTA);
-// 	free(cwd);
-// 	free(fcwd);
-// }
-
-static char	*build_color_prompt_final(char *fcwd)
-{
-	char	*temp;
-	char	*prompt;
-
-	temp = ft_strjoin("📁 \033[1;36m", fcwd);
-	free(fcwd);
-	if (!temp)
-		return (ft_strdup("📁 \033[1;36mBlack Hole \033[1;35m$\033[0m "));
-	prompt = ft_strjoin(temp, " \033[1;35m$\033[0m ");
-	free(temp);
-	if (!prompt)
-		return (ft_strdup("📁 \033[1;36mBlack Hole \033[1;35m$\033[0m "));
-	return (prompt);
-}
-
 char	*build_color_prompt(void)
 {
 	char	*home;
 	char	*cwd;
 	char	*fcwd;
+	char	*prompt;
+	char	*temp;
+	size_t	home_len;
 
 	home = getenv("HOME");
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
 		perror("cwd");
-		return (ft_strdup("📁 \033[1;36mBlack Hole \033[1;35m$\033[0m "));
+		return (ft_strdup("📁 \033[1;31m<deleted>\033[0m \033[1;35m$\033[0m "));
 	}
 	if (home)
-		fcwd = ft_strrpl(cwd, home, "~");
+	{
+		home_len = ft_strlen(home);
+		if (ft_strncmp(cwd, home, home_len) == 0 && (cwd[home_len] == '/'
+				|| cwd[home_len] == '\0'))
+		{
+			fcwd = ft_strrpl(cwd, home, "~");
+		}
+		else
+			fcwd = ft_strdup(cwd);
+	}
 	else
 		fcwd = ft_strdup(cwd);
 	free(cwd);
 	if (!fcwd)
 		return (ft_strdup("📁 \033[1;36mBlack Hole \033[1;35m$\033[0m "));
-	return (build_color_prompt_final(fcwd));
+	temp = ft_strjoin("📁 \033[1;36m", fcwd);
+	free(fcwd);
+	if (!temp)
+		return (ft_strdup("📁 \033[1;36mBlack Hole \033[1;35m$\033[0m "));
+	prompt = ft_strjoin(temp, " \033[1;35m$\033[0m ");
+	free(temp);
+	return (prompt);
 }
 
 char	*build_prompt(void)
