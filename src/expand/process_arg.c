@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:25:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/14 20:13:42 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/15 08:29:15 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ static void	cpy_between_quotes(char *raw, char *start, size_t *i, size_t *j)
 	raw[*i + (*j)++] = '&';
 	raw[*i + (*j)] = start[*i];
 	(*i)++;
-	while (start[*i] && start[*i] != quote)
+	while (i && start[*i] && start[*i] != quote)
 	{
 		raw[*i + *j] = start[*i];
-		i++;
+		(*i)++;
 	}
 	raw[*i + (*j)++] = '&';
 	raw[*i + *j] = start[*i];

@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/15 07:21:20 by user             ###   ########.fr       */
+/*   Updated: 2025/07/15 08:18:14 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,38 +29,6 @@ void	display_banner(void)
 	printf("\n\n");
 	printf(RESET);
 }
-
-// void	display_prompt(void)
-// {
-// 	char	*home;
-// 	char	*cwd;
-// 	char	*fcwd;
-// 	char	*tty;
-// 	int		ttys;
-
-// 	home = getenv("HOME");
-// 	cwd = getcwd(NULL, 0);
-// 	if (!cwd)
-// 	{
-// 		perror("getcwd CD RM DIR ERROR");
-// 		cwd = ft_strdup("<unknown>");
-// 		if (!cwd)
-// 			return ;
-// 	}
-// 	fcwd = ft_strrpl(cwd, home, "~");
-// 	if (!fcwd)
-// 	{
-// 		fcwd = ft_strdup(cwd);
-// 		if (!fcwd)
-// 		{
-// 			free(cwd);
-// 			return ;
-// 		}
-// 	}
-// 	printf("📁 %s%s 💻 %s", BOLD_CYAN, fcwd, BOLD_MAGENTA);
-// 	free(cwd);
-// 	free(fcwd);
-// }
 
 static char	*build_color_prompt_final(char *fcwd)
 {
