@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_var.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 07:36:24 by user              #+#    #+#             */
-/*   Updated: 2025/07/14 20:14:38 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/15 07:06:26 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,5 @@ char	*expand_variable(char *input, size_t *i, t_env *env)
 	ft_strlcpy(res, input, start);
 	ft_strlcat(res, val, len);
 	ft_strlcat(res, &input[*i], len);
-	free(input);
-	return (res);
+	return (free(input), res);
 }

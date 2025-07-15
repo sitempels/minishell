@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/07/14 19:53:39 by stempels         ###   ########.fr        #
+#    Updated: 2025/07/15 07:01:49 by user             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,7 +91,7 @@ run: $(NAME)
 	@./$(NAME)
 #
 leak: debug
-	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --verbose --suppressions=./misc/valgrind.supp ./debug_$(NAME_PROJECT)
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --verbose --suppressions=./valgrind.supp ./debug_$(NAME_PROJECT)
 #
 clean:
 	rm -rf $(OBJ_DIR) $(DEPENDS)
