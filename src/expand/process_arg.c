@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:25:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/15 08:29:15 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/15 13:47:22 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ char	*process_arg(t_shell *shell, char *start, size_t size)
 	char	quote;
 	char	*raw;
 
-	i = -1;
+	i = 0;
 	j = 0;
-	while (++i + j < (int)size)
+	while (i + j < (int)size)
 	{
 		if (start[i + j] == '\'' || start[i + j] == '\"')
 		{
@@ -32,13 +32,16 @@ char	*process_arg(t_shell *shell, char *start, size_t size)
 			while (start[i + j] && start[i + j] != quote)
 				i++;
 			j++;
+			continue ;
 		}
+		if (start[i + j] != '\'' || start[i + j] != '\"')
+			i++;
 	}
-	raw = (char *)ft_calloc(i + (2 * j) + 1, sizeof(char));
+	raw = (char *) malloc(sizeof(char) * (i + (2 * j) + 1));
 	if (!raw)
 		return (NULL);
 	raw[i + (2 * j)] = '\0';
-	cpy_and_add(raw, start, (i + (2 * j)));
+	cpy_and_add(raw, start, (i + (2 * j) + 1));
 	start = expand_string(shell, raw);
 	return (start);
 }
@@ -50,7 +53,7 @@ static void	cpy_and_add(char *raw, char *start, size_t size)
 
 	i = 0;
 	j = 0;
-	while (i + j < size)
+	while (start[i] && i + j < size)
 	{
 		if (start[i] && (start[i] == '\'' || start[i] == '\"'))
 			cpy_between_quotes(raw, start, &i, &j);
@@ -68,12 +71,11 @@ static void	cpy_between_quotes(char *raw, char *start, size_t *i, size_t *j)
 	raw[*i + (*j)++] = '&';
 	raw[*i + (*j)] = start[*i];
 	(*i)++;
-	while (i && start[*i] && start[*i] != quote)
+	while (start[*i] && start[*i] != quote)
 	{
 		raw[*i + *j] = start[*i];
 		(*i)++;
 	}
 	raw[*i + (*j)++] = '&';
 	raw[*i + *j] = start[*i];
-	(*i)++;
 }
