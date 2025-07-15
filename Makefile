@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/07/15 07:15:44 by user             ###   ########.fr        #
+#    Updated: 2025/07/15 07:30:30 by user             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,7 @@ EXPAND_DIR = expand
 SRC_EXPAND = $(addprefix $(EXPAND_DIR)/, expand process_arg expand_wordsplitting expand_quoteremoval expand_utils expand_string expand_exit expand_var)
 #
 BUILTIN_DIR = builtin
-SRC_BUILTIN = $(addprefix $(BUILTIN_DIR)/, cd echo env exit export pwd unset)
+SRC_BUILTIN = $(addprefix $(BUILTIN_DIR)/, cd cd_utils echo env exit export export_utils pwd unset)
 #
 UTILS_DIR = utils
 SRC_UTILS = $(addprefix $(UTILS_DIR)/, error path signal display shell cleaning redir)

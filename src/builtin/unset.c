@@ -3,30 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:06 by user              #+#    #+#             */
-/*   Updated: 2025/07/10 17:10:25 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/15 07:27:29 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	is_valid_identifier(const char *s)
-{
-	int	i;
-
-	if (!s || (!ft_isalpha(s[0]) && s[0] != '_'))
-		return (0);
-	i = 1;
-	while (s[i])
-	{
-		if (!ft_isalnum(s[i]) && s[i] != '_')
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 int	builtin_unset(t_env **env, char **args)
 {
