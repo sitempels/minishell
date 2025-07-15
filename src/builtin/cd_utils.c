@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 07:30:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/15 07:30:57 by user             ###   ########.fr       */
+/*   Updated: 2025/07/15 08:37:47 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,6 @@ char	*get_safe_cwd(void)
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
-		perror("cd");
+		return (ft_strdup("<deleted>"));
 	return (cwd);
 }
