@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 07:23:52 by user              #+#    #+#             */
-/*   Updated: 2025/07/15 07:25:44 by user             ###   ########.fr       */
+/*   Updated: 2025/07/15 07:53:24 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,25 @@ static int	process_export_arg(t_env **env, char *arg, int *error_flag)
 {
 	char	*key;
 	t_env	*existing;
+	int		ret;
 
-	if (!is_valid_identifier(arg))
-	{
-		ft_putstr_fd("export: `", 2);
-		ft_putstr_fd(arg, 2);
-		ft_putstr_fd("': not a valid identifier\n", 2);
-		*error_flag = 1;
+	if (!check_identifier_and_report(arg, error_flag))
 		return (0);
-	}
 	key = extract_key(arg);
 	if (!key)
 		return (1);
 	existing = env_getone(*env, key);
 	if (!existing)
-		return (handle_new_var(env, arg, key));
+	{
+		ret = handle_new_var(env, arg, key);
+		return (free(key), ret);
+	}
 	else if (ft_strchr(arg, '='))
-		return (handle_update_var(env, arg, key));
-	free(key);
-	return (0);
+	{
+		ret = handle_update_var(env, arg, key);
+		return (free(key), ret);
+	}
+	return (free(key), 0);
 }
 
 int	builtin_export(t_env **env, char **args)
