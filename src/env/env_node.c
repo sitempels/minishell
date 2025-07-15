@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:20:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/10 17:03:30 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/15 18:14:27 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,32 +36,6 @@ char	*extract_value(char *env)
 		return (NULL);
 	return (ft_strdup(equal_sign + 1));
 }
-
-// char	*extract_value(char *str)
-// {
-// 	char	*equal_sign;
-// 	char	*raw_value;
-// 	char	*clean_value;
-// 	size_t	len;
-
-// 	if (!str)
-// 		return (NULL);
-// 	equal_sign = ft_strchr(str, '=');
-// 	if (!equal_sign || !equal_sign[1])
-// 		return (ft_strdup(""));
-// 	raw_value = ft_strdup(equal_sign + 1);
-// 	if (!raw_value)
-// 		return (NULL);
-// 	len = ft_strlen(raw_value);
-// 	if (len >= 2 && ((raw_value[0] == '"' && raw_value[len - 1] == '"')
-// 			|| (raw_value[0] == '\'' && raw_value[len - 1] == '\'')))
-// 	{
-// 		clean_value = ft_strsub(raw_value, 1, len - 2);
-// 		free(raw_value);
-// 		return (clean_value);
-// 	}
-// 	return (raw_value);
-// }
 
 t_env	*new_env(char *env)
 {

@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:43:28 by user              #+#    #+#             */
-/*   Updated: 2025/07/15 08:38:45 by user             ###   ########.fr       */
+/*   Updated: 2025/07/15 18:13:37 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,33 +39,6 @@ int	update_env_dirs(t_env *env, char *oldpwd, char *newpwd)
 	free(newpwd);
 	return (0);
 }
-
-// int	builtin_cd(t_env *env, char *path)
-// {
-// 	char	*oldpwd;
-// 	char	*newpwd;
-// 	char	*target;
-// 	int		exit_status;
-
-// 	exit_status = 0;
-// 	oldpwd = get_safe_cwd();
-// 	if (!oldpwd)
-// 		return (1);
-// 	target = get_target_path(env, path, &exit_status);
-// 	if (!target)
-// 	{
-// 		free(oldpwd);
-// 		return (exit_status);
-// 	}
-// 	if (chdir(target) != 0)
-// 	{
-// 		perror("cd");
-// 		free(oldpwd);
-// 		return (errno);
-// 	}
-// 	newpwd = getcwd(NULL, 0);
-// 	return (update_env_dirs(env, oldpwd, newpwd));
-// }
 
 int	builtin_cd(t_env *env, char *path)
 {
