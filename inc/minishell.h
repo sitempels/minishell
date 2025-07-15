@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/15 07:29:52 by user             ###   ########.fr       */
+/*   Updated: 2025/07/15 07:52:54 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,8 @@ int								builtin_unset(t_env **env, char **args);
 int								builtin_echo(char **argv);
 
 int								is_valid_identifier(const char *str);
+int								check_identifier_and_report(char *arg,
+									int *error_flag);
 t_env							*create_env_no_value(char *key);
 int								handle_new_var(t_env **env, char *arg,
 									char *key);

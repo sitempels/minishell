@@ -6,11 +6,24 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:34 by user              #+#    #+#             */
-/*   Updated: 2025/07/15 07:28:27 by user             ###   ########.fr       */
+/*   Updated: 2025/07/15 07:52:26 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_identifier_and_report(char *arg, int *error_flag)
+{
+	if (!is_valid_identifier(arg))
+	{
+		ft_putstr_fd("export: `", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		*error_flag = 1;
+		return (0);
+	}
+	return (1);
+}
 
 int	is_valid_identifier(const char *str)
 {
