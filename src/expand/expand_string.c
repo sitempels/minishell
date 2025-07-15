@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:20:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/15 07:09:44 by user             ###   ########.fr       */
+/*   Updated: 2025/07/15 16:51:56 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static size_t	skip_and_quote_block(char *input, size_t i)
 		while (input[i] && !(input[i] == '&' && input[i + 1] == '\''))
 			i++;
 		if (input[i])
-			i += 2;
+			i++;
 	}
 	return (i);
 }
@@ -58,13 +58,10 @@ char	*expand_string(t_shell *shell, char *input)
 				input = expand_exit_dollar(input, i, shell);
 			else if (ft_isalpha(input[i + 1]) || input[i + 1] == '_')
 				input = expand_named_variable(input, &i, shell);
-			else if (input[i + 1] == '$')
-				i += 2;
 			else
 				i++;
 			if (!input)
 				return (NULL);
-			continue ;
 		}
 		i++;
 	}

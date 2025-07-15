@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:10:49 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/15 12:35:17 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:53:51 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ static void	arg_count(char *str, int *nbr, char *match_lst)
 			(*nbr)++;
 		while (str[i] && !match(str[i], match_lst))
 		{
-		//	if (str[i] != '&')
-		//		i++;
 			if (str[i] && str[i] == '&' && ((str[i + 1] == '\''
 						|| str[i + 1] == '\"')))
 			{
@@ -64,7 +62,6 @@ static void	arg_count(char *str, int *nbr, char *match_lst)
 				i = i + 2;
 				while (str[i] && str[i] != quote)
 					i++;
-			//	i++;
 			}
 			i++;
 		}
@@ -108,5 +105,4 @@ static void	handle_quote(char *str, int *k, int *j)
 	*k = *k + 2;
 	while (str[*j + *k] && (str[*j + *k] != quote))
 		(*k)++;
-	//(*k)++;
 }
