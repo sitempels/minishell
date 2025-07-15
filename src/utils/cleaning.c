@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 08:14:47 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/13 09:27:03 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/15 07:18:04 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ void	clean_tree(t_node **tree)
 	if (!tree || !*tree)
 		return ;
 	if ((*tree)->type == DLESS)
+	{
 		if (((*tree)->right)->use.content)
 		{
 			close(((*tree)->right)->use.fd);
 			((*tree)->right)->use.content = NULL;
 		}
+	}
 	if ((*tree)->left)
 		clean_tree(&(*tree)->left);
 	if ((*tree)->right)
@@ -46,10 +48,12 @@ void	clean_node(t_node **node)
 	if (!*node)
 		return ;
 	if ((*node)->type == ARGUMENT || (*node)->type == FILENAME)
+	{
 		if ((*node)->use.content)
 			clean_token_lst(&(*node)->use.content);
+	}
 	free(*node);
-	node = NULL;
+	*node = NULL;
 	return ;
 }
 
@@ -64,7 +68,6 @@ void	clean_shell(t_shell *shell)
 	if (shell->cli)
 		free(shell->cli);
 	shell->cli = NULL;
-	g_signal = 0;
 	return ;
 }
 

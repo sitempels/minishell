@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/14 19:13:08 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/15 07:52:54 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void							signals(void);
 void							handle_sigint(int sig);
 void							handle_sigquit(int sig);
 void							handle_here_doc(int sig);
-t_shell							*init_shell(int mode, char **envp);
+t_shell							*init_shell(char **envp);
 int								update_envint(t_env *env, char *key, int modif);
 
 /*__________________________________ENV_______________________________________*/
@@ -161,11 +161,29 @@ t_env							*env_dup(t_env *src);
 /*_________________________________BUILTINS___________________________________*/
 int								builtin_env(t_env *env);
 int								builtin_cd(t_env *env, char *path);
-void							builtin_exit(t_shell *shell, int print, char *status);
+void							builtin_exit(t_shell *shell, int print,
+									char *status);
 int								builtin_pwd(void);
 int								builtin_export(t_env **env, char **args);
 int								builtin_unset(t_env **env, char **args);
 int								builtin_echo(char **argv);
+
+int								is_valid_identifier(const char *str);
+int								check_identifier_and_report(char *arg,
+									int *error_flag);
+t_env							*create_env_no_value(char *key);
+int								handle_new_var(t_env **env, char *arg,
+									char *key);
+int								handle_update_var(t_env **env, char *arg,
+									char *key);
+char							*handle_invalid_option(int *exit_status);
+char							*handle_dash(t_env *env, int *exit_status);
+char							*handle_empty(t_env *env, int *exit_status);
+char							*get_target_path(t_env *env, char *path,
+									int *exit_status);
+char							*get_safe_cwd(void);
+int								update_env_dirs(t_env *env, char *oldpwd,
+									char *newpwd);
 
 /*_________________________________DISPLAY____________________________________*/
 void							display_banner(void);
