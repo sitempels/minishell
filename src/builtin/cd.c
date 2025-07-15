@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:43:28 by user              #+#    #+#             */
-/*   Updated: 2025/07/15 08:09:30 by user             ###   ########.fr       */
+/*   Updated: 2025/07/15 08:38:45 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,11 @@ int	builtin_cd(t_env *env, char *path)
 		return (1);
 	target = get_target_path(env, path, &exit_status);
 	if (!target)
-	{
-		free(oldpwd);
-		return (exit_status);
-	}
+		return (free(oldpwd), exit_status);
 	if (chdir(target) != 0)
-	{
-		perror("cd");
-		free(oldpwd);
-		return (errno);
-	}
-	newpwd = getcwd(NULL, 0);
+		return (perror("cd"), free(oldpwd), errno);
+	newpwd = get_safe_cwd();
+	if (!newpwd)
+		return (free(oldpwd), 1);
 	return (update_env_dirs(env, oldpwd, newpwd));
 }
