@@ -6,16 +6,11 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 16:07:43 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/15 18:11:57 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*UTILS FUNCTIONS*/
-// void	*expander(t_token *token);
-/**/
-/*DESCENT FUNCTIONS - BY ORDER OF DESCENT*/
 
 t_node	*parser(t_shell *shell, t_token **token)
 {
