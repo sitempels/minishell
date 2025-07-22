@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/15 08:03:52 by user             ###   ########.fr       */
+/*   Updated: 2025/07/16 08:34:41 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ static int	read_and_prepare(t_shell *shell)
 	shell->cli = readline(prompt);
 	free(prompt);
 	if (!shell->cli)
-		ft_error(shell, 1, 1, "leaving the shell...");
+	{
+		write(STDOUT_FILENO, "leaving the shell...\n", 21);
+		exit (1);
+	}
 	signal(SIGQUIT, handle_sigquit);
 	if (shell->cli[0] == '\0' || ft_is_all_whitespace(shell->cli))
 	{
@@ -95,8 +98,7 @@ int	main(void)
 
 	display_banner();
 	shell = init_shell(environ);
-	if (minishell(shell))
-		return (1);
+	minishell(shell);
 	destroy_shell(shell);
 	return (0);
 }
