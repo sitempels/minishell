@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/15 07:52:54 by user             ###   ########.fr       */
+/*   Updated: 2025/07/23 08:54:44 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef enum e_errnum
 	OPEN_FILE,
 	CLOSE_FILE,
 	N_CREAT,
+	N_SUCH,
 	NOT_H,
 	C_MISS,
 	A_MISS,
@@ -274,7 +275,7 @@ char							**get_arg(t_shell *shell, t_token *arg,
 									int nbr);
 /**/
 /*_________________________________UTILS______________________________________*/
-char							*get_path(char *cmd, t_env *env, int mode);
+char							*get_path(t_shell *shell, char *cmd, t_env *env, int mode);
 /**/
 /*____________CLEAN_____________*/
 void							clean_token_lst(t_token **token_lst);

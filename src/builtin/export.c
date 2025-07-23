@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 07:23:52 by user              #+#    #+#             */
-/*   Updated: 2025/07/15 07:53:24 by user             ###   ########.fr       */
+/*   Updated: 2025/07/23 10:40:41 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,12 @@ static int	process_export_arg(t_env **env, char *arg, int *error_flag)
 	if (!existing)
 	{
 		ret = handle_new_var(env, arg, key);
-		return (free(key), ret);
+		return (ret);
 	}
 	else if (ft_strchr(arg, '='))
 	{
 		ret = handle_update_var(env, arg, key);
-		return (free(key), ret);
+		return (ret);
 	}
 	return (free(key), 0);
 }

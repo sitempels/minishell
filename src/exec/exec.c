@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/15 08:01:39 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/23 09:25:07 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,14 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 		argv = expand(shell, (tree->right)->use.content, NULL);
 	if (!isbuiltin(shell, argv, 0) && create_fork(shell))
 	{
-		path = get_path(argv[0], shell->env, F_OK + X_OK);
-		if (path)
+		path = get_path(shell, argv[0], shell->env, F_OK + X_OK);
+		if (!path)
+			ft_error(shell, 0, 3, argv[0], ": ", get_errnum(N_SUCH));
+		else
+		{
 			execve(path, argv, envp_from_env(shell->env));
-		ft_error(shell, 0, 3, argv[0], ": ", get_errnum(C_MISS));
+			ft_error(shell, 0, 3, argv[0], ": ", get_errnum(C_MISS));
+		}
 		ft_free_array_pos(&argv, 0);
 		builtin_exit(shell, 0, "127");
 	}

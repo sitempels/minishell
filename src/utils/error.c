@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 05:05:48 by user              #+#    #+#             */
-/*   Updated: 2025/07/14 10:41:39 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/23 08:48:01 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ int	ft_error(t_shell *shell, int quit, int nbr_context, ...)
 
 	if (nbr_context > 0)
 	{
-		write(2, "minishell: ", 11);
+		write(STDERR_FILENO, "minishell: ", 11);
 		va_start(error_msg, nbr_context);
 		while (nbr_context > 0)
 		{
 			error = va_arg(error_msg, char *);
-			write(2, error, ft_strlen(error));
+			write(STDERR_FILENO, error, ft_strlen(error));
 			nbr_context--;
 		}
-		write(2, "\n", 1);
+		write(STDERR_FILENO, "\n", 1);
 		va_end(error_msg);
 	}
 	if (errno != 0)
@@ -52,6 +52,8 @@ char	*get_errnum(int error)
 		return ("could not close file");
 	if (error == N_CREAT)
 		return ("Could not create");
+	if (error == N_SUCH)
+		return ("No such file or directory");
 	if (error == C_MISS)
 		return ("Command not found");
 	if (error == A_MISS)
