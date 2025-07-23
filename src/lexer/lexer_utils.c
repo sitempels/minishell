@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:16:13 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/23 13:52:43 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/23 14:45:51 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ static int	pass_quote(const char *cli, size_t *i)
 	while (cli[*i] && cli[*i] != quote)
 		(*i)++;
 	if (cli[*i])
-	{
-		(*i)++;
 		return (0);
-	}
 	return (1);
 }
 
