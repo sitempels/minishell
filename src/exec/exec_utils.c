@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/14 19:45:48 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/22 11:48:12 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	create_fork(t_shell *shell)
 	return (0);
 }
 
-int	create_pipe(t_shell *shell, t_node *tree, int a, int *pipefd)
+int	create_pipe(t_shell *shell, t_node *tree, int a, int *pipefd)/*{{{*/
 {
 	if (create_fork(shell))
 	{
@@ -53,18 +53,18 @@ int	create_pipe(t_shell *shell, t_node *tree, int a, int *pipefd)
 	}
 	return (0);
 }
-
-int	wait_and_decrypt_child(t_shell *shell)
+/*}}}*/
+int wait_and_decrypt_child(t_shell *shell)/*{{{*/
 {
 	int	status;
 
 	status = 0;
-	if (wait(&status))
+	if (wait(&status))/*{{{*/
 	{
 		if (WIFEXITED(status))
 			shell->status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 			shell->status = (WTERMSIG(status));
-	}
+	}/*}}}*/
 	return (shell->status);
-}
+}/*}}}*/

@@ -6,7 +6,7 @@
 /*   By: kerberos <kerberos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 07:49:20 by kerberos          #+#    #+#             */
-/*   Updated: 2025/05/05 22:07:31 by kerberos         ###   ########.fr       */
+/*   Updated: 2025/07/22 13:49:55 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ double	ft_exp2(double x)
 	double	result;
 	int		i;
 
+	i = 0;
 	if (x == 0)
 		return (1.0);
 	result = 1.0;

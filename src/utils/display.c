@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/15 17:48:01 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/22 13:48:01 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ char	*build_prompt_str(char *path)
 	char	*temp;
 	char	*prompt;
 
-	temp = ft_strjoin("📁 \033[1;36m", path);
+	temp = ft_strjoin("📁 \001\033[1;36m\002", path);
 	if (!temp)
 		return (NULL);
-	prompt = ft_strjoin(temp, " \033[1;35m$\033[0m ");
+	prompt = ft_strjoin(temp, " \001\033[1;35m$\033[0m \002");
 	free(temp);
 	return (prompt);
 }
@@ -78,14 +78,14 @@ char	*build_color_prompt(void)
 	home = getenv("HOME");
 	cwd = get_safe_cwd();
 	if (!cwd)
-		return (ft_strdup("📁 \033[1;31m<deleted>\033[0m \033[1;35m$\033[0m "));
+		return (ft_strdup("📁 \001\033[1;31m<deleted>\033[0m \033[1;35m$\033[0m \002"));
 	fcwd = format_cwd_with_home(cwd, home);
 	free(cwd);
 	if (!fcwd)
-		return (ft_strdup("📁 \033[1;31m<deleted>\033[0m \033[1;35m$\033[0m "));
+		return (ft_strdup("📁 \001\033[1;31m<deleted>\033[0m \033[1;35m$\033[0m \002"));
 	prompt = build_prompt_str(fcwd);
 	free(fcwd);
 	if (!prompt)
-		return (ft_strdup("📁 \033[1;31m<deleted>\033[0m \033[1;35m$\033[0m "));
+		return (ft_strdup("📁 \001\033[1;31m<deleted>\033[0m \033[1;35m$\033[0m \002"));
 	return (prompt);
 }
