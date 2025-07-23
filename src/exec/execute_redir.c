@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/13 14:13:33 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/23 14:05:21 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	execute_redir_input(t_shell *shell, t_node *tree)
 		arg = expand(shell, (tree->right)->use.content, NULL);
 		if (ft_arrlen(arg) > 1)
 			ft_error(shell, 0, 1, "ambiguous redirect");
-		path = get_path(arg[0], shell->env, F_OK + R_OK);
+		path = get_path(shell, arg[0], shell->env, F_OK + R_OK);
 	}
 	if (!path)
 	{
@@ -74,7 +74,7 @@ int	execute_redir_output(t_shell *shell, t_node *tree)
 	if (tree->right)
 	{
 		arg = expand(shell, (tree->right)->use.content, NULL);
-		path = get_path(arg[0], shell->env, F_OK + R_OK);
+		path = get_path(shell, arg[0], shell->env, F_OK + R_OK);
 	}
 	if (!path)
 		fd = open(arg[0], O_RDWR | O_CREAT, 00644);
@@ -98,7 +98,7 @@ int	execute_redir_output_a(t_shell *shell, t_node *tree)
 	if (tree->right)
 	{
 		arg = expand(shell, (tree->right)->use.content, NULL);
-		path = get_path(arg[0], shell->env, F_OK + R_OK);
+		path = get_path(shell, arg[0], shell->env, F_OK + R_OK);
 	}
 	if (!path)
 		fd = open(arg[0], O_RDWR | O_CREAT, 00644);

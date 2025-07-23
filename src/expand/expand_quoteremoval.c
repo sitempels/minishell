@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 10:11:02 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 15:08:14 by sjacquet         ###   ########.fr       */
+/*   Updated: 2025/07/14 20:05:32 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static char	*copy_without(char *dst, char *src, int nbr)
 	while (i < nbr)
 	{
 		if (src[i + j] && src[i + j] == '&' && (src[i + j + 1] == '\'' || src[i
-				+ j + 1] == '\"'))
+					+ j + 1] == '\"'))
 			j = j + 2;
 		else if (src[i + j])
 		{

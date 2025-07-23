@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/14 17:09:57 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/23 10:52:38 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	execute_node(t_shell *shell, t_node *tree)
 	if (!tree)
 		return (0);
 	tree->use.fct(shell, tree);
+	if (g_signal != 0)
+		shell->status = g_signal + 128;
 	return (shell->status);
 }
 
@@ -31,8 +33,7 @@ int	create_fork(t_shell *shell)
 		ft_error(shell, 0, 2, "EXEC: FORK", get_errnum(N_CREAT));
 	if (pid == 0)
 	{
-	//	signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		signal(SIGINT, handle_sigint);
 		return (1);
 	}
 	else

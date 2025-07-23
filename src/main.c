@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/14 16:56:52 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/23 13:07:07 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,14 @@ static int	read_and_prepare(t_shell *shell)
 {
 	char	*prompt;
 
-	if (g_signal == SIGINT)
-	{
-		g_signal = 0;
-	}
 	prompt = build_color_prompt();
 	shell->cli = readline(prompt);
 	free(prompt);
-	if (!shell->cli) // si NULL => fin de shell (Ctrl+D)
-		ft_error(shell, 1, 1, "leaving the shell...");
+	if (!shell->cli)
+	{
+		write(STDOUT_FILENO, "leaving the shell...\n", 21);
+		exit (1);
+	}
 	signal(SIGQUIT, handle_sigquit);
 	if (shell->cli[0] == '\0' || ft_is_all_whitespace(shell->cli))
 	{
@@ -47,12 +46,8 @@ static int	read_and_prepare(t_shell *shell)
 		shell->cli = NULL;
 		return (0);
 	}
-	if (!is_valid_cli(shell->cli))
-	{
-		printf("%sUnclosed quotes%s\n", BOLD_RED, RESET);
-		clean_shell(shell);
+	if (is_valid_cli(shell, shell->cli))
 		return (0);
-	}
 	if (shell->cli && *shell->cli)
 		add_history(shell->cli);
 	return (1);
@@ -65,57 +60,41 @@ static int	parse_and_execute(t_shell *shell)
 	shell->tokens = lexer(shell, &shell->tokens, shell->cli);
 	if (!shell->tokens || shell->tokens->type == EOL)
 		return (0);
-	if (shell->mode == 1 || (shell->mode >= 2 && shell->mode != 4))
-		show_lexeme(shell->tokens);
 	parser(shell, &shell->tokens);
 	if (!shell->tree)
 		return (0);
-	if (shell->mode == 1 || shell->mode >= 3)
-		show_tree(shell->tree, 1);
-	if (shell->mode <= 1)
-		execute_node(shell, shell->tree);
+	execute_node(shell, shell->tree);
+	if (g_signal != 0)
+		shell->status = 128 + g_signal;
 	return (1);
-}
-
-static void	wait_and_restore(t_shell *shell)
-{
-//	while (shell->child_nbr > 0)
-//	{
-//		wait_and_decrypt_child(shell);
-//		shell->child_nbr--;
-//	}
-	restore_std_io(shell);
-	clean_shell(shell);
 }
 
 int	minishell(t_shell *shell)
 {
 	while (1)
 	{
+		if (g_signal != 0)
+			shell->status = 128 + g_signal;
+		g_signal = 0;
 		signals();
 		if (!read_and_prepare(shell))
 			continue ;
 		if (!parse_and_execute(shell))
 			continue ;
-		wait_and_restore(shell);
+		restore_std_io(shell);
+		clean_shell(shell);
 	}
 	return (0);
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(void)
 {
-	int		mode;
-	t_shell	*shell;
+	t_shell		*shell;
+	extern char	**environ;
 
-	mode = 0;
-	if (argc > 2)
-		return (write(1, "Usage: ./minishell <mode>\n", 10));
-	if (argc == 2)
-		mode = argv[1][0] - 48;
 	display_banner();
-	shell = init_shell(mode, envp);
-	if (minishell(shell))
-		return (1);
+	shell = init_shell(environ);
+	minishell(shell);
 	destroy_shell(shell);
 	return (0);
 }

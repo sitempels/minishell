@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 10:37:45 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/14 10:24:27 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/15 18:11:30 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,29 +102,3 @@ static int	handle_word(char *cli)
 	}
 	return (i);
 }
-
-/*
-static int	handle_case(t_shell *shell, t_token **new, char *cli, int *i)
-{
-//	t_token	*next;
-//	next = NULL;
-	if (*new && (*new)->type == DLESS)
-	{
-		token_found(shell, &next, cli, i);
-		if (!next || next->type != WORD)
-		{
-			free(*new);
-			if (next)
-				free(next);
-			shell->status = 1;
-			return (ft_error(shell, 0, 2, get_errnum(NEAR), "'<<'"));
-		}
-		(*new)->next = handle_heredoc(shell, next);
-		if (!(*new)->next && g_signal != SIGINT)
-			return (ft_error(shell, 0, 2, get_errnum(NEAR), "'<<'"), 1);
-		if (g_signal == SIGINT)
-			return (clean_shell(shell), 130);
-	}
-	return (0);
-}
-*/

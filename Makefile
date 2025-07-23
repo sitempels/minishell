@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/07/13 09:18:30 by stempels         ###   ########.fr        #
+#    Updated: 2025/07/16 07:31:35 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ MAIN = main
 SRC_DIR = src
 #
 ENV_DIR = env
-SRC_ENV = $(addprefix $(ENV_DIR)/, env_list env_node env_utils env_from_envp env_del env_sort)
+SRC_ENV = $(addprefix $(ENV_DIR)/, env_list env_node env_utils env_update env_from_envp env_del env_sort)
 #
 LEXER_DIR = lexer
 SRC_LEXER = $(addprefix $(LEXER_DIR)/, lexer lexer_utils)
@@ -49,10 +49,10 @@ EXPAND_DIR = expand
 SRC_EXPAND = $(addprefix $(EXPAND_DIR)/, expand process_arg expand_wordsplitting expand_quoteremoval expand_utils expand_string expand_exit expand_var)
 #
 BUILTIN_DIR = builtin
-SRC_BUILTIN = $(addprefix $(BUILTIN_DIR)/, cd echo env exit export pwd unset)
+SRC_BUILTIN = $(addprefix $(BUILTIN_DIR)/, cd cd_utils echo env exit export export_utils pwd unset)
 #
 UTILS_DIR = utils
-SRC_UTILS = $(addprefix $(UTILS_DIR)/, debug error path signal display shell cleaning redir)
+SRC_UTILS = $(addprefix $(UTILS_DIR)/, error signal display shell cleaning redir)
 #
 SRCS ::= $(MAIN) $(SRC_LEXER) $(SRC_ENV) $(SRC_PARSER) $(SRC_EXEC) $(SRC_EXPAND) $(SRC_BUILTIN) $(SRC_UTILS)
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 
@@ -84,14 +84,17 @@ $(LIBFT):
 #
 $(NAME): $(OBJ) $(LIBFT) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
-	@echo "$(NAME) $(GREEN)created !$(NC)"
 	@mkdir -p .here_doc
+	@echo "$(NAME) $(GREEN)created !$(NC)"
 
 run: $(NAME)
 	@./$(NAME)
 #
 leak: debug
-	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --verbose --suppressions=./misc/valgrind.supp ./debug_$(NAME_PROJECT)
+	@valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-origins=yes --track-fds=yes --suppressions=./valgrind.supp ./debug_$(NAME_PROJECT)
+#
+vgdb: debug
+	@valgrind --vgdb-error=0 --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=./valgrind.supp ./debug_$(NAME_PROJECT)
 #
 clean:
 	rm -rf $(OBJ_DIR) $(DEPENDS)
@@ -112,14 +115,14 @@ ffclean: fclean libclean
 #
 re: ffclean all
 #
-debug: clean $(OBJ) $(LIBFT) 
+debug: $(OBJ) $(LIBFT) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
 	@mkdir -p .here_doc
 	@echo "$(NAME) created !"
 #
 -include $(DEPENDS)
 #
-.PHONY: all clean libclean fclean ffclean re debug
+.PHONY: all clean libclean fclean ffclean re
 #----------------------------TEXT----------------------------------------------#
 
 #
