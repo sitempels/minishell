@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/23 08:34:24 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/23 10:52:38 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	create_pipe(t_shell *shell, t_node *tree, int a, int *pipefd)
 	return (0);
 }
 
-int wait_and_decrypt_child(t_shell *shell)
+int	wait_and_decrypt_child(t_shell *shell)
 {
 	int	status;
 

@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/22 13:48:01 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/23 11:00:10 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,21 @@ char	*build_color_prompt(void)
 	char	*cwd;
 	char	*fcwd;
 	char	*prompt;
+	char	*tmp;
 
 	home = getenv("HOME");
 	cwd = get_safe_cwd();
+	tmp = ft_strdup("📁 \001\033[1;31m<deleted>\033[0m \033[1;35m$\033[0m \002");
 	if (!cwd)
-		return (ft_strdup("📁 \001\033[1;31m<deleted>\033[0m \033[1;35m$\033[0m \002"));
+		return (tmp);
 	fcwd = format_cwd_with_home(cwd, home);
 	free(cwd);
 	if (!fcwd)
-		return (ft_strdup("📁 \001\033[1;31m<deleted>\033[0m \033[1;35m$\033[0m \002"));
+		return (tmp);
 	prompt = build_prompt_str(fcwd);
 	free(fcwd);
 	if (!prompt)
-		return (ft_strdup("📁 \001\033[1;31m<deleted>\033[0m \033[1;35m$\033[0m \002"));
+		return (tmp);
+	free(tmp);
 	return (prompt);
 }

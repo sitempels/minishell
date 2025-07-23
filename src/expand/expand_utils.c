@@ -6,11 +6,13 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:10:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/23 09:28:31 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/23 13:52:07 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*get_full_path(char **paths, char *cmd, int mode);
 
 char	*get_env_value(t_env *env, const char *key)
 {
@@ -41,7 +43,6 @@ char	*append_char(char *s, char c)
 
 char	*get_path(t_shell *shell, char *cmd, t_env *env, int mode)
 {
-	int		i;
 	int		error;
 	char	*path_full;
 	char	**paths;
@@ -51,12 +52,26 @@ char	*get_path(t_shell *shell, char *cmd, t_env *env, int mode)
 	if (error == 0)
 		return (cmd);
 	target = env_getone(env, "PATH");
-	if (target && target->value[0])
-		paths = ft_strsplit((env_getone(env, "PATH"))->value, ':');
-	if (!target || !target->value[0] || !paths)
+	if (!target || !target->value[0])
+		return (ft_error(shell, 0, 3, cmd, ": ", get_errnum(N_SUCH)), NULL);
+	paths = ft_strsplit((env_getone(env, "PATH"))->value, ':');
+	if (!paths)
 		return (NULL);
-	i = -1;
-	while (paths[++i])
+	path_full = get_full_path(paths, cmd, mode);
+	if (!path_full)
+		ft_error(shell, 0, 3, cmd, ": ", get_errnum(C_MISS));
+	return (ft_free_array_pos(&paths, 0), path_full);
+}
+
+static char	*get_full_path(char **paths, char *cmd, int mode)
+{
+	int		i;
+	int		error;
+	char	*path_full;
+
+	i = 0;
+	path_full = NULL;
+	while (paths[i])
 	{
 		path_full = ft_strjoin_var(3, paths[i], "/", cmd);
 		error = access(path_full, mode);
@@ -64,6 +79,7 @@ char	*get_path(t_shell *shell, char *cmd, t_env *env, int mode)
 			break ;
 		free(path_full);
 		path_full = NULL;
+		i++;
 	}
-	return (ft_free_array_pos(&paths, 0), path_full);
+	return (path_full);
 }

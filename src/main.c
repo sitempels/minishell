@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/16 08:34:41 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/23 13:07:07 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,8 @@ static int	read_and_prepare(t_shell *shell)
 		shell->cli = NULL;
 		return (0);
 	}
-	if (!is_valid_cli(shell->cli))
-	{
-		printf("%sUnclosed quotes%s\n", BOLD_RED, RESET);
-		clean_shell(shell);
+	if (is_valid_cli(shell, shell->cli))
 		return (0);
-	}
 	if (shell->cli && *shell->cli)
 		add_history(shell->cli);
 	return (1);
