@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 07:36:24 by user              #+#    #+#             */
-/*   Updated: 2025/07/24 11:43:50 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:29:30 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ char	*expand_variable(char *input, size_t *i, t_env *env)
 	if (!key)
 		return (input);
 	val = get_env_value(env, key);
-	free(key);
 	if (!val)
-		return (free(input), ft_strdup(""));
+		val = "";
 	len = ft_strlen(input) - (*i - start) + ft_strlen(val);
 	res = (char *)malloc(len);
 	if (!res)
-		return (free(input), NULL);
-	res[len] = '\0';
+		return (free(key), free(input), NULL);
+	res[len - 1] = '\0';
 	ft_strlcpy(res, input, start);
 	ft_strlcat(res, val, len);
 	ft_strlcat(res, &input[*i], len);
-	return (free(input), res);
+	*i = len - ft_strlen(res) - 1;
+	return (free(key), free(input), res);
 }

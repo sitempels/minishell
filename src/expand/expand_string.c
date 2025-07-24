@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:20:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/24 11:21:25 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:32:59 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ char	*expand_string(t_shell *shell, char *input)
 			if (!input)
 				return (NULL);
 		}
-		i++;
+		if (input[i])
+			i++;
 	}
 	return (input);
 }
