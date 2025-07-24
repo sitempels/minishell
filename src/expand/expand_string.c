@@ -6,13 +6,13 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:20:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/15 16:51:56 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:21:25 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static size_t	skip_and_quote_block(char *input, size_t i)
+static size_t	skip_quote_block(char *input, size_t i)
 {
 	if (input[i] == '&' && input[i + 1] == '\'')
 	{
@@ -51,7 +51,7 @@ char	*expand_string(t_shell *shell, char *input)
 	i = 0;
 	while (input[i])
 	{
-		i = skip_and_quote_block(input, i);
+		i = skip_quote_block(input, i);
 		if (input[i] == '$')
 		{
 			if (input[i + 1] == '?')
