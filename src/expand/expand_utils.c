@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 06:10:00 by user              #+#    #+#             */
-/*   Updated: 2025/07/23 13:52:07 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:44:50 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ char	*get_path(t_shell *shell, char *cmd, t_env *env, int mode)
 	char	**paths;
 	t_env	*target;
 
+	if (!ft_strcmp(cmd, ".") || !ft_strcmp(cmd, ".."))
+		return (ft_error(shell, 0, 3, cmd, ": ", get_errnum(C_MISS)), NULL);
 	error = access(cmd, mode);
 	if (error == 0)
 		return (cmd);

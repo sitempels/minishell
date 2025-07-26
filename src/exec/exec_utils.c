@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/26 15:48:17 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/26 16:35:51 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	create_fork(t_shell *shell)
 		ft_error(shell, 0, 2, "EXEC: FORK", get_errnum(N_CREAT));
 	if (pid == 0)
 	{
-		signal(SIGINT, handle_sigint);
+		signal(SIGINT, SIG_DFL);
 		return (1);
 	}
 	else

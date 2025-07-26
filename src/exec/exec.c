@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/23 13:51:31 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:39:38 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 	{
 		path = get_path(shell, argv[0], shell->env, F_OK + X_OK);
 		if (path)
+		{
 			execve(path, argv, envp_from_env(shell->env));
+			perror(argv[0]);
+		}
 		ft_free_array_pos(&argv, 0);
 		builtin_exit(shell, 0, "127");
 	}
