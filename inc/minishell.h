@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/24 19:19:25 by user             ###   ########.fr       */
+/*   Updated: 2025/07/26 18:33:45 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ t_env							*env_dup(t_env *src);
 int								builtin_env(t_env *env);
 int								builtin_cd(t_env *env, char *path);
 void							builtin_exit(t_shell *shell, int print,
-									char *status);
+									char **status);
 int								builtin_pwd(void);
 int								builtin_export(t_env **env, char **args);
 int								builtin_unset(t_env **env, char **args);

@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/26 17:39:38 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/26 18:32:19 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static int	isbuiltin(t_shell *shell, char **argv, int found)
 	else if (!ft_strcmp(argv[0], "env"))
 		shell->status = builtin_env(shell->env);
 	else if (!ft_strcmp(argv[0], "exit"))
-		builtin_exit(shell, 1, argv[1]);
+		builtin_exit(shell, 1, argv);
 	else if (!ft_strcmp(argv[0], "export"))
 		shell->status = builtin_export(&shell->env, argv);
 	else if (!ft_strcmp(argv[0], "pwd"))
