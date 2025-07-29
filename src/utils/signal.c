@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:50 by user              #+#    #+#             */
-/*   Updated: 2025/07/26 17:46:54 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/29 17:17:33 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,19 @@ void	handle_sigint(int sig)
 	if (sig == SIGINT)
 	{
 		g_signal = SIGINT;
-		rl_replace_line("", 0);
-//		rl_redisplay();
-		rl_on_new_line();
+		if (rl_end != 0)
+		{
+			write(1, "\n", 1);
+		}
 		if (rl_end == 0)
 			ioctl(STDIN_FILENO, TIOCSTI, "\n");
+//		rl_redisplay();
+		rl_replace_line("", 0);
+		//ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		rl_on_new_line();
 	}
 }
+	//		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 
 void	handle_sigquit(int sig)
 {

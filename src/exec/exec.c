@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/26 18:32:19 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/29 17:00:21 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,13 @@ int	execute_pipe(t_shell *shell, t_node *tree)
 	create_pipe(shell, tree->right, 1, pipefd);
 	close(pipefd[0]);
 	close(pipefd[1]);
+//	signal(SIGINT, handle_sigint);
 	while (shell->child_nbr > 0)
 	{
 		wait_and_decrypt_child(shell);
 		shell->child_nbr--;
+		if (g_signal == SIGINT)
+			g_signal = 0;
 	}
 	return (shell->status);
 }
@@ -82,10 +85,12 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 			perror(argv[0]);
 		}
 		ft_free_array_pos(&argv, 0);
-		builtin_exit(shell, 0, "127");
+		shell->status = 127;
+		builtin_exit(shell, 0, NULL);
 	}
 	ft_free_array_pos(&argv, 0);
 	wait_and_decrypt_child(shell);
+	signal(SIGINT, handle_sigint);
 	return (shell->status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/26 16:35:51 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/29 17:16:22 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@ int	create_fork(t_shell *shell)
 		return (1);
 	}
 	else
+	{
 		shell->child_nbr++;
+	}
 	return (0);
 }
 
