@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:56:41 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/24 15:40:19 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:17:29 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ void	display_banner(void)
 		"██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗\n"
 		"╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝\n"
 		"Build by Simon T. && Selim J.\n";
-	printf(MAGENTA);
-	printf("\n\n");
-	printf("%s", b);
-	printf("\n\n");
-	printf(RESET);
+	ft_printf(MAGENTA);
+	ft_printf("\n\n");
+	ft_printf("%s", b);
+	ft_printf("\n\n");
+	ft_printf(RESET);
 }
 
 char	*format_cwd_with_home(char *cwd, char *home)

@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:56 by user              #+#    #+#             */
-/*   Updated: 2025/07/26 18:38:22 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/30 13:38:29 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	builtin_exit(t_shell *shell, int print, char **status)
 	int	intstatus;
 
 	if (print)
-		ft_printf("minishell: exiting the shell...\n");
+		write(2, "exit\n", 5);
 	if (status && status[1])
 	{
 		intstatus = ft_atoi(status[1]);

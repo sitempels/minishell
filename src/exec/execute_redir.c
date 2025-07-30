@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 10:04:05 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/26 15:46:59 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/30 15:40:34 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 int	execute_redir_input(t_shell *shell, t_node *tree)
 {
 	int		fd;
-	char	*path;
 	char	**arg;
 
-	path = NULL;
+	arg = NULL;
 	if (tree->right)
 		arg = expand(shell, (tree->right)->use.content, NULL);
 	fd = open(arg[0], O_RDONLY, O_CLOEXEC);
@@ -53,6 +52,7 @@ int	execute_redir_output(t_shell *shell, t_node *tree)
 	int		fd;
 	char	**arg;
 
+	arg = NULL;
 	if (tree->right)
 		arg = expand(shell, (tree->right)->use.content, NULL);
 	fd = open(arg[0], O_WRONLY | O_TRUNC | O_CREAT, 00644);
@@ -74,6 +74,7 @@ int	execute_redir_output_a(t_shell *shell, t_node *tree)
 	int		fd;
 	char	**arg;
 
+	arg = NULL;
 	if (tree->right)
 		arg = expand(shell, (tree->right)->use.content, NULL);
 	fd = open(arg[0], O_WRONLY | O_APPEND | O_CREAT, 00644);

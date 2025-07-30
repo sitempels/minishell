@@ -6,11 +6,13 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:50 by user              #+#    #+#             */
-/*   Updated: 2025/07/30 12:54:31 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/30 16:55:22 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	handle_sigpipe(int sig);
 
 void	handle_sigint(int sig)
 {
@@ -24,18 +26,18 @@ void	handle_sigint(int sig)
 	}
 }
 
+static void	handle_sigpipe(int sig)
+{
+	g_signal = sig;
+}
+
 void	handle_sigquit(int sig)
 {
 	if (sig == SIGQUIT)
 	{
 		g_signal = SIGQUIT;
-		if (rl_end > 0)
-		{
-			write(STDOUT_FILENO, "Quit (core dumped)", 18);
-			write(STDOUT_FILENO, "\n", 1);
-			rl_replace_line("", 0);
-			rl_on_new_line();
-		}
+		rl_replace_line("", 0);
+		rl_on_new_line();
 	}
 }
 
@@ -66,4 +68,5 @@ void	signals(void)
 	sa_quit.sa_handler = SIG_IGN;
 	if (sigaction(SIGQUIT, &sa_quit, NULL) == -1)
 		perror("sigaction(SIGQUIT)");
+	signal(SIGPIPE, handle_sigpipe);
 }

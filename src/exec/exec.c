@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/29 17:00:21 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/30 17:23:53 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,20 @@ int	execute_and_or_if(t_shell *shell, t_node *tree)
 
 int	execute_pipe(t_shell *shell, t_node *tree)
 {
-	int	pipefd[2];
+	int			pipefd[2];
+	pid_t	child_1;
+	pid_t	child_2;
 
 	if (pipe(pipefd) == -1)
 		return (ft_error(shell, 0, 2, "PIPE", get_errnum(N_CREAT)), 1);
-	create_pipe(shell, tree->left, 0, pipefd);
-	create_pipe(shell, tree->right, 1, pipefd);
+	child_1 = create_pipe(shell, tree->left, 0, pipefd);
+	child_2 = create_pipe(shell, tree->right, 1, pipefd);
 	close(pipefd[0]);
 	close(pipefd[1]);
-//	signal(SIGINT, handle_sigint);
-	while (shell->child_nbr > 0)
-	{
-		wait_and_decrypt_child(shell);
-		shell->child_nbr--;
-		if (g_signal == SIGINT)
-			g_signal = 0;
-	}
+	waitpid(child_1, NULL, 0);
+	wait_and_decrypt_child(shell, child_2);
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, handle_sigquit);
 	return (shell->status);
 }
 
@@ -62,7 +60,7 @@ int	execute_subshell(t_shell *shell, t_node *tree)
 			return (1);
 		builtin_exit(shell, 0, NULL);
 	}
-	wait_and_decrypt_child(shell);
+	wait_and_decrypt_child(shell, 0);
 	return (shell->status);
 }
 
@@ -70,27 +68,33 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 {
 	char	*path;
 	char	**argv;
+	pid_t	child;
 
 	argv = NULL;
 	if (execute_node(shell, tree->left))
 		return (1);
 	if (tree->right)
 		argv = expand(shell, (tree->right)->use.content, NULL);
-	if (!isbuiltin(shell, argv, 0) && create_fork(shell))
+	if (!isbuiltin(shell, argv, 0))
 	{
-		path = get_path(shell, argv[0], shell->env, F_OK + X_OK);
-		if (path)
+		child = create_fork(shell);
+		if (child == 0)
 		{
-			execve(path, argv, envp_from_env(shell->env));
-			perror(argv[0]);
+			path = get_path(shell, argv[0], shell->env, F_OK + X_OK);
+			if (path)
+			{
+				execve(path, argv, envp_from_env(shell->env));
+				perror(argv[0]);
+			}
+			ft_free_array_pos(&argv, 0);
+			shell->status = 127;
+			builtin_exit(shell, 0, NULL);
 		}
-		ft_free_array_pos(&argv, 0);
-		shell->status = 127;
-		builtin_exit(shell, 0, NULL);
 	}
 	ft_free_array_pos(&argv, 0);
-	wait_and_decrypt_child(shell);
+	wait_and_decrypt_child(shell, child);
 	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, handle_sigquit);
 	return (shell->status);
 }
 

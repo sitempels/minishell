@@ -6,14 +6,14 @@
 #    By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/11 01:33:34 by sjacquet          #+#    #+#              #
-#    Updated: 2025/07/13 09:26:39 by stempels         ###   ########.fr        #
+#    Updated: 2025/07/30 15:45:30 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	libft.a
 
 CC		=	cc
-CFLAGS	=	-Wall -Wextra -Werror -g 
+CFLAGS	=	-Wall -Wextra -Werror -g -fPIC 
 IFLAGS	=	-Iinc
 
 INC = inc

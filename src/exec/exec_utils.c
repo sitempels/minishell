@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/30 13:10:05 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/30 17:22:10 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	execute_node(t_shell *shell, t_node *tree)
 	return (shell->status);
 }
 
-int	create_fork(t_shell *shell)
+pid_t create_fork(t_shell *shell)
 {
 	pid_t	pid;
 
@@ -34,19 +34,23 @@ int	create_fork(t_shell *shell)
 	if (pid == 0)
 	{
 		signal(SIGINT, handle_sigint);
-		return (1);
+		signal(SIGQUIT, handle_sigquit);
 	}
 	else
 	{
 		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		shell->child_nbr++;
 	}
-	return (0);
+	return (pid);
 }
 
-int	create_pipe(t_shell *shell, t_node *tree, int a, int *pipefd)
+pid_t	create_pipe(t_shell *shell, t_node *tree, int a, int *pipefd)
 {
-	if (create_fork(shell))
+	pid_t	pid;
+
+	pid = create_fork(shell);
+	if (pid == 0)
 	{
 		close(pipefd[a]);
 		dup2(pipefd[(-a + 1)], -a + 1);
@@ -54,24 +58,28 @@ int	create_pipe(t_shell *shell, t_node *tree, int a, int *pipefd)
 		execute_node(shell, tree);
 		builtin_exit(shell, 0, NULL);
 	}
-	return (0);
+	return (pid);
 }
 
-int	wait_and_decrypt_child(t_shell *shell)
+int	wait_and_decrypt_child(t_shell *shell, pid_t pid)
 {
 	int	status;
 
 	status = 0;
-	if (wait(&status))
+	if (waitpid(pid, &status, 0))
 	{
 		if (WIFEXITED(status))
+		{
 			shell->status = WEXITSTATUS(status);
+			if (shell->status > 128)
+				g_signal = shell->status - 128;
+		}
 		else if (WIFSIGNALED(status))
 		{
-			if (rl_end != 0)
-				write(1, "\n", 1);
 			g_signal = WTERMSIG(status);
-			//shell->status = 128 + g_signal;
+			if (g_signal == SIGINT)
+ 				write(STDIN_FILENO, "\n", 1);
+			shell->status = 128 + g_signal;
 		}
 	}
 	return (shell->status);

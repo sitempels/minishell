@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 04:35:33 by sjacquet          #+#    #+#             */
-/*   Updated: 2025/07/26 18:33:45 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/30 15:13:04 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,10 +267,10 @@ int								execute_redir_output_a(t_shell *shell,
 /**/
 /*____________UTILS_____________*/
 int								execute_node(t_shell *shell, t_node *tree);
-int								create_fork(t_shell *shell);
-int								create_pipe(t_shell *shell, t_node *tree, int a,
+pid_t							create_fork(t_shell *shell);
+pid_t							create_pipe(t_shell *shell, t_node *tree, int a,
 									int *pipefd);
-int								wait_and_decrypt_child(t_shell *shell);
+int								wait_and_decrypt_child(t_shell *shell, pid_t pid);
 char							**get_arg(t_shell *shell, t_token *arg,
 									int nbr);
 /**/
