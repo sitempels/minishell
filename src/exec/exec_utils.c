@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/30 17:22:10 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/30 17:38:57 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,27 @@ int	execute_node(t_shell *shell, t_node *tree)
 	return (shell->status);
 }
 
-pid_t create_fork(t_shell *shell)
+int	execute_subshell(t_shell *shell, t_node *tree)
+{
+	if (execute_node(shell, tree->left))
+		return (1);
+	if (create_fork(shell))
+	{
+		shell->std_io[0] = ttyname(STDOUT_FILENO);
+		shell->std_io[1] = ttyname(STDIN_FILENO);
+		if (update_envint(shell->env, "SHLVL", 1))
+			return (1);
+		execute_node(shell, tree->right);
+		clean_shell(shell);
+		if (update_envint(shell->env, "SHLVL", -1))
+			return (1);
+		builtin_exit(shell, 0, NULL);
+	}
+	wait_and_decrypt_child(shell, 0);
+	return (shell->status);
+}
+
+pid_t	create_fork(t_shell *shell)
 {
 	pid_t	pid;
 
@@ -78,7 +98,7 @@ int	wait_and_decrypt_child(t_shell *shell, pid_t pid)
 		{
 			g_signal = WTERMSIG(status);
 			if (g_signal == SIGINT)
- 				write(STDIN_FILENO, "\n", 1);
+				write(STDIN_FILENO, "\n", 1);
 			shell->status = 128 + g_signal;
 		}
 	}

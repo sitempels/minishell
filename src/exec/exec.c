@@ -6,13 +6,14 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/30 17:23:53 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/30 17:38:08 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static int	isbuiltin(t_shell *shell, char **argv, int status);
+static void	handle_cmd(t_shell *shell, char **argv);
 
 int	execute_and_or_if(t_shell *shell, t_node *tree)
 {
@@ -27,7 +28,7 @@ int	execute_and_or_if(t_shell *shell, t_node *tree)
 
 int	execute_pipe(t_shell *shell, t_node *tree)
 {
-	int			pipefd[2];
+	int		pipefd[2];
 	pid_t	child_1;
 	pid_t	child_2;
 
@@ -44,29 +45,8 @@ int	execute_pipe(t_shell *shell, t_node *tree)
 	return (shell->status);
 }
 
-int	execute_subshell(t_shell *shell, t_node *tree)
-{
-	if (execute_node(shell, tree->left))
-		return (1);
-	if (create_fork(shell))
-	{
-		shell->std_io[0] = ttyname(STDOUT_FILENO);
-		shell->std_io[1] = ttyname(STDIN_FILENO);
-		if (update_envint(shell->env, "SHLVL", 1))
-			return (1);
-		execute_node(shell, tree->right);
-		clean_shell(shell);
-		if (update_envint(shell->env, "SHLVL", -1))
-			return (1);
-		builtin_exit(shell, 0, NULL);
-	}
-	wait_and_decrypt_child(shell, 0);
-	return (shell->status);
-}
-
 int	execute_cmd(t_shell *shell, t_node *tree)
 {
-	char	*path;
 	char	**argv;
 	pid_t	child;
 
@@ -79,23 +59,29 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 	{
 		child = create_fork(shell);
 		if (child == 0)
-		{
-			path = get_path(shell, argv[0], shell->env, F_OK + X_OK);
-			if (path)
-			{
-				execve(path, argv, envp_from_env(shell->env));
-				perror(argv[0]);
-			}
-			ft_free_array_pos(&argv, 0);
-			shell->status = 127;
-			builtin_exit(shell, 0, NULL);
-		}
+			handle_cmd(shell, argv);
 	}
 	ft_free_array_pos(&argv, 0);
 	wait_and_decrypt_child(shell, child);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigquit);
 	return (shell->status);
+}
+
+static void	handle_cmd(t_shell *shell, char **argv)
+{
+	char	*path;
+
+	path = NULL;
+	path = get_path(shell, argv[0], shell->env, F_OK + X_OK);
+	if (path)
+	{
+		execve(path, argv, envp_from_env(shell->env));
+		perror(argv[0]);
+	}
+	ft_free_array_pos(&argv, 0);
+	shell->status = 127;
+	builtin_exit(shell, 0, NULL);
 }
 
 static int	isbuiltin(t_shell *shell, char **argv, int found)
