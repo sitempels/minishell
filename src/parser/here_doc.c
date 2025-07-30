@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/14 18:17:12 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/30 11:32:49 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_node	*handle_heredoc(t_shell *shell, t_node *del)
 	while (g_signal != SIGINT
 		&& write_heredoc(shell, *(del->use.content), fd, quoted))
 		continue ;
+	signal(SIGINT, handle_sigint);
 	close(fd);
 	free(del->use.content);
 	del->use.fd = open(here_name, O_RDONLY);

@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/29 17:16:22 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/30 13:10:05 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ int	create_fork(t_shell *shell)
 		ft_error(shell, 0, 2, "EXEC: FORK", get_errnum(N_CREAT));
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
+		signal(SIGINT, handle_sigint);
 		return (1);
 	}
 	else
 	{
+		signal(SIGINT, SIG_IGN);
 		shell->child_nbr++;
 	}
 	return (0);
@@ -66,7 +67,12 @@ int	wait_and_decrypt_child(t_shell *shell)
 		if (WIFEXITED(status))
 			shell->status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-			shell->status = (WTERMSIG(status));
+		{
+			if (rl_end != 0)
+				write(1, "\n", 1);
+			g_signal = WTERMSIG(status);
+			//shell->status = 128 + g_signal;
+		}
 	}
 	return (shell->status);
 }

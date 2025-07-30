@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/29 16:17:11 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/30 13:06:58 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,10 @@ int	minishell(t_shell *shell)
 	while (1)
 	{
 		if (g_signal != 0)
-			shell->status = 128 + g_signal;
+		{
+			if (g_signal != 0)
+				shell->status = 128 + g_signal;
+		}
 		g_signal = 0;
 		signals();
 		if (!read_and_prepare(shell))
