@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/30 17:38:57 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/30 17:43:09 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	execute_node(t_shell *shell, t_node *tree)
 {
+	if (g_signal != 0)
+		return (shell->status);
 	if (!shell)
 		return (1);
 	if (!tree)
