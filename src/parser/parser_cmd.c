@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/09 17:35:38 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/31 14:28:09 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_node	*parse_simple_cmd(t_shell *shell, t_token **token)
 		return (NULL);
 	new = create_node(shell, NULL, CMD);
 	new->use.fct = &execute_cmd;
-	while ((*token)->type == LESS || (*token)->type == DLESS
+	while ((*token) && (*token)->type == LESS || (*token)->type == DLESS
 		|| (*token)->type == GREAT || (*token)->type == DGREAT
 		|| (*token)->type == WORD)
 	{

@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/31 07:29:22 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/31 16:17:33 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	read_and_prepare(t_shell *shell)
 		return (0);
 	}
 	if (is_valid_cli(shell, shell->cli))
-		return (0);
+		return (clean_shell(shell), 0);
 	if (shell->cli && *shell->cli)
 		add_history(shell->cli);
 	if (g_signal != 0)
@@ -50,10 +50,10 @@ static int	parse_and_execute(t_shell *shell)
 		return (0);
 	shell->tokens = lexer(shell, &shell->tokens, shell->cli);
 	if (!shell->tokens || shell->tokens->type == EOL)
-		return (0);
+		return (clean_shell(shell), 0);
 	parser(shell, &shell->tokens);
 	if (!shell->tree)
-		return (0);
+		return (clean_shell(shell), 0);
 	execute_node(shell, shell->tree);
 	if (g_signal != 0)
 		shell->status = 128 + g_signal;
