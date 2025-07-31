@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:42:34 by user              #+#    #+#             */
-/*   Updated: 2025/07/15 07:52:26 by user             ###   ########.fr       */
+/*   Updated: 2025/07/31 10:40:45 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	handle_new_var(t_env **env, char *arg, char *key)
 			free(key);
 			return (1);
 		}
+		free(key);
 	}
 	else
 	{
