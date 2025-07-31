@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 09:10:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/30 17:43:09 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/31 07:31:38 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	execute_subshell(t_shell *shell, t_node *tree)
 		clean_shell(shell);
 		if (update_envint(shell->env, "SHLVL", -1))
 			return (1);
-		builtin_exit(shell, 0, NULL);
+		builtin_exit(shell, 1, NULL);
 	}
 	wait_and_decrypt_child(shell, 0);
 	return (shell->status);
@@ -57,12 +57,13 @@ pid_t	create_fork(t_shell *shell)
 	{
 		signal(SIGINT, handle_sigint);
 		signal(SIGQUIT, handle_sigquit);
+		shell->child_nbr = 1;
 	}
 	else
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
-		shell->child_nbr++;
+		shell->child_nbr = 0;
 	}
 	return (pid);
 }
@@ -78,7 +79,7 @@ pid_t	create_pipe(t_shell *shell, t_node *tree, int a, int *pipefd)
 		dup2(pipefd[(-a + 1)], -a + 1);
 		close(pipefd[(-a + 1)]);
 		execute_node(shell, tree);
-		builtin_exit(shell, 0, NULL);
+		builtin_exit(shell, 1, NULL);
 	}
 	return (pid);
 }

@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:50 by user              #+#    #+#             */
-/*   Updated: 2025/07/30 16:55:22 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/31 07:28:18 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,6 @@ void	handle_sigint(int sig)
 	}
 }
 
-static void	handle_sigpipe(int sig)
-{
-	g_signal = sig;
-}
-
 void	handle_sigquit(int sig)
 {
 	if (sig == SIGQUIT)
@@ -41,16 +36,9 @@ void	handle_sigquit(int sig)
 	}
 }
 
-void	handle_here_doc(int sig)
+static void	handle_sigpipe(int sig)
 {
-	if (sig == SIGINT)
-	{
-		g_signal = SIGINT;
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		if (ioctl(STDIN_FILENO, TIOCSTI, "\n") < 0)
-			perror("minishell: ioctl failed");
-	}
+	g_signal = sig;
 }
 
 void	signals(void)

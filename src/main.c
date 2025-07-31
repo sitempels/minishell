@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:31:51 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/30 17:25:06 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/31 07:29:22 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	read_and_prepare(t_shell *shell)
 	if (!shell->cli)
 	{
 		write(STDOUT_FILENO, "leaving the shell...\n", 21);
-		builtin_exit(shell, 0, NULL);
+		builtin_exit(shell, 1, NULL);
 	}
 	signal(SIGQUIT, handle_sigquit);
 	if (shell->cli[0] == '\0')
@@ -44,6 +44,8 @@ static int	read_and_prepare(t_shell *shell)
 
 static int	parse_and_execute(t_shell *shell)
 {
+	if (g_signal != 0)
+		return (1);
 	if (!shell->cli)
 		return (0);
 	shell->tokens = lexer(shell, &shell->tokens, shell->cli);

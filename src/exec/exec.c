@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/30 17:38:08 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/31 07:31:00 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static void	handle_cmd(t_shell *shell, char **argv)
 	}
 	ft_free_array_pos(&argv, 0);
 	shell->status = 127;
-	builtin_exit(shell, 0, NULL);
+	builtin_exit(shell, 1, NULL);
 }
 
 static int	isbuiltin(t_shell *shell, char **argv, int found)
@@ -96,7 +96,7 @@ static int	isbuiltin(t_shell *shell, char **argv, int found)
 	else if (!ft_strcmp(argv[0], "env"))
 		shell->status = builtin_env(shell->env);
 	else if (!ft_strcmp(argv[0], "exit"))
-		builtin_exit(shell, 1, argv);
+		builtin_exit(shell, shell->child_nbr, argv);
 	else if (!ft_strcmp(argv[0], "export"))
 		shell->status = builtin_export(&shell->env, argv);
 	else if (!ft_strcmp(argv[0], "pwd"))

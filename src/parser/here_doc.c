@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/30 11:32:49 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/31 07:35:52 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ t_node	*handle_heredoc(t_shell *shell, t_node *del)
 		return (ft_error(shell, 0, 2, "HERE_DOC", get_errnum(OPEN_FILE)), NULL);
 	}
 	is_quoted(del->use.content, &quoted);
+	signal(SIGQUIT, SIG_IGN);
 	while (g_signal != SIGINT
 		&& write_heredoc(shell, *(del->use.content), fd, quoted))
 		continue ;
-	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, handle_sigquit);
 	close(fd);
 	free(del->use.content);
 	del->use.fd = open(here_name, O_RDONLY);
@@ -76,7 +77,6 @@ static int	write_heredoc(t_shell *shell, t_token del, int fd, int quoted)
 {
 	char	*line;
 
-	signal(SIGINT, handle_here_doc);
 	line = readline("heredoc>> ");
 	if (!line)
 	{
