@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 17:57:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/31 07:31:00 by stempels         ###   ########.fr       */
+/*   Updated: 2025/07/31 09:22:50 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	execute_cmd(t_shell *shell, t_node *tree)
 	pid_t	child;
 
 	argv = NULL;
+	child = 0;
 	if (execute_node(shell, tree->left))
 		return (1);
 	if (tree->right)
