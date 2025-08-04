@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/31 14:24:53 by stempels         ###   ########.fr       */
+/*   Updated: 2025/08/04 11:25:52 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,19 @@ static void	expand_and_write(t_shell *shell, char *line, int fd)
 {
 	int		i;
 	char	**line_arr;
+	t_token	*line_t;
 
 	i = 0;
-	line_arr = expand(shell, NULL, line);
+	line_t = (t_token *) ft_calloc(1, sizeof(t_token));
+	line_t->start = line;
+	line_t->size = ft_strlen(line);
+	line_arr = expand(shell, line_t, NULL);
+	free(line_t);
 	while (line_arr[i])
 	{
 		write(fd, line_arr[i], ft_strlen(line_arr[i]));
+		if (line_arr[i + 1])
+			write(fd, " ", 1);
 		free(line_arr[i]);
 		i++;
 	}
