@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/15 18:11:57 by stempels         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:05:21 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,20 @@ t_node	*parser(t_shell *shell, t_token **token)
 	if (!token)
 		return (NULL);
 	shell->tree = parse_complete_cmd(shell, token);
-	if ((*token)->type == EOL && !(*token)->next)
+	if ((*token) && ((*token)->type == EOL && !(*token)->next))
 	{
 		free(*token);
 		*token = NULL;
 	}
+	if (!*token)
+		return (NULL);
 	if (g_signal == SIGINT)
 	{
 		clean_shell(shell);
 		return (NULL);
 	}
-	if (shell->tree)
+	if ((*token) && shell->tree)
 		verif_tree(shell, shell->tree, NULL);
-	else
-		ft_error(shell, 0, 1, "PARSER: Tree not planted !\n");
 	return (shell->tree);
 }
 
@@ -43,7 +43,7 @@ t_node	*parse_complete_cmd(t_shell *shell, t_token **token)
 		return (NULL);
 	new = NULL;
 	node = parse_pipeline(shell, token);
-	if ((*token)->type == AND_IF || (*token)->type == OR_IF)
+	if ((*token) && ((*token)->type == AND_IF || (*token)->type == OR_IF))
 	{
 		new = create_node(shell, token, (*token)->type);
 		new->left = node;
@@ -71,7 +71,7 @@ t_node	*parse_pipeline(t_shell *shell, t_token **token)
 		return (NULL);
 	new = NULL;
 	node = parse_cmd(shell, token);
-	if ((*token)->type == OR)
+	if ((*token) && (*token)->type == OR)
 	{
 		new = create_node(shell, token, OR);
 		new->left = node;

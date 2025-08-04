@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/07/16 07:31:35 by stempels         ###   ########.fr        #
+#    Updated: 2025/08/04 15:48:29 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,7 +84,6 @@ $(LIBFT):
 #
 $(NAME): $(OBJ) $(LIBFT) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
-	@mkdir -p .here_doc
 	@echo "$(NAME) $(GREEN)created !$(NC)"
 
 run: $(NAME)

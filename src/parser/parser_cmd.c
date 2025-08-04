@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:21 by stempels          #+#    #+#             */
-/*   Updated: 2025/07/31 14:28:09 by stempels         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:58:24 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ t_node	*parse_simple_cmd(t_shell *shell, t_token **token)
 		return (NULL);
 	new = create_node(shell, NULL, CMD);
 	new->use.fct = &execute_cmd;
-	while ((*token) && (*token)->type == LESS || (*token)->type == DLESS
-		|| (*token)->type == GREAT || (*token)->type == DGREAT
-		|| (*token)->type == WORD)
+	while ((*token) && ((*token)->type == LESS || (*token)->type == DLESS
+			|| (*token)->type == GREAT || (*token)->type == DGREAT
+			|| (*token)->type == WORD))
 	{
 		if ((*token)->type == LESS || (*token)->type == DLESS
 			|| (*token)->type == GREAT || (*token)->type == DGREAT)
@@ -75,7 +75,7 @@ t_node	*parse_io_redirect(t_shell *shell, t_token **token)
 	if (g_signal == SIGINT || (*token)->type == EOL)
 		return (NULL);
 	new = create_node(shell, token, (*token)->type);
-	if ((*token)->type == WORD)
+	if ((*token) && ((*token)->type == WORD))
 	{
 		get_usage(new, (new)->type);
 		new->right = create_node(shell, NULL, FILENAME);
@@ -83,8 +83,10 @@ t_node	*parse_io_redirect(t_shell *shell, t_token **token)
 		if (new->type == DLESS)
 		{
 			new->right = handle_heredoc(shell, new->right);
+			if (!new->right)
+				new->right = create_node(shell, NULL, ERROR);
 			if (g_signal == SIGINT)
-				return (free(new->right), free(new), NULL);
+				return (free(new), NULL);
 		}
 	}
 	else

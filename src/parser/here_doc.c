@@ -6,7 +6,7 @@
 /*   By: sjacquet <sjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:38:46 by stempels          #+#    #+#             */
-/*   Updated: 2025/08/04 11:25:52 by stempels         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:39:21 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,14 @@ t_node	*handle_heredoc(t_shell *shell, t_node *del)
 	int		quoted;
 	char	*here_name;
 
-	here_name = create_heredoc(shell, ".here_doc/heredoc");
+	here_name = create_heredoc(shell, ".heredoc");
 	fd = open(here_name, O_WRONLY | O_CREAT, 00644);
 	if (fd == -1)
 	{
 		shell->status = 1;
 		free(here_name);
-		return (ft_error(shell, 0, 2, "HERE_DOC :", get_errnum(OPEN_FILE)), NULL);
+		ft_error(shell, 0, 2, "HERE_DOC: ", get_errnum(OPEN_FILE));
+		return (clean_node(&del), NULL);
 	}
 	is_quoted(del->use.content, &quoted);
 	while (g_signal != SIGINT
@@ -40,10 +41,9 @@ t_node	*handle_heredoc(t_shell *shell, t_node *del)
 	free(del->use.content);
 	del->use.fd = open(here_name, O_RDONLY);
 	unlink(here_name);
-	free(here_name);
 	if (g_signal == SIGINT)
-		return (free(del), close(fd), NULL);
-	return (del);
+		return (free(del), free(here_name), close(fd), NULL);
+	return (free(here_name), del);
 }
 
 static char	*create_heredoc(t_shell *shell, char *here_doc)
