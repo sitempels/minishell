@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/08/04 15:48:29 by stempels         ###   ########.fr        #
+#    Updated: 2025/08/05 09:18:27 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -104,7 +104,6 @@ libclean:
 	rm -rf $(LIBFT)
 #
 fclean: clean
-	rm -rf .here_doc
 	rm -rf $(NAME)
 	rm -rf $(addprefix debug_, $(NAME))
 	$(MAKE) fclean -C $(LIBFT_DIR)	
@@ -116,7 +115,6 @@ re: ffclean all
 #
 debug: $(OBJ) $(LIBFT) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
-	@mkdir -p .here_doc
 	@echo "$(NAME) created !"
 #
 -include $(DEPENDS)
