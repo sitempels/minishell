@@ -1,0 +1,14 @@
+// Cette commande la fait un truc bizzare sur mon pc a la maison avec valgrind.
+// Je la mets ici comme ca je peux test a l'ecole voir si ca fait la meme chose
+ps aux | grep bash | grep -v grep
+
+// Liste de commande qui font crash minishell
+// erreurs de syntaxes encore non explorees
+ls >
+echo hello |
+cat file.txt >
+echo hi > > out.txt
+cat > | grep
+
+// Ca ne devrait pas etre compliquer a gerer vu notre setup actuel.
+// J'ai tester pas mal de commande avec des pipes et des redirections, il bronche pas d'un poil.
