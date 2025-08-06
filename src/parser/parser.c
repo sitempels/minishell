@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/08/04 15:05:21 by stempels         ###   ########.fr       */
+/*   Updated: 2025/08/06 15:36:46 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ t_node	*parser(t_shell *shell, t_token **token)
 		free(*token);
 		*token = NULL;
 	}
-	if (!*token)
-		return (NULL);
+	else
+		return (clean_shell(shell), NULL);
 	if (g_signal == SIGINT)
 	{
 		clean_shell(shell);
 		return (NULL);
 	}
-	if ((*token) && shell->tree)
+	if (shell->tree)
 		verif_tree(shell, shell->tree, NULL);
 	return (shell->tree);
 }
