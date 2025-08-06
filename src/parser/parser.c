@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:50:25 by stempels          #+#    #+#             */
-/*   Updated: 2025/08/06 15:36:46 by stempels         ###   ########.fr       */
+/*   Updated: 2025/08/06 16:31:51 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ t_node	*parse_pipeline(t_shell *shell, t_token **token)
 	{
 		new = create_node(shell, token, OR);
 		new->left = node;
-		if (!new->left->right || (*token)->type == EOL)
+		if ((*token)->type == EOL)
 		{
-			free(new->left);
+			clean_tree(&new->left);
 			new->left = NULL;
 			new->right = create_node(shell, NULL, ERROR);
 			return (new);
